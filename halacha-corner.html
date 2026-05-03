@@ -2728,7 +2728,7 @@
   <!-- Bottom section divider: dark fades to light -->
   <div class="hch-divider-wrapper">
     <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,70 L0,38 Q100,28 200,36 T400,30 Q500,36 600,28 T800,34 Q900,28 1000,34 T1200,30 L1200,70 Z" fill="#F3EEE6"></path>
+      <path d="M0,70 L0,38 Q100,28 200,36 T400,30 Q500,36 600,28 T800,34 Q900,28 1000,34 T1200,30 L1200,70 Z" fill="var(--bg-light)"></path>
     </svg>
   </div>
 
@@ -2930,7 +2930,7 @@
   <!-- Section transition divider -->
   <div class="hcf-divider-wrapper">
     <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,60 L0,28 Q80,18 160,26 T320,22 Q400,28 480,20 T640,24 Q720,20 800,26 T960,22 Q1040,18 1120,26 T1200,22 L1200,60 Z" fill="#1A1023"></path>
+      <path d="M0,60 L0,28 Q80,18 160,26 T320,22 Q400,28 480,20 T640,24 Q720,20 800,26 T960,22 Q1040,18 1120,26 T1200,22 L1200,60 Z" fill="var(--bg-light)"></path>
     </svg>
   </div>
 </section>
@@ -3060,7 +3060,79 @@
     <!-- End FAQ List -->
 
     <!-- Disclaimer Block -->
-    <footer class="hcf-disclaimer">
+    
+
+<section class="um-delete-section" dir="rtl" aria-labelledby="um-delete-title" data-zappy-component="true" id="ai-section-1777839099550-fb0n0vy">
+  <div class="um-delete-container">
+    <div class="um-delete-icon-wrap" aria-hidden="true">
+      <svg class="um-delete-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="30" stroke="url(#goldGrad)" stroke-width="2.5"></circle>
+        <path d="M22 22L42 42M42 22L22 42" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round"></path>
+        <defs>
+          <linearGradient id="goldGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#C9A84C"></stop>
+            <stop offset="50%" stop-color="#FFD700"></stop>
+            <stop offset="100%" stop-color="#B8860B"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="um-delete-content">
+      <h2 class="um-delete-title" id="um-delete-title">מחיקת חשבון</h2>
+      <p class="um-delete-subtitle">פעולה זו אינה ניתנת לביטול. כל המידע שלך יימחק לצמיתות.</p>
+    </div>
+
+    <div class="um-delete-warning-box" role="alert">
+      <div class="um-delete-warning-icon" aria-hidden="true">⚠️</div>
+      <div class="um-delete-warning-text">
+        <strong>שים לב!</strong> מחיקת החשבון תגרום לאיבוד כל ההתאמות, ההודעות והפרטים האישיים שלך לצמיתות. פעולה זו אינה הפיכה.
+      </div>
+    </div>
+
+    <ul class="um-delete-consequences" aria-label="השלכות מחיקת החשבון">
+      <li class="um-delete-consequence-item">
+        <span class="um-delete-consequence-icon" aria-hidden="true">💔</span>
+        <span>כל ההתאמות וההיכרויות שלך יאבדו לצמיתות</span>
+      </li>
+      <li class="um-delete-consequence-item">
+        <span class="um-delete-consequence-icon" aria-hidden="true">✉️</span>
+        <span>כל ההודעות והשיחות יימחקו ללא אפשרות שחזור</span>
+      </li>
+      <li class="um-delete-consequence-item">
+        <span class="um-delete-consequence-icon" aria-hidden="true">📷</span>
+        <span>תמונות הפרופיל ומידע אישי יוסרו מהמערכת</span>
+      </li>
+      <li class="um-delete-consequence-item">
+        <span class="um-delete-consequence-icon" aria-hidden="true">🔒</span>
+        <span>לא ניתן יהיה לשחזר את החשבון לאחר המחיקה</span>
+      </li>
+    </ul>
+
+    <div class="um-delete-confirm-area">
+      <label class="um-delete-confirm-label" for="um-delete-confirm-input">
+        לאישור, הקלד/י <strong>מחק את החשבון שלי</strong> בשדה למטה:
+      </label>
+      <input type="text" id="um-delete-confirm-input" class="um-delete-confirm-input" placeholder="הקלד/י כאן לאישור" aria-required="true" autocomplete="off">
+    </div>
+
+    <div class="um-delete-actions">
+      <button class="um-delete-btn-cancel" type="button" aria-label="בטל ושמור את החשבון">
+        לא, שמור את החשבון שלי
+      </button>
+      <button class="um-delete-btn-confirm" type="button" id="um-delete-confirm-btn" disabled="" aria-label="אשר מחיקת חשבון" aria-disabled="true">
+        כן, מחק את החשבון שלי
+      </button>
+    </div>
+
+    <p class="um-delete-footer-note">
+      רוצה להפסיק לקבל התראות בלבד?
+      <a href="#" class="um-delete-link">עדכן את הגדרות ההתראות</a>
+    </p>
+  </div>
+</section>
+
+<footer class="hcf-disclaimer">
       <div class="hcf-disclaimer-inner">
         <span class="hcf-disclaimer-icon" aria-hidden="true">
           <svg data-element-type="icon" data-icon-type="svg" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

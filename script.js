@@ -1904,6 +1904,39 @@ window.onload = function() {
     })(); // End of IIFE
     
 
+/* Added Component Script */
+(function () {
+  const CONFIRM_PHRASE = 'מחק את החשבון שלי';
+  const input = document.getElementById('um-delete-confirm-input');
+  const btn = document.getElementById('um-delete-confirm-btn');
+
+  if (!input || !btn) return;
+
+  input.addEventListener('input', function () {
+    const val = this.value.trim();
+    const isMatch = val === CONFIRM_PHRASE;
+
+    btn.disabled = !isMatch;
+    btn.setAttribute('aria-disabled', String(!isMatch));
+
+    if (isMatch) {
+      input.classList.add('um-input-valid');
+    } else {
+      input.classList.remove('um-input-valid');
+    }
+  });
+
+  btn.addEventListener('click', function () {
+    if (this.disabled) return;
+    // Confirm deletion action — integrate with backend as needed
+    const confirmed = window.confirm('האם אתה בטוח לחלוטין שברצונך למחוק את החשבון? פעולה זו אינה הפיכה.');
+    if (confirmed) {
+      // Trigger deletion logic here
+      alert('החשבון שלך נמחק. אנו מצטערים לראותך עוזב/ת.');
+    }
+  });
+})();
+
 
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
 (function(){
