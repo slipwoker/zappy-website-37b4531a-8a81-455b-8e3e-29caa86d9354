@@ -1,0 +1,3398 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>פינת הלכות</title>
+    <meta name="description" content="UNITED MATCH - פינת הלכות">
+    <meta name="keywords" content="">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: '37b4531a-8a81-455b-8e3e-29caa86d9354',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="פינת הלכות">
+    <meta property="og:description" content="UNITED MATCH - פינת הלכות">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="פינת הלכות">
+    <meta name="twitter:description" content="UNITED MATCH - פינת הלכות">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+
+          <style id="zappy-cta-mobile-style">
+            /* Hide CTA list item on desktop (tablets and up) */
+            @media (min-width: 769px) {
+              .nav-cta-item-mobile {
+                display: none !important;
+              }
+            }
+            /* Show CTA list item on mobile */
+            @media (max-width: 768px) {
+              .nav-cta-item-mobile {
+                display: list-item !important;
+              }
+            }
+          </style>
+        
+          <style id="zappy-nested-menu-style">
+            /* Desktop only: vertically center nav items */
+            @media (min-width: 769px) {
+              .nav-menu,
+              #navMenu {
+                align-items: center !important;
+              }
+            }
+            
+            /* Menu Group styling (non-clickable parent) - TOP LEVEL ONLY with ultra-specific selector */
+            .nav-menu > li > .menu-group-title,
+            #navMenu > li > .menu-group-title {
+              display: inline-block !important;
+              padding: 0.5rem 1rem !important;
+              color: var(--nav-color) !important;
+              font-weight: 500 !important;
+              line-height: 1.7 !important;
+              cursor: default !important;
+              user-select: none !important;
+              vertical-align: middle !important;
+              text-decoration: none !important;
+              margin: 0 !important;
+              transition: color 0.3s ease !important;
+            }
+            
+            .nav-menu > li > .menu-group-title:hover,
+            #navMenu > li > .menu-group-title:hover {
+              color: var(--nav-hover-color) !important;
+            }
+            
+            /* Desktop: show submenu on Menu Group hover */
+            li:has(.menu-group-title):hover > .sub-menu {
+              opacity: 1 !important;
+              visibility: visible !important;
+              transform: translateY(0) !important;
+              pointer-events: auto !important; /* Enable interaction when hovering */
+            }
+            
+            /* Hide menu items marked as hidden (overrides hover states) */
+            .zappy-hidden-menu-item,
+            li:has(.menu-group-title):hover > .sub-menu .zappy-hidden-menu-item {
+              display: none !important;
+              opacity: 0 !important;
+              visibility: hidden !important;
+              pointer-events: none !important;
+            }
+            
+            /* Keep submenu visible when hovering over the submenu itself */
+            .sub-menu:hover {
+              opacity: 1 !important;
+              visibility: visible !important;
+              pointer-events: auto !important;
+            }
+            
+            /* Nested dropdown menu styles - using more specific selectors */
+            .nav-menu .sub-menu,
+            nav .sub-menu,
+            .navbar .sub-menu {
+              display: block !important; /* Ensure submenu is in the DOM */
+              position: absolute !important;
+              top: 100%;
+              left: 0;
+              right: auto;
+              min-width: 200px;
+              background: white;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              border-radius: 8px;
+              padding: 8px 0;
+              margin-top: 0px; /* Remove gap to prevent hover loss */
+              opacity: 0 !important;
+              visibility: hidden !important;
+              transform: translateY(-10px);
+              transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+              z-index: 1000;
+              list-style: none;
+              pointer-events: none; /* Prevent interaction when hidden */
+            }
+            
+            /* RTL (Hebrew/Arabic) submenu positioning - align to right instead of left */
+            [dir="rtl"] .nav-menu .sub-menu,
+            [dir="rtl"] nav .sub-menu,
+            [dir="rtl"] .navbar .sub-menu,
+            html[lang="he"] .nav-menu .sub-menu,
+            html[lang="he"] nav .sub-menu,
+            html[lang="he"] .navbar .sub-menu,
+            html[lang="ar"] .nav-menu .sub-menu,
+            html[lang="ar"] nav .sub-menu,
+            html[lang="ar"] .navbar .sub-menu {
+              left: auto;
+              right: 0;
+            }
+            
+            /* Show submenu on parent hover - more specific selectors */
+            .nav-menu li:hover > .sub-menu,
+            nav li:hover > .sub-menu,
+            .navbar li:hover > .sub-menu {
+              opacity: 1 !important;
+              visibility: visible !important;
+              transform: translateY(0) !important;
+              pointer-events: auto !important; /* Enable interaction when visible */
+            }
+            
+            /* Parent item must be relatively positioned */
+            .nav-menu li:has(.sub-menu),
+            nav li:has(.sub-menu),
+            .navbar li:has(.sub-menu) {
+              position: relative;
+            }
+            
+            /* Style for submenu items */
+            .sub-menu li {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+            }
+            
+            .sub-menu a,
+            .sub-menu .menu-group-title {
+              display: block !important;
+              padding: 10px 12px !important;
+              color: #333 !important;
+              font-weight: 600 !important;
+              text-decoration: none;
+              transition: background-color 0.2s;
+              white-space: nowrap;
+              cursor: default;
+            }
+            
+            .sub-menu a:hover {
+              background-color: #f5f5f5;
+            }
+            
+            /* CRITICAL: Override submenu styles for TOP-LEVEL Menu Groups only - must come AFTER submenu styles */
+            .nav-menu > li > .menu-group-title,
+            #navMenu > li > .menu-group-title {
+              display: inline-block !important;
+              padding: 0.5rem 1rem !important;
+              color: var(--nav-color) !important;
+              font-weight: 500 !important;
+              line-height: 1.7 !important;
+              cursor: default !important;
+              user-select: none !important;
+              vertical-align: middle !important;
+              text-decoration: none !important;
+              margin: 0 !important;
+              transition: color 0.3s ease !important;
+            }
+            
+            .nav-menu > li > .menu-group-title:hover,
+            #navMenu > li > .menu-group-title:hover {
+              color: var(--nav-hover-color) !important;
+              background-color: transparent !important;
+            }
+            
+            /* On mobile, show nested menus as expandable accordion */
+            @media (max-width: 768px) {
+              /* Mobile submenu styling */
+              .nav-menu .sub-menu,
+              nav .sub-menu,
+              .navbar .sub-menu {
+                position: static !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                margin-top: 0 !important;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                visibility: hidden;
+                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, padding 0.3s ease;
+                padding: 0 !important;
+                border-radius: 0 !important;
+              }
+              
+              /* Expanded state — no internal scroll; parent navMenu scrolls */
+              .sub-menu.mobile-expanded {
+                max-height: none !important;
+                overflow-y: visible !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                padding: 8px 0 8px 16px !important;
+              }
+              
+              /* RTL padding adjustment */
+              [dir="rtl"] .sub-menu.mobile-expanded,
+              html[lang="he"] .sub-menu.mobile-expanded,
+              html[lang="ar"] .sub-menu.mobile-expanded {
+                padding: 8px 16px 8px 0 !important;
+              }
+              
+              /* Disable hover behavior on mobile */
+              .nav-menu li:hover > .sub-menu,
+              nav li:hover > .sub-menu,
+              .navbar li:hover > .sub-menu {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+              }
+              
+              /* Enable visibility for expanded submenus */
+              .nav-menu li > .sub-menu.mobile-expanded,
+              nav li > .sub-menu.mobile-expanded,
+              .navbar li > .sub-menu.mobile-expanded {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+              }
+              
+              .sub-menu a {
+                padding: 10px 0 !important;
+                display: block !important;
+                font-size: 14px !important;
+                white-space: normal !important;
+              }
+              
+              .sub-menu a:hover {
+                background-color: transparent !important;
+              }
+              
+              /* Parent item wrapper - flex layout with relative positioning for absolute toggle */
+              .nav-menu li:has(.sub-menu),
+              nav li:has(.sub-menu),
+              .navbar li:has(.sub-menu) {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                align-items: center !important;
+                position: relative !important;
+                min-height: 44px !important;
+              }
+              
+              /* Parent link - takes full width since toggle is absolute (not a flex child) */
+              .nav-menu li:has(.sub-menu) > a,
+              nav li:has(.sub-menu) > a,
+              .navbar li:has(.sub-menu) > a,
+              .nav-menu > li > .menu-group-title,
+              #navMenu > li > .menu-group-title {
+                flex: 1 !important;
+                min-width: 0 !important;
+              }
+              
+              /* Normalize menu-group-title in mobile nav to match link alignment */
+              .nav-menu > li > .menu-group-title,
+              #navMenu > li > .menu-group-title {
+                padding: 0 !important;
+                line-height: inherit !important;
+              }
+              
+              /* Submenu takes full width below parent */
+              .nav-menu li:has(.sub-menu) > .sub-menu,
+              nav li:has(.sub-menu) > .sub-menu,
+              .navbar li:has(.sub-menu) > .sub-menu {
+                flex-basis: 100% !important;
+                width: 100% !important;
+              }
+              
+              /* HIDE EXISTING CHEVRONS/ARROWS from cloned sites to prevent duplicates */
+              .nav-menu li:has(.sub-menu) > a .fa-chevron-down,
+              .nav-menu li:has(.sub-menu) > a .fa-angle-down,
+              .nav-menu li:has(.sub-menu) > a [class*="chevron"],
+              .nav-menu li:has(.sub-menu) > a [class*="arrow"],
+              nav li:has(.sub-menu) > a [class*="chevron"],
+              nav li:has(.sub-menu) > a [class*="arrow"],
+              #navMenu li:has(.sub-menu) > a [class*="chevron"],
+              #navMenu li:has(.sub-menu) > a [class*="arrow"] {
+                display: none !important;
+                visibility: hidden !important;
+              }
+              
+              /* Toggle arrow button - flex child that stretches to match nav-link height */
+              .mobile-submenu-toggle {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 44px !important;
+                height: auto !important;
+                background: transparent !important;
+                border: none !important;
+                cursor: pointer !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: static !important;
+                flex-shrink: 0 !important;
+                align-self: stretch !important;
+                z-index: 2 !important;
+                -webkit-tap-highlight-color: transparent;
+              }
+              
+              .mobile-submenu-toggle::after {
+                content: '' !important;
+                display: block !important;
+                width: 0 !important;
+                height: 0 !important;
+                border-left: 6px solid transparent !important;
+                border-right: 6px solid transparent !important;
+                border-top: 7px solid currentColor !important;
+                transition: transform 0.3s ease !important;
+              }
+              
+              /* Rotate arrow when expanded */
+              .mobile-submenu-toggle.expanded::after {
+                transform: rotate(180deg) !important;
+              }
+            }
+            
+            /* Hide toggle button on desktop */
+            @media (min-width: 769px) {
+              .mobile-submenu-toggle {
+                display: none !important;
+              }
+            }
+          </style>
+          
+          <script id="zappy-mobile-menu-script">
+            // Mobile menu toggle for nested submenus (including Menu Groups)
+            // Uses separate toggle button - link navigates, arrow toggles submenu
+            (function() {
+              function initMobileMenuToggles() {
+                // Only run on mobile
+                if (window.innerWidth > 768) {
+                  // Remove any toggle buttons on desktop
+                  document.querySelectorAll('.mobile-submenu-toggle').forEach(btn => btn.remove());
+                  document.querySelectorAll('.sub-menu.mobile-expanded').forEach(menu => {
+                    menu.classList.remove('mobile-expanded');
+                  });
+                  console.log('[MOBILE MENU] Desktop mode - cleanup done');
+                  return;
+                }
+                
+                console.log('[MOBILE MENU] Initializing mobile menu toggles...');
+                
+                // Find all parent menu items (items with .sub-menu)
+                const menuItemsWithSubmenus = document.querySelectorAll(
+                  '.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)'
+                );
+                
+                console.log('[MOBILE MENU] Found', menuItemsWithSubmenus.length, 'items with submenus');
+                
+                menuItemsWithSubmenus.forEach(function(li) {
+                  // Skip if already has toggle button
+                  if (li.querySelector('.mobile-submenu-toggle')) {
+                    return;
+                  }
+                  
+                  const submenu = li.querySelector('.sub-menu');
+                  const parentLink = li.querySelector(':scope > a') || li.querySelector(':scope > .menu-group-title');
+                  
+                  if (!submenu || !parentLink) return;
+                  
+                  // Create toggle button
+                  const toggleBtn = document.createElement('button');
+                  toggleBtn.className = 'mobile-submenu-toggle';
+                  toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+                  toggleBtn.setAttribute('type', 'button');
+
+                  // Insert toggle button after the link
+                  parentLink.insertAdjacentElement('afterend', toggleBtn);
+                  
+                  console.log('[MOBILE MENU] Created toggle button for:', parentLink.textContent?.trim());
+                  
+                  // Handle toggle button click - only toggles submenu
+                  toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isExpanded = submenu.classList.contains('mobile-expanded');
+                    
+                    // Close all other submenus first
+                    document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+                      if (menu !== submenu) {
+                        menu.classList.remove('mobile-expanded');
+                        const otherToggle = menu.parentElement.querySelector('.mobile-submenu-toggle');
+                        if (otherToggle) otherToggle.classList.remove('expanded');
+                      }
+                    });
+                    
+                    // Toggle this submenu
+                    submenu.classList.toggle('mobile-expanded');
+                    toggleBtn.classList.toggle('expanded');
+                    
+                    console.log('[MOBILE MENU] Toggled submenu:', !isExpanded ? 'expanded' : 'collapsed');
+                  });
+                  
+                  // Parent link navigates normally - no preventDefault
+                });
+              }
+              
+              // Initialize on DOM load
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMobileMenuToggles);
+              } else {
+                initMobileMenuToggles();
+              }
+              
+              // Re-initialize on window resize (but use debounce to avoid too many calls)
+              let resizeTimer;
+              window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(initMobileMenuToggles, 250);
+              });
+              
+              // Also initialize when mobile menu becomes visible
+              // This handles cases where the mobile menu is hidden initially
+              const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                  if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    if (target.classList.contains('active') || target.style.display !== 'none') {
+                      console.log('[MOBILE MENU] Mobile menu became visible, re-initializing...');
+                      setTimeout(initMobileMenuToggles, 100);
+                    }
+                  }
+                });
+              });
+              
+              // Observe mobile menu containers
+              const mobileMenus = document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu');
+              mobileMenus.forEach(function(menu) {
+                observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+              });
+            })();
+          </script>
+        
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="article">
+    
+    
+    
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="פינת הלכות">
+    <meta property="og:locale" content="he_IL">
+    <!-- Twitter Card Meta Tags -->
+    
+    
+    
+    
+    <meta name="twitter:image:alt" content="פינת הלכות"><style id="zappy-ai-page-styles">@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Frank+Ruhl+Libre:wght@400;700&family=Heebo:wght@400;500;600;700&display=swap');
+
+.halacha-corner-hero-section {
+  position: relative;
+  overflow: visible;
+  direction: rtl;
+  background-color: #050505;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 65% 40%, rgba(201,168,76,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 70% at 20% 80%, rgba(26,16,35,0.8) 0%, transparent 70%),
+    linear-gradient(175deg, #0A0A0A 0%, #0D0B14 45%, #0A0A0A 100%);
+  color: var(--text-light);
+  padding: 140px 0 110px;
+  font-family: 'Heebo', sans-serif;
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Background layers ── */
+.halacha-corner-hero-section .hch-bg-base {
+  position: absolute;
+  inset: 0;
+  background-color: #050505;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.halacha-corner-hero-section .hch-radial-glow {
+  position: absolute;
+  inset-inline-end: 5%;
+  top: 10%;
+  width: 55%;
+  height: 75%;
+  background: radial-gradient(ellipse at center, rgba(212,160,23,0.13) 0%, rgba(201,168,76,0.06) 35%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* ── Constellation decorations ── */
+.halacha-corner-hero-section .hch-constellation {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.halacha-corner-hero-section .hch-constellation--tr {
+  inset-inline-end: 0;
+  top: 0;
+  width: 180px;
+  height: 180px;
+}
+
+.halacha-corner-hero-section .hch-constellation--bl {
+  inset-inline-start: 0;
+  bottom: 80px;
+  width: 180px;
+  height: 180px;
+}
+
+/* ── Container ── */
+.halacha-corner-hero-section .hch-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  direction: rtl;
+  width: 100%;
+}
+
+/* ── RIGHT: Text column ── */
+.halacha-corner-hero-section .hch-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: right;
+  gap: 0;
+}
+
+.halacha-corner-hero-section .hch-label-tag {
+  display: inline-block;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  border: 1px solid rgba(201,168,76,0.4);
+  padding: 5px 14px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+.halacha-corner-hero-section .hch-headline {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #F5E6C8;
+  margin: 0 0 20px 0;
+  text-shadow: 0 2px 40px rgba(201,168,76,0.18);
+}
+
+.halacha-corner-hero-section .hch-gold-rule {
+  width: 72px;
+  height: 2px;
+  background: linear-gradient(90deg, #C9A84C 0%, #FFD700 60%, transparent 100%);
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+
+.halacha-corner-hero-section .hch-subheadline {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #F5E6C8;
+  margin: 0 0 20px 0;
+}
+
+.halacha-corner-hero-section .hch-body-text {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #B8A880;
+  margin: 0 0 40px 0;
+  max-width: 460px;
+}
+
+.halacha-corner-hero-section .hch-cta-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+}
+
+.halacha-corner-hero-section .hch-btn-primary {
+  display: inline-block;
+  background: linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%);
+  color: #0A0A0A;
+  padding: 14px 36px;
+  border-radius: 4px;
+  border: none;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(201,168,76,0.3);
+}
+
+.halacha-corner-hero-section .hch-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 40px rgba(212,160,23,0.45), 0 0 80px rgba(212,160,23,0.2);
+}
+
+/* ── LEFT: Tablet column ── */
+.halacha-corner-hero-section .hch-tablet-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hero image behind the card */
+.halacha-corner-hero-section .hch-img-wrap {
+  position: absolute;
+  inset: -24px -24px -24px -24px;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.halacha-corner-hero-section .hch-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.35;
+  filter: brightness(0.6) saturate(0.7);
+  border-radius: 4px;
+  border: 1px solid rgba(201,168,76,0.15);
+  box-shadow: 0 0 30px rgba(201,168,76,0.12), 0 20px 60px rgba(0,0,0,0.8);
+}
+
+/* Tablet card */
+.halacha-corner-hero-section .hch-tablet-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(10,8,16,0.78);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(201,168,76,0.38);
+  border-radius: 4px;
+  padding: 40px 36px 36px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 16px 56px rgba(0,0,0,0.65), inset 0 1px 0 rgba(201,168,76,0.12);
+}
+
+/* Corner flourish SVGs */
+.halacha-corner-hero-section .hch-corner-flourish {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.halacha-corner-hero-section .hch-corner-flourish--tl {
+  top: -1px;
+  inset-inline-end: -1px;
+}
+
+.halacha-corner-hero-section .hch-corner-flourish--tr {
+  top: -1px;
+  inset-inline-start: -1px;
+}
+
+.halacha-corner-hero-section .hch-corner-flourish--bl {
+  bottom: -1px;
+  inset-inline-end: -1px;
+}
+
+.halacha-corner-hero-section .hch-corner-flourish--br {
+  bottom: -1px;
+  inset-inline-start: -1px;
+}
+
+/* Tablet inner */
+.halacha-corner-hero-section .hch-tablet-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.halacha-corner-hero-section .hch-tablet-ornament {
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.halacha-corner-hero-section .hch-tablet-ornament--bottom {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.halacha-corner-hero-section .hch-tablet-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #C9A84C;
+  text-align: center;
+  margin: 0 0 24px 0;
+  letter-spacing: 0.04em;
+}
+
+.halacha-corner-hero-section .hch-tablet-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.halacha-corner-hero-section .hch-tablet-line {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  align-items: flex-start;
+  direction: rtl;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+
+.halacha-corner-hero-section .hch-tablet-line:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.halacha-corner-hero-section .hch-line-num {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #C9A84C;
+  text-align: right;
+  line-height: 1.7;
+  flex-shrink: 0;
+}
+
+.halacha-corner-hero-section .hch-line-text {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #D4C9A8;
+  text-align: right;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ── Bottom divider ── */
+.halacha-corner-hero-section .hch-divider-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.halacha-corner-hero-section .hch-divider-wrapper svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── RESPONSIVE: Tablet ── */
+@media (max-width: 1024px) {
+  .halacha-corner-hero-section .hch-container {
+    gap: 40px;
+    padding: 0 32px;
+  }
+}
+
+/* ── RESPONSIVE: Mobile ── */
+@media (max-width: 768px) {
+  .halacha-corner-hero-section {
+    padding: 110px 0 90px;
+    min-height: auto;
+    align-items: flex-start;
+  }
+
+  .halacha-corner-hero-section .hch-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  .halacha-corner-hero-section .hch-radial-glow {
+    width: 80%;
+    inset-inline-end: 10%;
+  }
+
+  .halacha-corner-hero-section .hch-constellation--tr {
+    width: 120px;
+    height: 120px;
+  }
+
+  .halacha-corner-hero-section .hch-constellation--bl {
+    width: 100px;
+    height: 100px;
+    bottom: 70px;
+  }
+
+  .halacha-corner-hero-section .hch-headline {
+    font-size: 2.2rem;
+  }
+
+  .halacha-corner-hero-section .hch-body-text {
+    max-width: 100%;
+  }
+
+  .halacha-corner-hero-section .hch-tablet-col {
+    width: 100%;
+  }
+
+  .halacha-corner-hero-section .hch-img-wrap {
+    inset: -12px -12px -12px -12px;
+  }
+
+  .halacha-corner-hero-section .hch-tablet-card {
+    max-width: 100%;
+    padding: 28px 20px 24px;
+  }
+}
+
+.halacha-corner-editorial-section {
+  background-color: #F3EEE6;
+  background-image: linear-gradient(180deg, #F8F4EC 0%, #F3EEE6 100%);
+  color: var(--text-dark);
+  position: relative;
+  overflow: visible;
+  padding: 80px 0 72px;
+  direction: rtl;
+  font-family: 'Heebo', sans-serif;
+}
+
+.halacha-corner-editorial-section .halacha-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Top ornament */
+.halacha-corner-editorial-section .halacha-ornament-top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 52px;
+}
+
+/* Main grid: asymmetric two columns */
+.halacha-corner-editorial-section .halacha-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 64px;
+  align-items: start;
+  direction: rtl;
+}
+
+/* ── RIGHT COLUMN ── */
+.halacha-corner-editorial-section .halacha-main-col {
+  padding-inline-end: 0;
+}
+
+.halacha-corner-editorial-section .halacha-label {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 16px;
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-heading {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  color: var(--text-dark);
+  margin: 0 0 24px 0;
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-intro {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #5A4E44;
+  margin: 0 0 44px 0;
+  text-align: right;
+  max-width: 640px;
+}
+
+/* Content blocks */
+.halacha-corner-editorial-section .halacha-block {
+  margin-bottom: 0;
+}
+
+.halacha-corner-editorial-section .halacha-block-inner {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 28px 0 24px;
+  direction: rtl;
+}
+
+.halacha-corner-editorial-section .halacha-number {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #C9A84C;
+  opacity: 0.65;
+  line-height: 1;
+  padding-top: 4px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.halacha-corner-editorial-section .halacha-block-content {
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-block-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-dark);
+  margin: 0 0 10px 0;
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-block-text {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #5A4E44;
+  margin: 0;
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-divider {
+  height: 1px;
+  background: linear-gradient(to left, transparent, #C9A84C 20%, #C9A84C 80%, transparent);
+  opacity: 0.35;
+  margin: 0;
+}
+
+.halacha-corner-editorial-section .halacha-divider--last {
+  opacity: 0.15;
+}
+
+.halacha-corner-editorial-section .halacha-cta-row {
+  margin-top: 36px;
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .btn-ghost {
+  background: transparent;
+  color: #C9A84C;
+  border: none;
+  padding: 0;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  cursor: pointer;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  display: inline-block;
+}
+
+.halacha-corner-editorial-section .btn-ghost:hover {
+  color: #B8860B;
+  opacity: 0.85;
+}
+
+/* ── LEFT COLUMN: DARK PANEL ── */
+.halacha-corner-editorial-section .halacha-side-panel {
+  background: #131108;
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 8px;
+  padding: 40px 36px;
+  color: #F5E6C8;
+  position: relative;
+  box-shadow: 0 16px 56px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+
+/* Corner flourish decorations */
+.halacha-corner-editorial-section .halacha-panel-flourish {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.halacha-corner-editorial-section .halacha-panel-flourish--bl {
+  top: auto;
+  right: auto;
+  bottom: 12px;
+  left: 12px;
+}
+
+.halacha-corner-editorial-section .halacha-panel-header {
+  text-align: right;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.halacha-corner-editorial-section .halacha-panel-ornament {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(to left, #C9A84C, #FFD700);
+  margin-bottom: 16px;
+  margin-inline-start: auto;
+  border-radius: 2px;
+}
+
+.halacha-corner-editorial-section .halacha-panel-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #F5E6C8;
+  margin: 0 0 6px 0;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-panel-subtitle {
+  font-size: 0.8rem;
+  color: #B8A880;
+  letter-spacing: 0.06em;
+  margin: 0;
+  text-align: right;
+}
+
+/* Principles list */
+.halacha-corner-editorial-section .halacha-principles-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.halacha-corner-editorial-section .halacha-principle-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+  direction: rtl;
+}
+
+.halacha-corner-editorial-section .halacha-principle-item:last-child {
+  border-bottom: none;
+}
+
+.halacha-corner-editorial-section .halacha-principle-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #C9A84C;
+  opacity: 0.7;
+  padding-top: 2px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.halacha-corner-editorial-section .halacha-principle-text {
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-principle-text strong {
+  display: block;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #F5E6C8;
+  margin-bottom: 5px;
+  text-align: right;
+}
+
+.halacha-corner-editorial-section .halacha-principle-text span {
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: #B8A880;
+  display: block;
+  text-align: right;
+}
+
+/* Panel footer quote */
+.halacha-corner-editorial-section .halacha-panel-footer {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(201,168,76,0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.halacha-corner-editorial-section .halacha-panel-quote {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: #C9A84C;
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* Bottom gold line */
+.halacha-corner-editorial-section .halacha-bottom-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #C9A84C 20%, #C9A84C 80%, transparent);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .halacha-corner-editorial-section .halacha-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .halacha-corner-editorial-section .halacha-side-panel {
+    
+  }
+}
+
+@media (max-width: 768px) {
+  .halacha-corner-editorial-section {
+    padding: 60px 0 56px;
+  }
+
+  .halacha-corner-editorial-section .halacha-container {
+    padding: 0 20px;
+  }
+
+  .halacha-corner-editorial-section .halacha-ornament-top {
+    margin-bottom: 36px;
+  }
+
+  .halacha-corner-editorial-section .halacha-heading {
+    font-size: 1.75rem;
+  }
+
+  .halacha-corner-editorial-section .halacha-grid {
+    grid-template-columns: 1fr !important;
+    gap: 36px;
+  }
+
+  .halacha-corner-editorial-section .halacha-block-inner {
+    grid-template-columns: 28px 1fr;
+    gap: 14px;
+    padding: 22px 0 18px;
+  }
+
+  .halacha-corner-editorial-section .halacha-side-panel {
+    padding: 28px 24px;
+  }
+
+  .halacha-corner-editorial-section .halacha-principle-item {
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    padding: 16px 0;
+  }
+}
+/* ZAPPY_POSTGEN_GUARD_RTL_ORDER:פינת הלכות-editorial — stripped 1 order declaration(s) conflicting with RTL grid */
+
+
+.halacha-corner-features-section {
+  position: relative;
+  overflow: visible;
+  direction: rtl;
+  background-color: #0A0A0A;
+  background-image:
+    radial-gradient(ellipse at 95% 20%, rgba(201,168,76,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 5% 80%, rgba(201,168,76,0.05) 0%, transparent 55%),
+    linear-gradient(180deg, #0A0A0A 0%, #0D0C05 100%);
+  color: var(--text-light);
+  padding: 100px 0 80px;
+}
+
+/* Velvet texture overlay */
+.halacha-corner-features-section .hcf-texture-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ambient edge glows */
+.halacha-corner-features-section .hcf-glow-right {
+  position: absolute;
+  top: 10%;
+  inset-inline-end: -80px;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.halacha-corner-features-section .hcf-glow-left {
+  position: absolute;
+  bottom: 15%;
+  inset-inline-start: -80px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Container */
+.halacha-corner-features-section .hcf-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Section Header */
+.halacha-corner-features-section .hcf-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.halacha-corner-features-section .hcf-ornament {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.halacha-corner-features-section .hcf-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  color: #F5E6C8;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.halacha-corner-features-section .hcf-subtitle {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #B8A880;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Grid */
+.halacha-corner-features-section .hcf-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  direction: rtl;
+}
+
+@media (min-width: 768px) {
+  .halacha-corner-features-section .hcf-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+  }
+}
+
+/* Card */
+.halacha-corner-features-section .hcf-card {
+  position: relative;
+  background: rgba(20,18,8,0.85);
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  min-width: 0;
+}
+
+.halacha-corner-features-section .hcf-card:hover {
+  border-color: rgba(201,168,76,0.55);
+  box-shadow: 0 0 32px rgba(201,168,76,0.14), 0 16px 48px rgba(0,0,0,0.55);
+}
+
+/* Card serial number */
+.halacha-corner-features-section .hcf-card-number {
+  position: absolute;
+  top: 16px;
+  inset-inline-start: 18px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(201,168,76,0.55);
+  line-height: 1;
+  z-index: 2;
+}
+
+/* Card inner padding */
+.halacha-corner-features-section .hcf-card-inner {
+  padding: 40px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+}
+
+/* Top accent line (corner glow) */
+.halacha-corner-features-section .hcf-card-top-line {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(to inline-start, transparent, rgba(201,168,76,0.5), transparent);
+  pointer-events: none;
+}
+
+/* Fallback for top-line using standard left/right since logical shorthand in gradient isn't supported */
+.halacha-corner-features-section .hcf-card-top-line {
+  background: linear-gradient(to left, transparent 0%, rgba(201,168,76,0.5) 50%, transparent 100%);
+}
+
+/* Card title */
+.halacha-corner-features-section .hcf-card-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #F5E6C8;
+  margin: 0 0 16px;
+  text-align: right;
+}
+
+/* Thin gold divider */
+.halacha-corner-features-section .hcf-card-divider {
+  width: 48px;
+  height: 1px;
+  background: rgba(201,168,76,0.4);
+  margin-bottom: 16px;
+  margin-inline-start: auto;
+}
+
+/* Card body */
+.halacha-corner-features-section .hcf-card-body {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #B8A880;
+  text-align: right;
+  flex: 1;
+  margin: 0 0 24px;
+}
+
+/* Card footer */
+.halacha-corner-features-section .hcf-card-footer {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 16px;
+  border-top: 1px solid rgba(201,168,76,0.12);
+  margin-top: auto;
+}
+
+/* Tag */
+.halacha-corner-features-section .hcf-card-tag {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8A7A50;
+  line-height: 1.4;
+}
+
+/* Section transition divider */
+.halacha-corner-features-section .hcf-divider-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.halacha-corner-features-section .hcf-divider-wrapper svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .halacha-corner-features-section {
+    padding: 80px 0 70px;
+  }
+
+  .halacha-corner-features-section .hcf-container {
+    padding: 0 16px;
+  }
+
+  .halacha-corner-features-section .hcf-header {
+    margin-bottom: 40px;
+  }
+
+  .halacha-corner-features-section .hcf-title {
+    font-size: 1.75rem;
+  }
+
+  .halacha-corner-features-section .hcf-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .halacha-corner-features-section .hcf-card-inner {
+    padding: 36px 20px 22px;
+  }
+
+  .halacha-corner-features-section .hcf-glow-right,
+  .halacha-corner-features-section .hcf-glow-left {
+    display: none;
+  }
+}
+
+.halacha-corner-faq-section {
+  position: relative;
+  background-color: #131108;
+  background-image: linear-gradient(180deg, #131108 0%, #1C1A10 100%);
+  color: var(--text-light);
+  padding: 100px 24px 80px;
+  direction: rtl;
+  overflow: visible;
+  font-family: 'Heebo', sans-serif;
+}
+
+.hcf-corner-decoration {
+  position: absolute;
+  top: 32px;
+  inset-inline-start: 40px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+}
+
+.hcf-container {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hcf-header {
+  text-align: right;
+  margin-bottom: 56px;
+}
+
+.hcf-gold-ornament {
+  display: block;
+  margin-bottom: 20px;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+.hcf-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  color: #F5E6C8;
+  margin: 0 0 18px 0;
+  text-align: right;
+}
+
+.hcf-subtitle {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #B8A880;
+  max-width: 620px;
+  margin: 0;
+  text-align: right;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+.hcf-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hcf-faq-item {
+  padding: 0;
+}
+
+.hcf-faq-inner {
+  padding: 36px 0 32px;
+}
+
+.hcf-question-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+  text-align: right;
+}
+
+.hcf-question-marker {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: #C9A84C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hcf-question {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #F5E6C8;
+  margin: 0;
+  text-align: right;
+  flex: 1;
+}
+
+.hcf-answer-wrap {
+  padding-inline-start: 32px;
+}
+
+.hcf-answer {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #B8A880;
+  margin: 0;
+  text-align: right;
+}
+
+.hcf-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to left, rgba(201,168,76,0.45) 0%, rgba(201,168,76,0.08) 60%, transparent 100%);
+  border: none;
+  margin: 0;
+}
+
+.hcf-divider--last {
+  background: linear-gradient(to left, rgba(201,168,76,0.2) 0%, transparent 80%);
+}
+
+.hcf-disclaimer {
+  margin-top: 56px;
+  border-inline-start: 2px solid rgba(201,168,76,0.4);
+  padding-inline-start: 24px;
+}
+
+.hcf-disclaimer-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: right;
+}
+
+.hcf-disclaimer-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #C9A84C;
+  display: flex;
+  align-items: center;
+}
+
+.hcf-disclaimer-text {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: #9A8A6A;
+  margin: 0;
+  text-align: right;
+  flex: 1;
+}
+
+.hcf-disclaimer-link {
+  color: #C9A84C;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(201,168,76,0.5);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.hcf-question {
+  color: #F5E6C8;
+}
+
+.halacha-corner-faq-section {
+    padding: 100px 16px 60px;
+  }
+
+.hcf-corner-decoration {
+    display: none;
+  }
+
+.hcf-header {
+    margin-bottom: 40px;
+  }
+
+.hcf-title {
+    font-size: 1.75rem;
+  }
+
+.hcf-subtitle {
+    font-size: 0.95rem;
+    max-width: 100%;
+  }
+
+.hcf-faq-inner {
+    padding: 28px 0 24px;
+  }
+
+.hcf-question {
+    font-size: 1.15rem;
+  }
+
+.hcf-answer-wrap {
+    padding-inline-start: 0;
+  }
+
+.hcf-disclaimer {
+    margin-top: 40px;
+    padding-inline-start: 16px;
+  }
+
+.hcf-disclaimer-inner {
+    gap: 10px;
+  }
+
+.hcf-gold-ornament {
+    margin-inline-end: auto;
+    margin-inline-start: auto;
+  }
+
+.halacha-corner-faq-section {
+    padding: 120px 48px 100px;
+  }
+
+.hcf-faq-inner {
+    padding: 44px 0 40px;
+  }
+
+.halacha-corner-cta-section {
+  position: relative;
+  background-color: #0A0A0A;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%),
+    linear-gradient(180deg, #0A0A0A 0%, #0D0C05 100%);
+  color: var(--text-light);
+  padding: 100px 24px 120px;
+  overflow: visible;
+  direction: rtl;
+  text-align: right;
+}
+
+/* ── Thin gold border lines (top & bottom edges of section) ── */
+.halacha-corner-cta-section::before,
+.halacha-corner-cta-section::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.5) 30%, rgba(201,168,76,0.5) 70%, transparent 100%);
+  pointer-events: none;
+}
+.halacha-corner-cta-section::before { top: 0; }
+.halacha-corner-cta-section::after  { bottom: 0; }
+
+/* ── Corner flourishes ── */
+.halacha-corner-cta-section .hcc-corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.45;
+}
+.halacha-corner-cta-section .hcc-corner--tl {
+  top: 16px;
+  left: 16px;
+  border-top: 1px solid #C9A84C;
+  border-left: 1px solid #C9A84C;
+}
+.halacha-corner-cta-section .hcc-corner--tr {
+  top: 16px;
+  right: 16px;
+  border-top: 1px solid #C9A84C;
+  border-right: 1px solid #C9A84C;
+}
+.halacha-corner-cta-section .hcc-corner--bl {
+  bottom: 16px;
+  left: 16px;
+  border-bottom: 1px solid #C9A84C;
+  border-left: 1px solid #C9A84C;
+}
+.halacha-corner-cta-section .hcc-corner--br {
+  bottom: 16px;
+  right: 16px;
+  border-bottom: 1px solid #C9A84C;
+  border-right: 1px solid #C9A84C;
+}
+
+/* ── Radial glow behind heading ── */
+.halacha-corner-cta-section .hcc-glow {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  width: 560px;
+  height: 320px;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Inner content container ── */
+.halacha-corner-cta-section .hcc-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+/* ── Ornament dividers ── */
+.halacha-corner-cta-section .hcc-ornament {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+.halacha-corner-cta-section .hcc-ornament--bottom {
+  margin-bottom: 0;
+  margin-top: 44px;
+}
+
+/* ── Heading ── */
+.halacha-corner-cta-section .hcc-heading {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-light);
+  letter-spacing: 0.03em;
+  margin: 0 0 24px 0;
+  text-align: center;
+  max-width: none !important;
+}
+
+/* ── Subtext paragraph ── */
+.halacha-corner-cta-section .hcc-subtext {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0 0 40px 0;
+  text-align: center;
+  max-width: 520px;
+  max-width: none !important;
+}
+
+/* ── CTA Button ── */
+.halacha-corner-cta-section .hcc-cta {
+  display: inline-block;
+  border-radius: 100px;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #C9A84C 0%, #FFD700 100%);
+  color: #0A0A0A;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.2s ease, filter 0.3s ease;
+  box-shadow: 0 4px 24px rgba(201,168,76,0.25);
+  position: relative;
+  z-index: 2;
+}
+.halacha-corner-cta-section .hcc-cta:hover {
+  box-shadow: 0 8px 40px rgba(201,168,76,0.45);
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+/* ── Bottom fade to site background ── */
+.halacha-corner-cta-section .hcc-fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent 0%, #0A0A0A 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .halacha-corner-cta-section {
+    padding: 72px 20px 96px;
+  }
+  .halacha-corner-cta-section .hcc-heading {
+    font-size: 1.6rem;
+  }
+  .halacha-corner-cta-section .hcc-glow {
+    width: 320px;
+    height: 200px;
+  }
+  .halacha-corner-cta-section .hcc-corner {
+    width: 20px;
+    height: 20px;
+  }
+  .halacha-corner-cta-section .hcc-cta {
+    padding: 12px 32px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .halacha-corner-cta-section .hcc-heading {
+    font-size: 2rem;
+  }
+  .halacha-corner-cta-section .hcc-corner {
+    width: 40px;
+    height: 40px;
+    top: 24px;
+    bottom: 24px;
+  }
+  .halacha-corner-cta-section .hcc-corner--tl,
+  .halacha-corner-cta-section .hcc-corner--tr {
+    top: 24px;
+  }
+  .halacha-corner-cta-section .hcc-corner--bl,
+  .halacha-corner-cta-section .hcc-corner--br {
+    bottom: 24px;
+  }
+}</style>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <button class="phone-header-btn" data-phone="+972585454037" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/united-match-general-logo.webp" alt="UNITED MATCH" class="logo">
+      </a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/access-membership">גישה וחברות</a></li><li><a href="/profile-match-journey">פרופיל ומסע השידוכים</a></li><li><a href="/events-torah">אירועים ותורה</a></li><li><a href="/admin-platform-trust">ניהול ואמינות</a></li><li><a href="/personal-area" class="nav-link">אזור אישי</a></li><li class="nav-cta-item-mobile"><a href="/contact">צור קשר</a></li><li><a href="/halacha-corner" class="nav-link">הלכות</a></li></ul></div>
+
+    
+
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-dark)) !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '50%', 'important');
+          mobileToggle.style.setProperty('transform', 'translateY(-50%)', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '50%', 'important');
+          phoneBtn.style.setProperty('transform', 'translateY(-50%)', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu on button click - use newToggle now
+    newToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = this.querySelector('.hamburger-icon');
+      const closeIcon = this.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    });
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '+972 585454037';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // === WHATSAPP BUTTON VISIBILITY FIX ===
+    // Ensure WhatsApp floating button is hidden on desktop and visible on mobile
+    // IMPORTANT: Only target the floating button by its class, NOT generic wa.me links
+    const handleWhatsAppVisibility = function() {
+      const whatsappBtn = document.querySelector('.whatsapp-float');
+      if (whatsappBtn) {
+        const isDesktop = window.innerWidth >= 769;
+        if (isDesktop) {
+          whatsappBtn.style.setProperty('display', 'none', 'important');
+          whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
+          whatsappBtn.style.setProperty('opacity', '0', 'important');
+          whatsappBtn.style.setProperty('pointer-events', 'none', 'important');
+          console.log('[WhatsApp] Button hidden on desktop');
+        } else {
+          whatsappBtn.style.removeProperty('display');
+          whatsappBtn.style.removeProperty('visibility');
+          whatsappBtn.style.removeProperty('opacity');
+          whatsappBtn.style.removeProperty('pointer-events');
+          console.log('[WhatsApp] Button visible on mobile');
+        }
+      }
+    };
+    
+    // Run on load
+    handleWhatsAppVisibility();
+    
+    // Run on resize with debouncing
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleWhatsAppVisibility, 100);
+    });
+  });
+})();
+
+</script>
+  
+  <main class="blog-page ai-generated-page"><section class="halacha-corner-hero-section" data-layout-spec="פינת הלכות-hero" dir="rtl" data-hero-type="fullscreen-scrim">
+
+  <!-- Background layers -->
+  <div class="hch-bg-base" aria-hidden="true"></div>
+  <div class="hch-radial-glow" aria-hidden="true"></div>
+
+  <!-- Corner constellation decorations -->
+  <svg class="hch-constellation hch-constellation--tr" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+    <line x1="20" y1="20" x2="80" y2="40" stroke="rgba(201,168,76,0.22)" stroke-width="0.8"></line>
+    <line x1="80" y1="40" x2="140" y2="15" stroke="rgba(201,168,76,0.18)" stroke-width="0.8"></line>
+    <line x1="140" y1="15" x2="170" y2="60" stroke="rgba(201,168,76,0.15)" stroke-width="0.8"></line>
+    <line x1="80" y1="40" x2="110" y2="90" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"></line>
+    <circle cx="20" cy="20" r="1.5" fill="rgba(201,168,76,0.5)"></circle>
+    <circle cx="80" cy="40" r="2" fill="rgba(201,168,76,0.6)"></circle>
+    <circle cx="140" cy="15" r="1.5" fill="rgba(201,168,76,0.45)"></circle>
+    <circle cx="170" cy="60" r="1" fill="rgba(201,168,76,0.35)"></circle>
+    <circle cx="110" cy="90" r="1.5" fill="rgba(201,168,76,0.4)"></circle>
+  </svg>
+
+  <svg class="hch-constellation hch-constellation--bl" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+    <line x1="10" y1="160" x2="60" y2="130" stroke="rgba(201,168,76,0.2)" stroke-width="0.8"></line>
+    <line x1="60" y1="130" x2="130" y2="155" stroke="rgba(201,168,76,0.16)" stroke-width="0.8"></line>
+    <line x1="60" y1="130" x2="90" y2="80" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"></line>
+    <line x1="130" y1="155" x2="170" y2="120" stroke="rgba(201,168,76,0.12)" stroke-width="0.8"></line>
+    <circle cx="10" cy="160" r="1.5" fill="rgba(201,168,76,0.45)"></circle>
+    <circle cx="60" cy="130" r="2" fill="rgba(201,168,76,0.55)"></circle>
+    <circle cx="130" cy="155" r="1.5" fill="rgba(201,168,76,0.4)"></circle>
+    <circle cx="90" cy="80" r="1" fill="rgba(201,168,76,0.3)"></circle>
+    <circle cx="170" cy="120" r="1.5" fill="rgba(201,168,76,0.35)"></circle>
+  </svg>
+
+  <!-- Main content grid -->
+  <div class="hch-container">
+
+    <!-- RIGHT column: headline + intro + CTA -->
+    <div class="hch-text-col">
+
+      <span class="hch-label-tag">United Match</span>
+
+      <h1 class="hch-headline">פינת הלכות</h1>
+
+      <div class="hch-gold-rule" aria-hidden="true"></div>
+
+      <h3 class="hch-subheadline">הנחיות, עקרונות ומקורות הלכתיים<br>לדרך הנכונה בענייני שידוכים</h3>
+
+      <p class="hch-body-text">בפינה זו תמצאו ליקוט מוקפד של הלכות ומנהגים הנוגעים לתהליך השידוכים, הפגישות, ההתחייבות ובניית הבית בישראל — מתוך מקורות אמינים ורבנים מוסמכים.</p>
+
+      <div class="hch-cta-wrap">
+        <a href="/contact" class="hch-btn-primary">צרו קשר עם הצוות</a>
+      </div>
+
+    </div>
+
+    <!-- LEFT column: decorative halachic tablet card -->
+    <div class="hch-tablet-col">
+
+      <div class="hch-tablet-card">
+        <!-- Corner flourish frame -->
+        <svg class="hch-corner-flourish hch-corner-flourish--tl" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2,20 L2,2 L20,2" fill="none" stroke="rgba(201,168,76,0.55)" stroke-width="1.2"></path>
+          <path d="M6,20 L6,6 L20,6" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.7"></path>
+        </svg>
+        <svg class="hch-corner-flourish hch-corner-flourish--tr" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M38,20 L38,2 L20,2" fill="none" stroke="rgba(201,168,76,0.55)" stroke-width="1.2"></path>
+          <path d="M34,20 L34,6 L20,6" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.7"></path>
+        </svg>
+        <svg class="hch-corner-flourish hch-corner-flourish--bl" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2,20 L2,38 L20,38" fill="none" stroke="rgba(201,168,76,0.55)" stroke-width="1.2"></path>
+          <path d="M6,20 L6,34 L20,34" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.7"></path>
+        </svg>
+        <svg class="hch-corner-flourish hch-corner-flourish--br" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M38,20 L38,38 L20,38" fill="none" stroke="rgba(201,168,76,0.55)" stroke-width="1.2"></path>
+          <path d="M34,20 L34,34 L20,34" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.7"></path>
+        </svg>
+
+        <!-- Tablet inner content -->
+        <div class="hch-tablet-inner">
+
+          <!-- Decorative top ornament -->
+          <div class="hch-tablet-ornament" aria-hidden="true">
+            <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg" width="200" height="20">
+              <line x1="0" y1="10" x2="85" y2="10" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"></line>
+              <polygon points="100,2 106,10 100,18 94,10" fill="none" stroke="rgba(201,168,76,0.7)" stroke-width="1"></polygon>
+              <line x1="115" y1="10" x2="200" y2="10" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"></line>
+            </svg>
+          </div>
+
+          <h3 class="hch-tablet-title">עקרונות יסוד</h3>
+
+          <div class="hch-tablet-lines">
+            <div class="hch-tablet-line">
+              <span class="hch-line-num">א׳</span>
+              <p class="hch-line-text">"כל מי שאין לו אישה שרוי בלא שמחה, בלא ברכה, בלא טובה" — יבמות סב, ב</p>
+            </div>
+            <div class="hch-tablet-line">
+              <span class="hch-line-num">ב׳</span>
+              <p class="hch-line-text">חובה לברר יחוס, מידות ואמינות לפני כניסה לקשר שידוכים</p>
+            </div>
+            <div class="hch-tablet-line">
+              <span class="hch-line-num">ג׳</span>
+              <p class="hch-line-text">הצניעות בפגישות ובתקשורת — בסיס לבניית בית נאמן בישראל</p>
+            </div>
+          </div>
+
+          <!-- Bottom ornament -->
+          <div class="hch-tablet-ornament hch-tablet-ornament--bottom" aria-hidden="true">
+            <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg" width="200" height="20">
+              <line x1="0" y1="10" x2="85" y2="10" stroke="rgba(201,168,76,0.35)" stroke-width="0.6"></line>
+              <circle cx="100" cy="10" r="3" fill="none" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"></circle>
+              <line x1="115" y1="10" x2="200" y2="10" stroke="rgba(201,168,76,0.35)" stroke-width="0.6"></line>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Hero image (background visual behind card) -->
+      <div class="hch-img-wrap">
+        <img data-hero-bg="true" data-context="Elegant dark cinematic scene with ancient Hebrew manuscript pages, soft golden candlelight illuminating open Torah books on a dark wooden table, deep black and aubergine background tones, antique gold ink lettering, atmospheric luxury Jewish heritage aesthetic, no people" width="600" height="400" src="/assets/united-match-general-section-hero-halacha-corner-hero-image-1.webp" alt="ספרי תורה ומקורות הלכתיים באווירה יוקרתית">
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom section divider: dark fades to light -->
+  <div class="hch-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,70 L0,38 Q100,28 200,36 T400,30 Q500,36 600,28 T800,34 Q900,28 1000,34 T1200,30 L1200,70 Z" fill="#F3EEE6"></path>
+    </svg>
+  </div>
+
+</section>
+
+<section class="halacha-corner-editorial-section" data-layout-spec="פינת הלכות-editorial" dir="rtl">
+  <div class="halacha-container">
+
+    <!-- Gold ornament divider top -->
+    <div class="halacha-ornament-top" aria-hidden="true">
+      <svg data-no-icon-edit="true" aria-hidden="true" width="240" height="20" viewBox="0 0 240 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="10" x2="100" y2="10" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+        <polygon points="120,2 126,10 120,18 114,10" fill="#C9A84C" fill-opacity="0.7"></polygon>
+        <line x1="140" y1="10" x2="240" y2="10" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+      </svg>
+    </div>
+
+    <div class="halacha-grid">
+
+      <!-- Right column: main editorial content -->
+      <div class="halacha-main-col">
+        <div class="halacha-label">פינת ההלכות</div>
+        <h2 class="halacha-heading">הלכות שידוכין ונישואין</h2>
+        <p class="halacha-intro">מסורת ישראל מקדשת את ברית הנישואין כאחד מיסודות החיים. כאן תמצאו ליקוט מובחר של הלכות, מנהגים ועקרונות מנחים הנוגעים לדרך השידוך, להכנה לחתונה ולבניית הבית היהודי — מתוך מקורות מוסמכים ובלשון בהירה ונגישה.</p>
+
+        <!-- Block 1 -->
+        <article class="halacha-block">
+          <div class="halacha-block-inner">
+            <span class="halacha-number">א</span>
+            <div class="halacha-block-content">
+              <h3 class="halacha-block-title">הכנה לשידוך</h3>
+              <p class="halacha-block-text">מצוות עשה לחפש בן זוג ראוי בכבוד ובצניעות. על הצדדים לבחון תאימות ערכית, משפחתית ואישיותית לפני קבלת החלטה. מומלץ להיוועץ ברב או במורה הוראה מוסמך לאורך כל התהליך, ולהקפיד על גבולות הצניעות בכל שלבי ההיכרות.</p>
+            </div>
+          </div>
+          <div class="halacha-divider" aria-hidden="true"></div>
+        </article>
+
+        <!-- Block 2 -->
+        <article class="halacha-block">
+          <div class="halacha-block-inner">
+            <span class="halacha-number">ב</span>
+            <div class="halacha-block-content">
+              <h3 class="halacha-block-title">קידושין וחופה</h3>
+              <p class="halacha-block-text">מעשה הקידושין הוא מצוות דאורייתא ומחייב נוכחות עדים כשרים. טקס החופה מסמל את כניסת הזוג לחיי שותפות מקודשת. יש לוודא שהרב המסדר קידושין בקי בדיני הגט ובהלכות קידושין לכל פרטיהם, ושהחופה נעשית בצורה ראויה ומכובדת.</p>
+            </div>
+          </div>
+          <div class="halacha-divider" aria-hidden="true"></div>
+        </article>
+
+        <!-- Block 3 -->
+        <article class="halacha-block">
+          <div class="halacha-block-inner">
+            <span class="halacha-number">ג</span>
+            <div class="halacha-block-content">
+              <h3 class="halacha-block-title">בניית הבית היהודי</h3>
+              <p class="halacha-block-text">השנה הראשונה לנישואין מוגדרת כ״שנת חינוך״ ויש לה חשיבות מיוחדת בהלכה. קיום מצוות טהרת המשפחה, שלום בית, וכבוד הדדי הם עמודי התווך של הבית היהודי. ההשקעה בלימוד ההלכות הנוגעות לחיי הנישואין היא מהדברים החשובים ביותר לזוג צעיר.</p>
+            </div>
+          </div>
+          <div class="halacha-divider halacha-divider--last" aria-hidden="true"></div>
+        </article>
+
+        <div class="halacha-cta-row">
+          <a href="#" class="btn-ghost halacha-read-more">לכל פינת ההלכות ←</a>
+        </div>
+      </div>
+
+      <!-- Left column: dark principles panel -->
+      <aside class="halacha-side-panel">
+        <!-- Corner flourish decoration -->
+        <div class="halacha-panel-flourish" aria-hidden="true">
+          <svg data-no-icon-edit="true" aria-hidden="true" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4 L4 28" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></path>
+            <path d="M4 4 L28 4" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></path>
+            <path d="M4 4 L10 4" stroke="#C9A84C" stroke-width="2" stroke-opacity="0.8"></path>
+            <path d="M4 4 L4 10" stroke="#C9A84C" stroke-width="2" stroke-opacity="0.8"></path>
+          </svg>
+        </div>
+        <div class="halacha-panel-flourish halacha-panel-flourish--bl" aria-hidden="true">
+          <svg data-no-icon-edit="true" aria-hidden="true" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 76 L4 52" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></path>
+            <path d="M4 76 L28 76" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></path>
+            <path d="M4 76 L10 76" stroke="#C9A84C" stroke-width="2" stroke-opacity="0.8"></path>
+            <path d="M4 76 L4 70" stroke="#C9A84C" stroke-width="2" stroke-opacity="0.8"></path>
+          </svg>
+        </div>
+
+        <div class="halacha-panel-header">
+          <div class="halacha-panel-ornament" aria-hidden="true"></div>
+          <h3 class="halacha-panel-title">עקרונות יסוד</h3>
+          <p class="halacha-panel-subtitle">מנחים לדרך השידוך</p>
+        </div>
+
+        <ul class="halacha-principles-list">
+          <li class="halacha-principle-item">
+            <div class="halacha-principle-num">01</div>
+            <div class="halacha-principle-text">
+              <strong>כבוד ההדדי</strong>
+              <span>כל פגישה ושיחה תתנהל מתוך כבוד אמיתי לצד השני, בהתאם לערכי התורה ולדרך ארץ.</span>
+            </div>
+          </li>
+          <li class="halacha-principle-item">
+            <div class="halacha-principle-num">02</div>
+            <div class="halacha-principle-text">
+              <strong>צניעות ושמירת גבולות</strong>
+              <span>שמירה על גבולות ההלכה בכל שלבי ההיכרות היא תנאי בסיסי לבניית קשר בריא ומקודש.</span>
+            </div>
+          </li>
+          <li class="halacha-principle-item">
+            <div class="halacha-principle-num">03</div>
+            <div class="halacha-principle-text">
+              <strong>ייעוץ רבני</strong>
+              <span>מומלץ לפנות לרב מוסמך בכל שאלה הלכתית הנוגעת לתהליך השידוך והנישואין.</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="halacha-panel-footer">
+          <div class="halacha-panel-quote">"בָּרָא הַקָּדוֹשׁ בָּרוּךְ הוּא אִישׁ וְאִשָּׁה, וְנָתַן בֵּינֵיהֶם אַהֲבָה"</div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- Bottom gold divider -->
+  <div class="halacha-bottom-divider" aria-hidden="true"></div>
+</section>
+
+<section class="halacha-corner-features-section" data-layout-spec="פינת הלכות-features" dir="rtl">
+  <!-- Velvet texture overlay -->
+  <div class="hcf-texture-overlay" aria-hidden="true"></div>
+  <!-- Ambient edge glows -->
+  <div class="hcf-glow-right" aria-hidden="true"></div>
+  <div class="hcf-glow-left" aria-hidden="true"></div>
+
+  <div class="hcf-container">
+    <!-- Section Header -->
+    <div class="hcf-header">
+      <!-- Gold ornament divider -->
+      <div class="hcf-ornament" aria-hidden="true">
+        <svg data-no-icon-edit="true" aria-hidden="true" width="240" height="20" viewBox="0 0 240 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="10" x2="100" y2="10" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+          <polygon points="120,2 127,10 120,18 113,10" fill="none" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></polygon>
+          <line x1="140" y1="10" x2="240" y2="10" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+        </svg>
+      </div>
+      <h2 class="hcf-title">פינת ההלכות</h2>
+      <p class="hcf-subtitle">לימוד יומי מעמיק של הלכות שידוכין, צניעות ומשפחה — מתוך מחויבות לאורח חיים יהודי מכובד ומדויק</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="hcf-grid">
+
+      <!-- Card 1 -->
+      <article class="hcf-card">
+        <span class="hcf-card-number" aria-hidden="true">01</span>
+        <div class="hcf-card-inner">
+          <div class="hcf-card-top-line" aria-hidden="true"></div>
+          <h3 class="hcf-card-title">הלכות שידוכין</h3>
+          <div class="hcf-card-divider" aria-hidden="true"></div>
+          <p class="hcf-card-body">סקירה הלכתית מקיפה של מצוות השידוכין, חובות הצדדים, וכללי ההתנהגות הראויה בתהליך ההיכרות. כל שלב מלווה בהפניות למקורות ראשוניים.</p>
+          <div class="hcf-card-footer">
+            <span class="hcf-card-tag">הלכה למעשה</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="hcf-card">
+        <span class="hcf-card-number" aria-hidden="true">02</span>
+        <div class="hcf-card-inner">
+          <div class="hcf-card-top-line" aria-hidden="true"></div>
+          <h3 class="hcf-card-title">צניעות ומפגשים</h3>
+          <div class="hcf-card-divider" aria-hidden="true"></div>
+          <p class="hcf-card-body">הנחיות מפורטות בנושאי צניעות בזמן ההיכרות, כולל מקומות מותרים לפגישה, נוכחות צד שלישי, ומגבלות ההתקשרות הרגשית בטרם הגיע הזמן.</p>
+          <div class="hcf-card-footer">
+            <span class="hcf-card-tag">צניעות ויחסים</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="hcf-card">
+        <span class="hcf-card-number" aria-hidden="true">03</span>
+        <div class="hcf-card-inner">
+          <div class="hcf-card-top-line" aria-hidden="true"></div>
+          <h3 class="hcf-card-title">קידושין ונישואין</h3>
+          <div class="hcf-card-divider" aria-hidden="true"></div>
+          <p class="hcf-card-body">ידע הלכתי עיוני ומעשי לקראת הנישואין — מדיני הקידושין וחופת הנישואין ועד ייחוד, שבע ברכות, ומצוות שמחת חתן וכלה כהלכתם.</p>
+          <div class="hcf-card-footer">
+            <span class="hcf-card-tag">חתן וכלה</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- Section transition divider -->
+  <div class="hcf-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,28 Q80,18 160,26 T320,22 Q400,28 480,20 T640,24 Q720,20 800,26 T960,22 Q1040,18 1120,26 T1200,22 L1200,60 Z" fill="#1A1023"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="halacha-corner-faq-section" data-layout-spec="פינת הלכות-faq" dir="rtl">
+  <!-- Decorative corner flourish -->
+  <div class="hcf-corner-decoration" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="8" width="80" height="80" rx="2" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.35" fill="none"></rect>
+      <rect x="16" y="16" width="64" height="64" rx="1" stroke="#C9A84C" stroke-width="0.6" stroke-opacity="0.2" fill="none"></rect>
+      <line x1="8" y1="48" x2="0" y2="48" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.3"></line>
+      <line x1="48" y1="8" x2="48" y2="0" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.3"></line>
+      <circle cx="48" cy="48" r="3" fill="#C9A84C" fill-opacity="0.4"></circle>
+    </svg>
+  </div>
+
+  <div class="hcf-container">
+
+    <!-- Section Header -->
+    <header class="hcf-header">
+      <div class="hcf-gold-ornament" aria-hidden="true">
+        <svg data-no-icon-edit="true" aria-hidden="true" width="240" height="20" viewBox="0 0 240 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="10" x2="100" y2="10" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.55"></line>
+          <polygon points="120,4 126,10 120,16 114,10" fill="none" stroke="#C9A84C" stroke-width="0.9" stroke-opacity="0.7"></polygon>
+          <circle cx="120" cy="10" r="2" fill="#C9A84C" fill-opacity="0.6"></circle>
+          <line x1="140" y1="10" x2="240" y2="10" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.55"></line>
+        </svg>
+      </div>
+      <h2 class="hcf-title">פינת הלכות</h2>
+      <p class="hcf-subtitle">ריכוז שאלות נפוצות בנושאי הלכה הנוגעים לשידוכים, לתהליך ההיכרות ולבניית הקשר. המידע המוצג הינו כללי ואינו מהווה פסיקה הלכתית אישית.</p>
+    </header>
+
+    <!-- FAQ Items -->
+    <div class="hcf-faq-list">
+
+      <!-- Item 1 -->
+      <article class="hcf-faq-item">
+        <div class="hcf-faq-inner">
+          <div class="hcf-question-row">
+            <span class="hcf-question-marker" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2L10.8 7.2H16.2L11.7 10.4L13.5 15.6L9 12.4L4.5 15.6L6.3 10.4L1.8 7.2H7.2L9 2Z" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <h3 class="hcf-question">האם מותר לדבר עם בן או בת הזוג לפני האירוסין?</h3>
+          </div>
+          <div class="hcf-answer-wrap">
+            <p class="hcf-answer">על פי ההלכה, מותר ואף מצווה להכיר את בן או בת הזוג לפני הנישואין, כדי לוודא שמדובר בהתאמה אמיתית. שיחות טלפון ופגישות בנוכחות אחרים מקובלות ומעודדות. יש להימנע מבידוד ומקרבה פיזית שאינה הולמת לפני הנישואין, בהתאם לדיני יחוד וצניעות.</p>
+          </div>
+        </div>
+        <div class="hcf-divider" aria-hidden="true"></div>
+      </article>
+
+      <!-- Item 2 -->
+      <article class="hcf-faq-item">
+        <div class="hcf-faq-inner">
+          <div class="hcf-question-row">
+            <span class="hcf-question-marker" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2L10.8 7.2H16.2L11.7 10.4L13.5 15.6L9 12.4L4.5 15.6L6.3 10.4L1.8 7.2H7.2L9 2Z" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <h3 class="hcf-question">כמה פגישות מקובלות לפני מתן תשובה?</h3>
+          </div>
+          <div class="hcf-answer-wrap">
+            <p class="hcf-answer">אין מספר קבוע בהלכה. הגדולים מדורות קודמים הדגישו שהכרה מספקת חשובה יותר ממספר הפגישות. בדרך כלל, בין שלוש לשש פגישות מהוות בסיס סביר לקבלת החלטה. העיקר הוא שהצדדים ירגישו בטחון ובהירות, תוך שמירה על גדרי הצניעות לאורך כל התהליך.</p>
+          </div>
+        </div>
+        <div class="hcf-divider" aria-hidden="true"></div>
+      </article>
+
+      <!-- Item 3 -->
+      <article class="hcf-faq-item">
+        <div class="hcf-faq-inner">
+          <div class="hcf-question-row">
+            <span class="hcf-question-marker" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2L10.8 7.2H16.2L11.7 10.4L13.5 15.6L9 12.4L4.5 15.6L6.3 10.4L1.8 7.2H7.2L9 2Z" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <h3 class="hcf-question">מה דין ה"שידוך" מבחינה הלכתית — האם יש מחויבות?</h3>
+          </div>
+          <div class="hcf-answer-wrap">
+            <p class="hcf-answer">שידוך בשלב ההיכרות אינו מחייב מבחינה הלכתית. הצדדים חופשיים לסיים את ההיכרות בכל עת, אם אין התאמה. עם זאת, יש להקפיד על כבוד הדדי ולהימנע מפגיעה מיותרת. לאחר ה"תנאים" (ארוסין פורמליים) ישנה מחויבות הלכתית גבוהה יותר, ויש להתייעץ עם רב לפני כל שינוי.</p>
+          </div>
+        </div>
+        <div class="hcf-divider" aria-hidden="true"></div>
+      </article>
+
+      <!-- Item 4 -->
+      <article class="hcf-faq-item">
+        <div class="hcf-faq-inner">
+          <div class="hcf-question-row">
+            <span class="hcf-question-marker" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2L10.8 7.2H16.2L11.7 10.4L13.5 15.6L9 12.4L4.5 15.6L6.3 10.4L1.8 7.2H7.2L9 2Z" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <h3 class="hcf-question">כיצד מתייחסת ההלכה לשימוש בפלטפורמות שידוכים דיגיטליות?</h3>
+          </div>
+          <div class="hcf-answer-wrap">
+            <p class="hcf-answer">גדולי הפוסקים בדורנו התייחסו בחיוב לפלטפורמות שידוכים מכובדות, בתנאי ששומרות על צניעות, פרטיות ויושרה. שימוש במאגר שידוכים מסודר, המנוהל בדרך ראויה, נחשב לאמצעי לגיטימי ואף מבורך לחיבור בין שני צדדים מתאימים. United Match פועלת בהתאם לעקרונות אלו.</p>
+          </div>
+        </div>
+        <div class="hcf-divider" aria-hidden="true"></div>
+      </article>
+
+      <!-- Item 5 -->
+      <article class="hcf-faq-item">
+        <div class="hcf-faq-inner">
+          <div class="hcf-question-row">
+            <span class="hcf-question-marker" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2L10.8 7.2H16.2L11.7 10.4L13.5 15.6L9 12.4L4.5 15.6L6.3 10.4L1.8 7.2H7.2L9 2Z" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <h3 class="hcf-question">האם חובה להתייעץ עם הורים לפני הסכמה לשידוך?</h3>
+          </div>
+          <div class="hcf-answer-wrap">
+            <p class="hcf-answer">כיבוד אב ואם מחייב שיתוף ההורים בתהליך, ובפרט בשלב הסכמה לשידוך. עם זאת, ההחלטה הסופית היא של הצדדים עצמם, ואין ביכולת ההורים לכפות שידוך. מומלץ לשמור על תקשורת פתוחה ומכבדת עם המשפחה לאורך כל התהליך, ולשלב ייעוץ רב אם עולות מחלוקות.</p>
+          </div>
+        </div>
+        <div class="hcf-divider hcf-divider--last" aria-hidden="true"></div>
+      </article>
+
+    </div>
+    <!-- End FAQ List -->
+
+    <!-- Disclaimer Block -->
+    <footer class="hcf-disclaimer">
+      <div class="hcf-disclaimer-inner">
+        <span class="hcf-disclaimer-icon" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="10" cy="10" r="8.5" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-opacity="0.7"></circle>
+            <line x1="10" y1="8" x2="10" y2="14" stroke="#C9A84C" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.8"></line>
+            <circle cx="10" cy="6" r="1" fill="#C9A84C" fill-opacity="0.8"></circle>
+          </svg>
+        </span>
+        <p class="hcf-disclaimer-text">המידע המוצג בפינת ההלכות הינו כללי ומיועד להרחבת הידע בלבד. אין לראות בו פסיקה הלכתית מחייבת. לכל שאלה אישית, נא לפנות לרב מוסמך. אנו ב-United Match שמחים לסייע ולהפנות לגורמים מקצועיים מתאימים — <a href="#contact" class="hcf-disclaimer-link">צרו קשר עמנו</a>.</p>
+      </div>
+    </footer>
+
+  </div>
+</section>
+
+<section class="halacha-corner-cta-section" data-layout-spec="פינת הלכות-cta" dir="rtl">
+  <!-- Decorative corner borders -->
+  <div class="hcc-corner hcc-corner--tl" aria-hidden="true"></div>
+  <div class="hcc-corner hcc-corner--tr" aria-hidden="true"></div>
+  <div class="hcc-corner hcc-corner--bl" aria-hidden="true"></div>
+  <div class="hcc-corner hcc-corner--br" aria-hidden="true"></div>
+
+  <!-- Radial glow behind heading -->
+  <div class="hcc-glow" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <div class="hcc-inner">
+    <!-- Gold ornament divider top -->
+    <div class="hcc-ornament" aria-hidden="true">
+      <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 240 16" width="240" height="16" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="8" x2="102" y2="8" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"></line>
+        <polygon points="120,2 126,8 120,14 114,8" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.8"></polygon>
+        <line x1="138" y1="8" x2="240" y2="8" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"></line>
+      </svg>
+    </div>
+
+    <h2 class="hcc-heading">מוזמנים להתחבר ולהתעלות</h2>
+    <p class="hcc-subtext">פינת ההלכות של United Match מלווה אתכם בדרך לחופה — עם תשובות, הכוונה והשראה מעולם ההלכה והמסורת היהודית. יש לכם שאלה? אנחנו כאן.</p>
+
+    <a href="/contact" class="btn-pill hcc-cta">צרו קשר</a>
+
+    <!-- Gold ornament divider bottom -->
+    <div class="hcc-ornament hcc-ornament--bottom" aria-hidden="true">
+      <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 240 16" width="240" height="16" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="8" x2="102" y2="8" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"></line>
+        <polygon points="120,2 126,8 120,14 114,8" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.8"></polygon>
+        <line x1="138" y1="8" x2="240" y2="8" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"></line>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Bottom fade divider -->
+  <div class="hcc-fade-bottom" aria-hidden="true"></div>
+</section></main>
+  
+  
+
+<section class="um-pricing-section" aria-labelledby="um-pricing-title">
+  <div class="um-pricing-bg-decor" aria-hidden="true">
+    <span class="um-decor-circle um-decor-circle--1"></span>
+    <span class="um-decor-circle um-decor-circle--2"></span>
+    <span class="um-decor-line um-decor-line--1"></span>
+    <span class="um-decor-line um-decor-line--2"></span>
+  </div>
+
+  <div class="um-pricing-container">
+    <div class="um-pricing-header">
+      <span class="um-pricing-eyebrow">תוכנית הצטרפות</span>
+      <h2 class="um-pricing-title" id="um-pricing-title">השקעה בעתידך</h2>
+      <p class="um-pricing-subtitle">חברות אחת. הזדמנות אחת. עתיד משותף.</p>
+    </div>
+
+    <div class="um-pricing-card-wrapper">
+      <div class="um-pricing-card" role="article" aria-label="תוכנית מחיר - 100 דפים לשידרוג">
+        <div class="um-card-glow" aria-hidden="true"></div>
+
+        <div class="um-card-badge">
+          <span class="um-badge-icon" aria-hidden="true">★</span>
+          <span>מומלץ</span>
+        </div>
+
+        <div class="um-card-header">
+          <h3 class="um-card-title">100 דפים לשידרוג</h3>
+          <div class="um-card-divider" aria-hidden="true"></div>
+          <div class="um-card-price" aria-label="מחיר: 10 דולר">
+            <span class="um-price-currency">$</span>
+            <span class="um-price-amount">10</span>
+          </div>
+          <p class="um-card-description">
+            קבל 100 דפי שידרוג פרמיום לפרופיל שלך ועלה לראש תוצאות החיפוש — כי ההזדמנות הנכונה מגיעה לאלו שנראים ראשונים.
+          </p>
+        </div>
+
+        <ul class="um-card-features" aria-label="מה כלול בתוכנית">
+          <li class="um-feature-item">
+            <span class="um-feature-icon" aria-hidden="true">✦</span>
+            <span>100 דפי שידרוג לפרופיל</span>
+          </li>
+          <li class="um-feature-item">
+            <span class="um-feature-icon" aria-hidden="true">✦</span>
+            <span>עדיפות בתוצאות החיפוש</span>
+          </li>
+          <li class="um-feature-item">
+            <span class="um-feature-icon" aria-hidden="true">✦</span>
+            <span>חשיפה מוגברת למועמדים מתאימים</span>
+          </li>
+          <li class="um-feature-item">
+            <span class="um-feature-icon" aria-hidden="true">✦</span>
+            <span>תמיכה אישית מצוות UNITED MATCH</span>
+          </li>
+        </ul>
+
+        <a href="/contact" class="um-cta-button" aria-label="הצטרפות עכשיו לתוכנית 100 דפים לשידרוג">
+          <span class="um-cta-text">הצטרפות עכשיו</span>
+          <span class="um-cta-icon" aria-hidden="true">←</span>
+        </a>
+
+        <p class="um-card-note">ללא התחייבות · תשלום חד פעמי</p>
+      </div>
+    </div>
+
+    <div class="um-pricing-trust">
+      <div class="um-trust-item">
+        <span class="um-trust-icon" aria-hidden="true">🔒</span>
+        <span>תשלום מאובטח</span>
+      </div>
+      <div class="um-trust-divider" aria-hidden="true"></div>
+      <div class="um-trust-item">
+        <span class="um-trust-icon" aria-hidden="true">💎</span>
+        <span>שירות יוקרתי</span>
+      </div>
+      <div class="um-trust-divider" aria-hidden="true"></div>
+      <div class="um-trust-item">
+        <span class="um-trust-icon" aria-hidden="true">❤️</span>
+        <span>אלפי זוגות מאושרים</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer" dir="rtl">
+  <div class="footer-top-accent"></div>
+  <div class="footer-container">
+    <div class="footer-grid">
+
+      <!-- Column 1: Company Info -->
+      <div class="footer-col footer-col--brand">
+        <div class="footer-logo-wrap">
+          <img src="/assets/united-match-general-logo.webp" alt="UNITED MATCH" class="logo">
+        </div>
+        <p class="footer-tagline">שידוכים ברמה הגבוהה ביותר — בסודיות, באמינות ובלב שלם.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" class="social-link" style="display:none !important;"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram" class="social-link" style="display:none !important;"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="WhatsApp" class="social-link" style="display:none !important;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-col footer-col--links">
+        <h4 class="footer-heading"><span class="heading-line"></span>ניווט מהיר</h4>
+        <ul class="footer-nav">
+          <li><a href="/access-membership">גישה וחברות</a></li>
+          <li><a href="/profile-match-journey">פרופיל ומסע השידוכים</a></li>
+          <li><a href="/events-torah">אירועים ותורה</a></li>
+          <li><a href="/admin-platform-trust">ניהול ואמינות</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Contact Info -->
+      <div class="footer-col footer-col--contact">
+        <h4 class="footer-heading"><span class="heading-line"></span>פרטי התקשרות</h4>
+        <ul class="footer-contact">
+          <li>
+            <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+            <span class="contact-text"><a href="mailto:hodya57356@gmail.com">hodya57356@gmail.com</a></span>
+          </li>
+          <li>
+            <span class="contact-icon"><i class="fas fa-phone"></i></span>
+            <span class="contact-text"><a href="tel:+972 585454037">+972 585454037</a></span>
+          </li>
+          <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <span class="contact-text">[business_address]</span></a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: About / Trust -->
+      <div class="footer-col footer-col--trust">
+        <h4 class="footer-heading"><span class="heading-line"></span>אודות UNITED MATCH</h4>
+        <p class="footer-about">אנו מאמינים שכל אדם ראוי לפגוש את זיווגו בדרך המכובדת, המדויקת והאישית ביותר. הפלטפורמה שלנו בנויה על יסודות של אמון, ערכים ואיכות ללא פשרות.</p>
+        <div class="footer-badge">
+          <i class="fas fa-shield-alt"></i>
+          <span>פלטפורמה מאובטחת ומוסמכת</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Gold Divider -->
+  <div class="footer-divider"></div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-container">
+    <div class="footer-bottom">
+      <p class="footer-copyright">© 2026 UNITED MATCH. כל הזכויות שמורות.</p>
+      <div class="footer-legal">
+        <a href="/privacy">מדיניות פרטיות</a>
+        <span class="legal-sep"></span>
+        <a href="/terms">תנאי שימוש</a>
+        <span class="legal-sep"></span>
+        <a href="/accessibility">נגישות</a>
+        <span class="legal-sep"></span>
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-navbar-scroll-effect">
+    (function(){
+      var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');
+      var cm=document.querySelector('.zappy-catalog-menu,#zappy-catalog-menu');
+      if(!nb)return;
+      var fb='rgba(243,238,230,0.85)';
+      var th=60;
+      var rs=getComputedStyle(document.documentElement);
+      var td=rs.getPropertyValue('--text-dark').trim()||'#1a1a1a';
+      var tl=rs.getPropertyValue('--text-light').trim()||'#ffffff';
+      var st=true?td:tl;
+      nb.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease,box-shadow 0.3s ease';
+      if(cm)cm.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease';
+      var neSel='a,.navbar-brand,.navbar-brand a,.dropdown-toggle,.mobile-toggle,.phone-header-btn,.mobile-hamburger-btn,.mobile-close-btn,.mobile-submenu-toggle,.nav-link';
+      var skipCls=['cart-link','login-link','nav-search-toggle','search-toggle'];
+      function sTC(c,clr){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){var sk=false;if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu')){sk=true;}for(var j=0;j<skipCls.length;j++){if(els[i].classList.contains(skipCls[j])){sk=true;break;}}if(!sk)els[i].style.setProperty('color',clr,'important');}}
+      function cTC(c){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu'))continue;els[i].style.removeProperty('color');}}
+      function applyScrolled(){
+        nb.classList.add('scrolled');
+        if(window.innerWidth>768){
+          nb.style.setProperty('--frosted-text',st);
+          nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('background-color',fb,'important');
+          nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+        }
+        if(cm){cm.classList.add('scrolled');if(window.innerWidth>768){cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}}
+      }
+      function onS(){
+        if(window._zappyNavNoDarkHero) return;
+        if(window.innerWidth<=768){nb.classList.remove('scrolled');cTC(nb);if(cm){cm.classList.remove('scrolled');cTC(cm);}return;}
+        var y=window.scrollY||window.pageYOffset;
+        if(y>th){
+          nb.classList.add('scrolled');nb.style.setProperty('background-color',fb,'important');nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('--frosted-text',st);nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+          if(cm){cm.classList.add('scrolled');cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}
+        }else{
+          nb.classList.remove('scrolled');nb.style.setProperty('background-color','transparent','important');nb.style.removeProperty('background-image');
+          nb.style.removeProperty('--frosted-text');nb.style.backdropFilter='none';nb.style.webkitBackdropFilter='none';nb.style.boxShadow='none';
+          cTC(nb);
+          if(cm){cm.classList.remove('scrolled');cm.style.setProperty('background','transparent','important');cm.style.setProperty('backdrop-filter','none','important');cm.style.setProperty('-webkit-backdrop-filter','none','important');cTC(cm);}
+        }
+      }
+      function sLum(rv,gv,bv){rv/=255;gv/=255;bv/=255;rv=rv<=0.03928?rv/12.92:Math.pow((rv+0.055)/1.055,2.4);gv=gv<=0.03928?gv/12.92:Math.pow((gv+0.055)/1.055,2.4);bv=bv<=0.03928?bv/12.92:Math.pow((bv+0.055)/1.055,2.4);return 0.2126*rv+0.7152*gv+0.0722*bv;}
+      window.addEventListener('scroll',onS,{passive:true});
+      window.addEventListener('resize',onS,{passive:true});
+      onS();
+      var heroEl=document.querySelector('section[class*="hero"],[data-hero-type],main>section:first-child');
+      var hasDH=false;
+      if(heroEl){var hCs=getComputedStyle(heroEl);var hBI=hCs.backgroundImage;if(hBI&&hBI!=='none'){if(hBI.indexOf('url(')!==-1){var hM2=hCs.backgroundColor.match(/\d+/g);if(hM2&&hM2.length>=3){hasDH=sLum(parseInt(hM2[0]),parseInt(hM2[1]),parseInt(hM2[2]))<0.4;}else{hasDH=true;}}else if(hBI.indexOf('gradient')!==-1){var cM=hBI.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g);if(cM&&cM.length>0){var tLm=0;for(var ci=0;ci<cM.length;ci++){var pts=cM[ci].match(/\d+/g);tLm+=sLum(parseInt(pts[0]),parseInt(pts[1]),parseInt(pts[2]));}hasDH=(tLm/cM.length)<0.4;}else{hasDH=true;}}else{hasDH=true;}}else{var hM=hCs.backgroundColor.match(/\d+/g);if(hM&&hM.length>=3){hasDH=sLum(parseInt(hM[0]),parseInt(hM[1]),parseInt(hM[2]))<0.4;}}}
+      if(!hasDH){window.removeEventListener('scroll',onS);window.removeEventListener('resize',onS);applyScrolled();window._zappyNavNoDarkHero=true;}
+    })();
+    </script>
+</body>
+</html>
