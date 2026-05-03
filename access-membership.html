@@ -374,12 +374,12 @@
     // Check if background is transparent or rgba with 0 alpha
     const isTransparent = bgColor === 'transparent' || 
                          bgColor === 'rgba(0, 0, 0, 0)' ||
-                         (bgColor.startsWith('rgba') &amp;&amp; bgColor.includes(', 0)'));
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
     
     if (isTransparent) {
       // Check for background-image or gradient
       const bgImage = computedStyle.backgroundImage;
-      if (bgImage &amp;&amp; bgImage !== 'none') {
+      if (bgImage && bgImage !== 'none') {
         console.log('[Navbar] Navbar has background image/gradient, using dark text');
         bgColor = 'rgb(240, 240, 240)'; // Assume light background
       } else {
@@ -392,7 +392,7 @@
     
     // Calculate luminance to determine if background is light or dark
     const rgb = bgColor.match(/\d+/g);
-    if (rgb &amp;&amp; rgb.length &gt;= 3) {
+    if (rgb && rgb.length >= 3) {
       const r = parseInt(rgb[0]);
       const g = parseInt(rgb[1]);
       const b = parseInt(rgb[2]);
@@ -528,7 +528,7 @@
       // ONLY apply inline positioning styles on mobile viewport
       // On desktop, the CSS handles hiding these buttons with display: none
       // Inline styles were breaking desktop layout by overriding CSS
-      const isMobileViewport = window.innerWidth &lt;= 768;
+      const isMobileViewport = window.innerWidth <= 768;
       
       if (mobileToggle) {
         // Icon sizing applies to all viewports for consistency
@@ -719,7 +719,7 @@
       phoneBtn.addEventListener('click', function() {
         // Get phone number from placeholder in page or use default
         const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
-        const phoneNumber = phoneLinks.length &gt; 0 
+        const phoneNumber = phoneLinks.length > 0 
           ? phoneLinks[0].getAttribute('href').replace('tel:', '')
           : '+972 585454037';
         
@@ -736,7 +736,7 @@
     const handleWhatsAppVisibility = function() {
       const whatsappBtn = document.querySelector('.whatsapp-float');
       if (whatsappBtn) {
-        const isDesktop = window.innerWidth &gt;= 769;
+        const isDesktop = window.innerWidth >= 769;
         if (isDesktop) {
           whatsappBtn.style.setProperty('display', 'none', 'important');
           whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
@@ -1129,7 +1129,7 @@
         <div class="amb-card-tiers zappy-preserve-css-grid" id="zappy-auto-grid-1777829575184-zhdylc" data-zappy-auto-grid="true" data-original-item-width="235" data-original-gap="16px" style="display: grid; --zappy-grid-cols: repeat(2, minmax(0, 1fr)); grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch !important;" data-zappy-explicit-columns="true">
           <div class="amb-tier amb-tier--standard" data-grid-item-index="0">
             <p class="zappy-editable"><span class="amb-tier-label">רגיל</span>
-            </p><ul class="amb-tier-list" ><li data-grid-item-index="0">פרופיל בסיסי בלבד</li><li data-grid-item-index="1">&amp;nbsp;תמונה ראשית</li></ul>
+            </p><ul class="amb-tier-list" ><li data-grid-item-index="0">פרופיל בסיסי בלבד</li><li data-grid-item-index="1">&nbsp;תמונה ראשית</li></ul>
           </div>
           <div class="amb-tier amb-tier--premium" data-grid-item-index="1">
             <p class="zappy-editable"><span class="amb-tier-label amb-tier-label--gold">פרמיום</span>
@@ -1170,6 +1170,114 @@
     </div>
   </div>
 </section>
+
+<section class="um-access-section" dir="rtl" aria-labelledby="um-access-title">
+  <div class="um-access-container">
+    <!-- Section Header -->
+    <div class="um-access-header">
+      <span class="um-access-eyebrow">רמות גישה לפלטפורמה</span>
+      <h2 class="um-access-title" id="um-access-title">בחר את רמת הגישה שלך</h2>
+      <p class="um-access-subtitle">פלטפורמת השידוכים היוקרתית של UNITED MATCH מציעה רמות גישה מותאמות לכל סוג משתמש</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="um-cards-grid" role="list">
+
+      <!-- Card 1: Regular -->
+      <article class="um-card um-card--regular" role="listitem" aria-label="גישה רגילה">
+        <div class="um-card-inner">
+          <div class="um-card-badge um-card-badge--regular">חינמי</div>
+          <div class="um-card-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <h3 class="um-card-title">גישה רגילה</h3>
+          <p class="um-card-desc">לכל מי שמצטרף למאגר</p>
+          <ul class="um-card-perms" aria-label="הרשאות גישה רגילה">
+            <li><span class="um-check" aria-hidden="true">✓</span>צפייה בהתאמות</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>הודעות מנהלים</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>פרופיל אישי</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>כניסות ויציאות</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>שיעורי תורה</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 2: Premium -->
+      <article class="um-card um-card--premium" role="listitem" aria-label="גישה פרמיום">
+        <div class="um-card-inner">
+          <div class="um-card-badge um-card-badge--premium">פרמיום</div>
+          <div class="um-card-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <h3 class="um-card-title">גישה פרמיום</h3>
+          <p class="um-card-desc">לאנשי עסקים ואנשים מבוססים</p>
+          <ul class="um-card-perms" aria-label="הרשאות גישה פרמיום">
+            <li><span class="um-check" aria-hidden="true">✓</span>כל מה שבגישה רגילה</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>עדיפות בזמינות שדכנים</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>תג פרמיום בולט</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>עדיפות בתוצאות חיפוש</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>ליווי שדכן אישי</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 3: Matchmaker -->
+      <article class="um-card um-card--matchmaker" role="listitem" aria-label="גישה שדכן">
+        <div class="um-card-inner">
+          <div class="um-card-badge um-card-badge--matchmaker">שדכן</div>
+          <div class="um-card-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3 class="um-card-title">גישה שדכן</h3>
+          <p class="um-card-desc">לשדכנים מקצועיים</p>
+          <ul class="um-card-perms" aria-label="הרשאות גישה שדכן">
+            <li><span class="um-check" aria-hidden="true">✓</span>חיפוש במאגר</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>קבלת נתונים</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>השארת בקשה למנהלים</li>
+            <li><span class="um-check um-check--limited" aria-hidden="true">◎</span>ללא גישה לפרטים ישירים</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 4: Admin (Featured) -->
+      <article class="um-card um-card--admin um-card--featured" role="listitem" aria-label="גישה מנהל">
+        <div class="um-card-glow" aria-hidden="true"></div>
+        <div class="um-card-inner">
+          <div class="um-card-badge um-card-badge--admin">מנהל</div>
+          <div class="um-card-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h3 class="um-card-title">גישה מנהל</h3>
+          <p class="um-card-desc">לצוות הניהול ובית המנהלים</p>
+          <ul class="um-card-perms" aria-label="הרשאות גישה מנהל">
+            <li><span class="um-check" aria-hidden="true">✓</span>גישה מלאה לכל המאגר</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>אישור שדכנים</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>ממשק שידוכים מלא</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>ניהול כל המשתמשים</li>
+            <li><span class="um-check" aria-hidden="true">✓</span>גישה לכל הפרטים האישיים</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+    <!-- End Cards Grid -->
+
+  </div>
+</section>
+
+
 
 <section class="access-membership-faq-section" data-layout-spec="גישה וחברות-faq" dir="rtl">
   <div class="faq-container">

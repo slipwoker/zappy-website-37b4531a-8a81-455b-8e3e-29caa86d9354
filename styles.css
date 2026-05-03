@@ -13169,6 +13169,385 @@ body.accessibility-widget-visible ._access-menu {
     gap: 10px;
   }
 }
+
+/* AI-generated section */
+/* =============================================
+   UNITED MATCH — Access Levels Section
+   ============================================= */
+
+.um-access-section {
+  background: #0a0a0a;
+  padding: 90px 20px 100px;
+  font-family: system-ui, sans-serif;
+  direction: rtl;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background texture */
+.um-access-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(201,168,76,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 80% 90%, rgba(255,215,0,0.05) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- Container ---- */
+.um-access-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Header ---- */
+.um-access-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.um-access-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--gradient-primary, linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 14px;
+}
+
+.um-access-title {
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: #f5f0e8;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.um-access-subtitle {
+  font-size: 1.05rem;
+  color: #a09880;
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ---- Grid ---- */
+.um-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* ---- Base Card ---- */
+.um-card {
+  position: relative;
+  border-radius: 18px;
+  border: 1px solid rgba(201,168,76,0.25);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: default;
+}
+
+.um-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201,168,76,0.55);
+  box-shadow:
+    0 16px 48px rgba(0,0,0,0.45),
+    0 0 24px rgba(201,168,76,0.12);
+}
+
+.um-card-inner {
+  padding: 36px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* ---- Badge ---- */
+.um-card-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 50px;
+  margin-bottom: 22px;
+}
+
+.um-card-badge--regular {
+  background: rgba(255,255,255,0.08);
+  color: #c8c0b0;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.um-card-badge--premium {
+  background: linear-gradient(135deg, rgba(201,168,76,0.25) 0%, rgba(255,215,0,0.2) 100%);
+  color: #FFD700;
+  border: 1px solid rgba(255,215,0,0.4);
+}
+
+.um-card-badge--matchmaker {
+  background: rgba(255,255,255,0.07);
+  color: #d4c9a8;
+  border: 1px solid rgba(201,168,76,0.3);
+}
+
+.um-card-badge--admin {
+  background: var(--gradient-primary, linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%));
+  color: #0a0a0a;
+  border: none;
+  font-weight: 800;
+}
+
+/* ---- Icon ---- */
+.um-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.1);
+  border: 1.5px solid rgba(201,168,76,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.um-card-icon svg {
+  width: 28px;
+  height: 28px;
+  color: #C9A84C;
+  stroke: #C9A84C;
+  transition: stroke 0.3s ease;
+}
+
+.um-card:hover .um-card-icon {
+  background: rgba(201,168,76,0.18);
+  border-color: rgba(201,168,76,0.55);
+}
+
+/* ---- Card Title ---- */
+.um-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f0ead8;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+
+/* ---- Card Description ---- */
+.um-card-desc {
+  font-size: 0.88rem;
+  color: #8a8070;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+/* ---- Permissions List ---- */
+.um-card-perms {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: right;
+  margin-top: auto;
+}
+
+.um-card-perms li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 0.875rem;
+  color: #c8c0b0;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.um-card-perms li:last-child {
+  border-bottom: none;
+}
+
+/* ---- Check Icons ---- */
+.um-check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #C9A84C;
+  line-height: 1;
+  text-align: center;
+  padding-top: 1px;
+}
+
+.um-check--limited {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.15);
+  color: #7a7060;
+}
+
+/* ---- Premium Card Variant ---- */
+.um-card--premium {
+  background: rgba(201,168,76,0.06);
+  border-color: rgba(255,215,0,0.35);
+}
+
+.um-card--premium .um-card-title {
+  background: var(--gradient-primary, linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.um-card--premium .um-card-icon {
+  background: rgba(255,215,0,0.12);
+  border-color: rgba(255,215,0,0.45);
+}
+
+.um-card--premium .um-card-icon svg {
+  stroke: #FFD700;
+}
+
+/* ---- Admin Card (Featured) ---- */
+.um-card--admin {
+  background: rgba(201,168,76,0.08);
+  border: 2px solid rgba(255,215,0,0.6);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.4),
+    0 0 32px rgba(201,168,76,0.15),
+    inset 0 1px 0 rgba(255,215,0,0.15);
+}
+
+.um-card--admin:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255,215,0,0.85);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    0 0 48px rgba(201,168,76,0.25),
+    inset 0 1px 0 rgba(255,215,0,0.2);
+}
+
+.um-card--admin .um-card-title {
+  background: var(--gradient-primary, linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.35rem;
+}
+
+.um-card--admin .um-card-icon {
+  width: 72px;
+  height: 72px;
+  background: rgba(255,215,0,0.15);
+  border-color: rgba(255,215,0,0.5);
+  box-shadow: 0 0 20px rgba(255,215,0,0.15);
+}
+
+.um-card--admin .um-card-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke: #FFD700;
+}
+
+.um-card--admin .um-card-perms li {
+  color: #ddd5bb;
+}
+
+.um-card--admin .um-check {
+  background: rgba(255,215,0,0.2);
+  border-color: rgba(255,215,0,0.5);
+  color: #FFD700;
+}
+
+/* ---- Glow Effect (Admin) ---- */
+.um-card-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: var(--gradient-primary, linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%));
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.35s ease;
+  filter: blur(12px);
+}
+
+.um-card--admin:hover .um-card-glow {
+  opacity: 0.18;
+}
+
+/* =============================================
+   RESPONSIVE — Tablet (2 columns)
+   ============================================= */
+@media (max-width: 1100px) {
+  .um-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* =============================================
+   RESPONSIVE — Mobile (1 column)
+   ============================================= */
+@media (max-width: 600px) {
+  .um-access-section {
+    padding: 60px 16px 70px;
+  }
+
+  .um-access-header {
+    margin-bottom: 40px;
+  }
+
+  .um-access-title {
+    font-size: 1.7rem;
+  }
+
+  .um-access-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .um-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .um-card-inner {
+    padding: 28px 22px 26px;
+  }
+
+  .um-card--admin .um-card-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .um-card--admin .um-card-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
@@ -13551,9 +13930,23 @@ nav .sub-menu.zappy-empty-submenu,
     overflow: hidden !important;
     position: relative !important;
   }
-  
-  /* Legacy zoom wrappers without saved crop data can still fall back to responsive images. */
-  [data-zappy-zoom-wrapper="true"]:not([data-zappy-zoom-wrapper-width]) img:not([data-zappy-mobile-object-position]):not([data-zappy-mobile-zoom]) {
+
+  /* The zoom wrapper's image is position:absolute (so it contributes 0 to the
+     wrapper's intrinsic content width). Inserted-element parents that carry a
+     desktop pixel height (e.g. height:234px) collapse to 0px wide on mobile
+     because nothing in the subtree pushes back on the cross-axis. Force them
+     to fill the parent container so the wrapper's aspect-ratio chain resolves. */
+  .zappy-inserted-element:has(> [data-zappy-zoom-wrapper="true"]) {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Reset zoom wrapper images on mobile to responsive display.
+     Images with explicit mobile crop overrides are excluded - the JS runtime
+     applies their crop/zoom after page load. */
+  [data-zappy-zoom-wrapper="true"] img:not([data-zappy-mobile-object-position]):not([data-zappy-mobile-zoom]) {
     position: relative !important;
     width: 100% !important;
     height: auto !important;
