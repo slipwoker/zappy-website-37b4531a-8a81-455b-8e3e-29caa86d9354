@@ -1,0 +1,55 @@
+# Business — Generative Engine Optimization Map
+
+---
+
+## Pages
+
+### בית
+https://example.com
+מאגר השידוכים היוקרתי והפרטי ביותר בישראל. שידוכים לדתיים ברמה הגבוהה ביותר, עם ליווי אישי, פרטיות מלאה ואלגנטיות ללא פשרות. הצטרפו עכשיו.
+
+### גישה וחברות
+https://example.com/access-membership
+הירשמו למאגר השידוכים הפרטי של United Match וקבלו גישה לחברות פרמיום. הכרויות לדתיים ברמה עילית, עם תג חבר מיוחד וחוויה בלעדית לגמרי.
+
+### פרופיל ומסע השידוכים
+https://example.com/profile-match-journey
+ערכו את הפרופיל האישי שלכם, עקבו אחר היסטוריית ההתאמות ותנו לסיפור האהבה שלכם להתחיל. מסע השידוכים הפרטי והמאובטח שלכם מתחיל כאן.
+
+### אירועים ותורה
+https://example.com/events-torah
+גלו אירועי שידוכים בלעדיים, ימי פעילות קהילתיים ופינת הלכות מעשירה. חיבור בין ערכי תורה לבין שידוכים יהודיים ברמה הגבוהה ביותר — כל זה במקום אחד.
+
+### ניהול ואמינות
+https://example.com/admin-platform-trust
+מערכת ניהול מתקדמת, אבטחת מידע ברמה הגבוהה ביותר ושקיפות מלאה. United Match מחויבת לפרטיות חברותיה ולניהול מקצועי שמעמיד את האמון במרכז.
+
+### צור קשר
+https://example.com/contact
+יש לכם שאלות? צוות United Match זמין עבורכם לכל פרט ובירור. צרו קשר עוד היום ותנו לנו ללוות אתכם בדרך לשידוך המושלם שמחכה לכם.
+
+## Legal & Policy
+
+### Privacy Policy
+https://example.com/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://example.com/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://example.com/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+# Business Context (for LLM understanding)
+
+## About Business
+---
+
+# Additional Resources
+
+- **Sitemap**: https://example.com/sitemap.xml
+- **Robots.txt**: https://example.com/robots.txt
