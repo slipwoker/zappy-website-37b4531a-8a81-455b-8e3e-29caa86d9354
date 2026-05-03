@@ -374,12 +374,12 @@
     // Check if background is transparent or rgba with 0 alpha
     const isTransparent = bgColor === 'transparent' || 
                          bgColor === 'rgba(0, 0, 0, 0)' ||
-                         (bgColor.startsWith('rgba') &amp;&amp; bgColor.includes(', 0)'));
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
     
     if (isTransparent) {
       // Check for background-image or gradient
       const bgImage = computedStyle.backgroundImage;
-      if (bgImage &amp;&amp; bgImage !== 'none') {
+      if (bgImage && bgImage !== 'none') {
         console.log('[Navbar] Navbar has background image/gradient, using dark text');
         bgColor = 'rgb(240, 240, 240)'; // Assume light background
       } else {
@@ -392,7 +392,7 @@
     
     // Calculate luminance to determine if background is light or dark
     const rgb = bgColor.match(/\d+/g);
-    if (rgb &amp;&amp; rgb.length &gt;= 3) {
+    if (rgb && rgb.length >= 3) {
       const r = parseInt(rgb[0]);
       const g = parseInt(rgb[1]);
       const b = parseInt(rgb[2]);
@@ -528,7 +528,7 @@
       // ONLY apply inline positioning styles on mobile viewport
       // On desktop, the CSS handles hiding these buttons with display: none
       // Inline styles were breaking desktop layout by overriding CSS
-      const isMobileViewport = window.innerWidth &lt;= 768;
+      const isMobileViewport = window.innerWidth <= 768;
       
       if (mobileToggle) {
         // Icon sizing applies to all viewports for consistency
@@ -719,7 +719,7 @@
       phoneBtn.addEventListener('click', function() {
         // Get phone number from placeholder in page or use default
         const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
-        const phoneNumber = phoneLinks.length &gt; 0 
+        const phoneNumber = phoneLinks.length > 0 
           ? phoneLinks[0].getAttribute('href').replace('tel:', '')
           : '[business_phone]';
         
@@ -736,7 +736,7 @@
     const handleWhatsAppVisibility = function() {
       const whatsappBtn = document.querySelector('.whatsapp-float');
       if (whatsappBtn) {
-        const isDesktop = window.innerWidth &gt;= 769;
+        const isDesktop = window.innerWidth >= 769;
         if (isDesktop) {
           whatsappBtn.style.setProperty('display', 'none', 'important');
           whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
@@ -828,7 +828,7 @@
       <h3 class="index-hero-subtitle">ברוכים הבאים למאגר השידוכים הפרטי<br><br>והיוקרתי של United Match</h3>
 
       <div class="index-hero-ctas">
-        <a href="/register" class="index-hero-btn-primary">הרשמה עכשיו</a>
+        <a href="/contact" class="index-hero-btn-primary">הרשמה עכשיו</a>
         <a href="/login" class="index-hero-btn-secondary">כניסה לאזור אישי</a>
       </div>
     </div>
@@ -957,7 +957,7 @@
       <h3 class="index-hero-subtitle">ברוכים הבאים למאגר השידוכים הפרטי<br><br>והיוקרתי של United Match</h3>
 
       <div class="index-hero-ctas">
-        <a href="/register" class="index-hero-btn-primary">הרשמה עכשיו</a>
+        <a href="/contact" class="index-hero-btn-primary">הרשמה עכשיו</a>
         <a href="/login" class="index-hero-btn-secondary">כניסה לאזור אישי</a>
       </div>
     </div>
@@ -1263,7 +1263,7 @@
 
         <!-- CTA -->
         <div class="membership-cta-row">
-          <a href="/registration" class="btn-primary membership-cta-btn" data-element-type="button" data-element-id="btn-1777828968875-3nr3fgou0" data-native-element="true">הצטרפות לפרמיום</a>
+          <a href="/contact" class="btn-primary membership-cta-btn" data-element-type="button" data-element-id="btn-1777828968875-3nr3fgou0" data-native-element="true">הצטרפות לפרמיום</a>
           <a href="/contact" class="btn-secondary membership-cta-btn" data-element-type="button" data-element-id="btn-1777828968875-1kumcypvf" data-native-element="true">לשאלות ויצירת קשר</a>
         </div>
 
@@ -1516,7 +1516,7 @@
       <p class="iss-cta-sub">הצטרפו למאגר השידוכים הפרטי והיוקרתי של United Match ותנו לנו ללוות אתכם אל הפרק הבא בחיים</p>
       <div class="iss-cta-buttons">
         <a href="/contact" class="btn-primary iss-btn-main">צרו קשר עכשיו</a>
-        <a href="/register" class="btn-secondary iss-btn-sec">הרשמה למאגר</a>
+        <a href="/contact" class="btn-secondary iss-btn-sec">הרשמה למאגר</a>
       </div>
     </div>
 
@@ -1589,7 +1589,7 @@
 
       <!-- CTA Buttons -->
       <div class="index-cta-buttons">
-        <a href="/register" class="btn-primary index-cta-btn-primary">הרשמה עכשיו</a>
+        <a href="/contact" class="btn-primary index-cta-btn-primary">הרשמה עכשיו</a>
         <a href="/login" class="btn-secondary index-cta-btn-secondary">כניסה לאזור אישי</a>
       </div>
     </div>
