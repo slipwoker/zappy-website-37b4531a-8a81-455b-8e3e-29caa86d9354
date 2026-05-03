@@ -13548,6 +13548,16 @@ body.accessibility-widget-visible ._access-menu {
     height: 28px;
   }
 }
+
+.um-access-section .um-card {
+  cursor: pointer !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.um-access-section .um-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 20px 60px rgba(212,160,23,0.3) !important;
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,
