@@ -20,6 +20,10 @@ https://example.com/profile-match-journey
 https://example.com/events-torah
 גלו אירועי שידוכים בלעדיים, ימי פעילות קהילתיים ופינת הלכות מעשירה. חיבור בין ערכי תורה לבין שידוכים יהודיים ברמה הגבוהה ביותר — כל זה במקום אחד.
 
+### פינת הלכות
+https://example.com/halacha-corner
+UNITED MATCH - פינת הלכות
+
 ### פלטפורמה מאובטחת שבנויה על אמון מוחלט — UNITED MATCH
 https://example.com/admin-platform-trust
 מערכת ניהול מתקדמת, אבטחת מידע ברמה הגבוהה ביותר ושקיפות מלאה. United Match מחויבת לפרטיות חברותיה ולניהול מקצועי שמעמיד את האמון במרכז.
@@ -31,10 +35,6 @@ UNITED MATCH - האזור האישי שלי
 ### דברו איתנו — השידוך הבא שלכם מתחיל כאן — UNITED MATCH
 https://example.com/contact
 יש לכם שאלות? צוות United Match זמין עבורכם לכל פרט ובירור. צרו קשר עוד היום ותנו לנו ללוות אתכם בדרך לשידוך המושלם שמחכה לכם.
-
-### פינת הלכות
-https://example.com/halacha-corner
-UNITED MATCH - פינת הלכות
 
 ## Legal & Policy
 
