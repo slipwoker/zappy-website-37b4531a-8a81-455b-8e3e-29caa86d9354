@@ -28,9 +28,6 @@ https://example.com/admin-platform-trust
 https://example.com/personal-area
 UNITED MATCH - האזור האישי שלי
 
-### Page
-https://example.com/menu-group-1777838480865
-
 ### דברו איתנו — השידוך הבא שלכם מתחיל כאן — UNITED MATCH
 https://example.com/contact
 יש לכם שאלות? צוות United Match זמין עבורכם לכל פרט ובירור. צרו קשר עוד היום ותנו לנו ללוות אתכם בדרך לשידוך המושלם שמחכה לכם.
