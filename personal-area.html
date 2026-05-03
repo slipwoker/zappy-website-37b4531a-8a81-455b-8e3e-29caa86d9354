@@ -1,0 +1,3004 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>האזור האישי שלי</title>
+    <meta name="description" content="UNITED MATCH - האזור האישי שלי">
+    <meta name="keywords" content="">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: '37b4531a-8a81-455b-8e3e-29caa86d9354',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="האזור האישי שלי">
+    <meta property="og:description" content="UNITED MATCH - האזור האישי שלי">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="האזור האישי שלי">
+    <meta name="twitter:description" content="UNITED MATCH - האזור האישי שלי">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="article">
+    
+    
+    
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="האזור האישי שלי">
+    <meta property="og:locale" content="he_IL">
+    <!-- Twitter Card Meta Tags -->
+    
+    
+    
+    
+    <meta name="twitter:image:alt" content="האזור האישי שלי"><style id="zappy-ai-page-styles">.member-access-hero-section {
+  position: relative;
+  overflow: visible;
+  direction: rtl;
+  background-color: #0A0A0A;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 30% 40%, rgba(201,168,76,0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(26,16,35,0.9) 0%, transparent 70%),
+    linear-gradient(180deg, #0A0A0A 0%, #0D0C05 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+  padding: 140px 0 100px;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ── Background layers ── */
+.member-access-hero-section .mahs-bg-image-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.member-access-hero-section .mahs-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.22;
+  display: block;
+}
+
+.member-access-hero-section .mahs-scrim {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.82) 60%, rgba(10,10,10,0.97) 100%),
+    linear-gradient(270deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.0) 50%);
+  pointer-events: none;
+}
+
+.member-access-hero-section .mahs-bg-radial {
+  position: absolute;
+  inset-inline-end: 55%;
+  top: 10%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.member-access-hero-section .mahs-constellation {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.member-access-hero-section .mahs-constellation-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Container ── */
+.member-access-hero-section .mahs-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ── Two-column inner ── */
+.member-access-hero-section .mahs-inner {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 80px;
+  align-items: center;
+  direction: rtl;
+}
+
+/* ── RIGHT COLUMN: Text ── */
+.member-access-hero-section .mahs-text-col {
+  text-align: right;
+}
+
+.member-access-hero-section .mahs-ornament {
+  margin-bottom: 24px;
+  display: block;
+  text-align: right;
+}
+
+.member-access-hero-section .mahs-headline {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: #F5E6C8;
+  margin: 0 0 20px 0;
+  text-align: right;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.7), 0 0 80px rgba(201,168,76,0.1);
+}
+
+.member-access-hero-section .mahs-subtitle {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #B8A880;
+  margin: 0 0 40px 0;
+  text-align: right;
+  max-width: 540px;
+}
+
+/* ── CTA Row ── */
+.member-access-hero-section .mahs-cta-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-start;
+  margin-bottom: 28px;
+}
+
+.member-access-hero-section .mahs-btn-primary {
+  display: inline-block;
+  background: linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%);
+  color: #0A0A0A;
+  padding: 14px 36px;
+  border-radius: 4px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 30px rgba(201,168,76,0.3), 0 8px 24px rgba(0,0,0,0.4);
+  white-space: nowrap;
+}
+
+.member-access-hero-section .mahs-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 50px rgba(201,168,76,0.5), 0 12px 32px rgba(0,0,0,0.5);
+}
+
+.member-access-hero-section .mahs-btn-secondary {
+  display: inline-block;
+  background: transparent;
+  color: #F5E6C8;
+  padding: 13px 32px;
+  border-radius: 4px;
+  border: 1px solid rgba(201,168,76,0.55);
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.member-access-hero-section .mahs-btn-secondary:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.85);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* ── Access tiers info ── */
+.member-access-hero-section .mahs-access-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.875rem;
+  color: #8A7A50;
+  letter-spacing: 0.04em;
+  text-align: right;
+  margin: 0;
+  font-family: 'Heebo', sans-serif;
+}
+
+.member-access-hero-section .mahs-access-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C9A84C, #FFD700);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(201,168,76,0.5);
+}
+
+/* ── LEFT COLUMN: Trust panel ── */
+.member-access-hero-section .mahs-trust-panel {
+  position: relative;
+  background: rgba(10,8,5,0.82);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 2px;
+  padding: 40px 32px 36px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 16px 56px rgba(0,0,0,0.6), 0 0 40px rgba(201,168,76,0.06);
+  text-align: right;
+}
+
+/* Corner flourishes */
+.member-access-hero-section .mahs-corner-flourish {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.member-access-hero-section .mahs-corner-tl {
+  top: -1px;
+  inset-inline-start: -1px;
+  border-top: 2px solid rgba(201,168,76,0.7);
+  border-inline-start: 2px solid rgba(201,168,76,0.7);
+}
+
+.member-access-hero-section .mahs-corner-tr {
+  top: -1px;
+  inset-inline-end: -1px;
+  border-top: 2px solid rgba(201,168,76,0.7);
+  border-inline-end: 2px solid rgba(201,168,76,0.7);
+}
+
+.member-access-hero-section .mahs-corner-bl {
+  bottom: -1px;
+  inset-inline-start: -1px;
+  border-bottom: 2px solid rgba(201,168,76,0.7);
+  border-inline-start: 2px solid rgba(201,168,76,0.7);
+}
+
+.member-access-hero-section .mahs-corner-br {
+  bottom: -1px;
+  inset-inline-end: -1px;
+  border-bottom: 2px solid rgba(201,168,76,0.7);
+  border-inline-end: 2px solid rgba(201,168,76,0.7);
+}
+
+.member-access-hero-section .mahs-panel-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 10px;
+  font-family: 'Heebo', sans-serif;
+}
+
+.member-access-hero-section .mahs-panel-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #F5E6C8;
+  margin: 0 0 28px 0;
+  text-align: right;
+}
+
+/* Trust list */
+.member-access-hero-section .mahs-trust-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.member-access-hero-section .mahs-trust-item {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 14px;
+  align-items: flex-start;
+  direction: rtl;
+}
+
+.member-access-hero-section .mahs-trust-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C9A84C;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.member-access-hero-section .mahs-trust-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+
+.member-access-hero-section .mahs-trust-content strong {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #F5E6C8;
+  line-height: 1.3;
+}
+
+.member-access-hero-section .mahs-trust-content span {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.82rem;
+  color: #8A7A50;
+  line-height: 1.5;
+}
+
+.member-access-hero-section .mahs-panel-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+  margin: 28px 0 20px;
+}
+
+.member-access-hero-section .mahs-panel-tagline {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #8A7A50;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+/* ── Bottom fade transition ── */
+.member-access-hero-section .mahs-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(180deg, transparent 0%, #0A0A0A 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── RESPONSIVE: Tablet ── */
+@media (max-width: 1024px) {
+  .member-access-hero-section .mahs-inner {
+    grid-template-columns: 1fr 300px;
+    gap: 48px;
+  }
+
+  .member-access-hero-section .mahs-headline {
+    font-size: 2.8rem;
+  }
+}
+
+/* ── RESPONSIVE: Mobile ── */
+@media (max-width: 768px) {
+  .member-access-hero-section {
+    padding: 110px 0 80px;
+  }
+
+  .member-access-hero-section .mahs-container {
+    padding: 0 20px;
+  }
+
+  .member-access-hero-section .mahs-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .member-access-hero-section .mahs-headline {
+    font-size: 2.2rem;
+    line-height: 1.2;
+  }
+
+  .member-access-hero-section .mahs-subtitle {
+    font-size: 1.1rem;
+    max-width: 100%;
+  }
+
+  .member-access-hero-section .mahs-cta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .member-access-hero-section .mahs-btn-primary,
+  .member-access-hero-section .mahs-btn-secondary {
+    width: 100%;
+    text-align: center;
+    padding: 14px 24px;
+  }
+
+  .member-access-hero-section .mahs-trust-panel {
+    padding: 28px 20px 24px;
+  }
+
+  .member-access-hero-section .mahs-bg-radial {
+    width: 300px;
+    height: 300px;
+    inset-inline-end: auto;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.member-access-membership-section {
+  position: relative;
+  background-color: #0A0A0A;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 70% 40%, rgba(201,168,76,0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 60% at 20% 70%, rgba(201,168,76,0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #0A0A0A 0%, #0D0C05 100%);
+  color: var(--text-light);
+  padding: 80px 24px 80px;
+  overflow: visible;
+  direction: rtl;
+}
+
+/* Glow decoration */
+.member-access-membership-section .membership-glow-decoration {
+  position: absolute;
+  top: 10%;
+  inset-inline-start: 5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(212,160,23,0.1) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+}
+
+/* Container */
+.member-access-membership-section .membership-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.member-access-membership-section .membership-header {
+  text-align: right;
+  margin-bottom: 52px;
+}
+
+.member-access-membership-section .membership-ornament {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.member-access-membership-section .membership-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  color: #F5E6C8;
+  margin: 0 0 16px 0;
+  text-align: right;
+}
+
+.member-access-membership-section .membership-subtitle {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #B8A880;
+  max-width: 680px;
+  margin: 0;
+  text-align: right;
+}
+
+/* Grid */
+.member-access-membership-section .membership-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  direction: rtl;
+  align-items: stretch;
+}
+
+/* Card Base */
+.member-access-membership-section .membership-card {
+  position: relative;
+  background: #131108;
+  border-radius: 10px;
+  border: 1px solid rgba(201,168,76,0.22);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.55);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.member-access-membership-section .membership-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 56px rgba(0,0,0,0.65);
+}
+
+/* Premium Card Special Treatment */
+.member-access-membership-section .membership-card--premium {
+  border: 1px solid rgba(201,168,76,0.5);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.55), 0 0 40px rgba(212,160,23,0.12), 0 0 80px rgba(212,160,23,0.06);
+  background: linear-gradient(160deg, #161208 0%, #0F0D06 100%);
+}
+
+.member-access-membership-section .membership-card--premium:hover {
+  box-shadow: 0 16px 56px rgba(0,0,0,0.65), 0 0 60px rgba(212,160,23,0.2), 0 0 100px rgba(212,160,23,0.1);
+}
+
+/* Premium Badge */
+.member-access-membership-section .membership-premium-badge {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  background: linear-gradient(135deg, #C9A84C 0%, #FFD700 100%);
+  color: #0A0A0A;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 5px 14px 5px 10px;
+  border-radius: 0 10px 0 8px;
+  z-index: 3;
+  text-transform: uppercase;
+}
+
+/* Corner Flourish */
+.member-access-membership-section .membership-corner-flourish {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* Card Inner */
+.member-access-membership-section .membership-card-inner {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Card Header */
+.member-access-membership-section .membership-card-header {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.member-access-membership-section .membership-card-icon {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+  color: #C9A84C;
+}
+
+.member-access-membership-section .membership-card-icon--premium {
+  filter: drop-shadow(0 0 8px rgba(212,160,23,0.4));
+}
+
+.member-access-membership-section .membership-card-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #F5E6C8;
+  margin: 0 0 8px 0;
+  text-align: right;
+}
+
+.member-access-membership-section .membership-card-title--premium {
+  color: #FFD700;
+  text-shadow: 0 0 20px rgba(212,160,23,0.3);
+}
+
+.member-access-membership-section .membership-card-desc {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #B8A880;
+  margin: 0;
+  text-align: right;
+}
+
+/* Divider */
+.member-access-membership-section .membership-divider {
+  height: 1px;
+  background: rgba(201,168,76,0.25);
+  margin: 0 0 22px 0;
+  border: none;
+}
+
+.member-access-membership-section .membership-divider--premium {
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.6) 50%, transparent 100%);
+}
+
+/* Features List */
+.member-access-membership-section .membership-features-list {
+  list-style: none;
+  margin: 0 0 28px 0;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.member-access-membership-section .membership-feature-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: right;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #D4C9A8;
+}
+
+.member-access-membership-section .membership-feature-item--premium {
+  color: #F0E0B0;
+}
+
+.member-access-membership-section .membership-feature-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.5);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.member-access-membership-section .membership-feature-dot--premium {
+  background: #C9A84C;
+  box-shadow: 0 0 6px rgba(212,160,23,0.5);
+}
+
+/* Card Footer */
+.member-access-membership-section .membership-card-footer {
+  margin-top: auto;
+  text-align: right;
+}
+
+/* Buttons */
+.member-access-membership-section .membership-btn {
+  display: inline-block;
+  text-decoration: none;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.member-access-membership-section .membership-btn--secondary {
+  background: transparent;
+  color: #C9A84C;
+  border: 1px solid rgba(201,168,76,0.5);
+}
+
+.member-access-membership-section .membership-btn--secondary:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.8);
+  box-shadow: 0 0 20px rgba(201,168,76,0.15);
+  transform: translateY(-1px);
+}
+
+.member-access-membership-section .membership-btn--primary {
+  background: linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%);
+  color: #0A0A0A;
+  border: none;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+
+.member-access-membership-section .membership-btn--primary:hover {
+  box-shadow: 0 8px 32px rgba(201,168,76,0.5);
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+/* Bottom Gold Divider */
+.member-access-membership-section .membership-bottom-divider {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 72px auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.4) 30%, rgba(201,168,76,0.6) 50%, rgba(201,168,76,0.4) 70%, transparent 100%);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .member-access-membership-section .membership-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .member-access-membership-section {
+    padding: 60px 16px 60px;
+  }
+
+  .member-access-membership-section .membership-glow-decoration {
+    display: none;
+  }
+
+  .member-access-membership-section .membership-header {
+    margin-bottom: 36px;
+  }
+
+  .member-access-membership-section .membership-title {
+    font-size: 1.75rem;
+  }
+
+  .member-access-membership-section .membership-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .member-access-membership-section .membership-card {
+    width: 100%;
+  }
+
+  .member-access-membership-section .membership-card-inner {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .member-access-membership-section .membership-bottom-divider {
+    margin-top: 48px;
+  }
+
+  .member-access-membership-section .membership-ornament {
+    justify-content: flex-start;
+  }
+}
+
+.member-access-benefits-section {
+  background-color: #F3EEE6;
+  background-image: linear-gradient(180deg, #F3EEE6 0%, #EDE5D8 100%);
+  color: var(--text-dark);
+  position: relative;
+  overflow: visible;
+  padding: 80px 0 100px;
+  direction: rtl;
+  box-shadow: 0 12px 40px rgba(10,10,10,0.18);
+}
+
+/* Container */
+.member-access-benefits-section .mab-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* Header */
+.member-access-benefits-section .mab-header {
+  text-align: right;
+  margin-bottom: 52px;
+}
+
+.member-access-benefits-section .mab-gold-ornament {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.member-access-benefits-section .mab-section-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-dark);
+  margin: 0 0 16px;
+  letter-spacing: 0.02em;
+}
+
+.member-access-benefits-section .mab-section-desc {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #4A3F35;
+  max-width: 680px;
+  margin: 0;
+  text-align: right;
+}
+
+/* Grid */
+.member-access-benefits-section .mab-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+  direction: rtl;
+}
+
+/* Cards - Base */
+.member-access-benefits-section .mab-card {
+  position: relative;
+  background: #FDFAF5;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  text-align: right;
+}
+
+.member-access-benefits-section .mab-card:hover {
+  box-shadow: 0 8px 32px rgba(201, 168, 76, 0.18), 0 2px 8px rgba(0,0,0,0.08);
+  border-color: rgba(201, 168, 76, 0.6);
+  transform: translateY(-3px);
+}
+
+/* Standard Card */
+.member-access-benefits-section .mab-card-standard {
+  background: #FDFAF5;
+  border-color: rgba(201, 168, 76, 0.25);
+}
+
+/* Premium Card */
+.member-access-benefits-section .mab-card-premium {
+  background: linear-gradient(145deg, #FFFDF7 0%, #F9F2E4 100%);
+  border-color: rgba(201, 168, 76, 0.5);
+}
+
+.member-access-benefits-section .mab-card-premium:hover {
+  box-shadow: 0 10px 40px rgba(201, 168, 76, 0.28), 0 2px 12px rgba(0,0,0,0.1);
+  border-color: rgba(201, 168, 76, 0.85);
+}
+
+/* Corner accent for premium */
+.member-access-benefits-section .mab-card-corner-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.4);
+  border-right: 1px solid rgba(201, 168, 76, 0.4);
+  pointer-events: none;
+}
+
+.member-access-benefits-section .mab-card-corner-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.4);
+  border-right: 1px solid rgba(201, 168, 76, 0.4);
+}
+
+/* Card icon */
+.member-access-benefits-section .mab-card-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 44px;
+  height: 44px;
+  background: rgba(201, 168, 76, 0.1);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 6px;
+  margin-inline-start: auto;
+  color: #C9A84C;
+  padding: 8px;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.member-access-benefits-section .mab-card-icon-wrap svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Card content */
+.member-access-benefits-section .mab-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: right;
+}
+
+/* Badge */
+.member-access-benefits-section .mab-card-badge {
+  display: inline-block;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #7A6535;
+  background: rgba(201, 168, 76, 0.12);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 100px;
+  padding: 3px 10px;
+  width: fit-content;
+  margin-inline-start: auto;
+}
+
+.member-access-benefits-section .mab-badge-premium {
+  color: #8B6914;
+  background: rgba(201, 168, 76, 0.2);
+  border-color: rgba(201, 168, 76, 0.5);
+}
+
+/* Card title */
+.member-access-benefits-section .mab-card-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* Card description */
+.member-access-benefits-section .mab-card-desc {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #5A4E42;
+  margin: 0;
+}
+
+/* Trust Panel */
+.member-access-benefits-section .mab-trust-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  background: linear-gradient(135deg, #1C1A10 0%, #111008 100%);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 8px;
+  padding: 28px 32px;
+  direction: rtl;
+}
+
+.member-access-benefits-section .mab-trust-main {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
+  text-align: right;
+}
+
+.member-access-benefits-section .mab-trust-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  background: rgba(201, 168, 76, 0.1);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 50%;
+  color: #C9A84C;
+  flex-shrink: 0;
+}
+
+.member-access-benefits-section .mab-trust-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #F5E6C8;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+
+.member-access-benefits-section .mab-trust-body {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #B8A880;
+  margin: 0;
+}
+
+.member-access-benefits-section .mab-trust-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 160px;
+  text-align: right;
+  border-inline-start: 1px solid rgba(201, 168, 76, 0.25);
+  padding-inline-start: 28px;
+}
+
+.member-access-benefits-section .mab-trust-note {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #B8A880;
+  margin: 0;
+  text-align: right;
+}
+
+.member-access-benefits-section .mab-trust-cta {
+  display: inline-block;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #C9A84C;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.member-access-benefits-section .mab-trust-cta:hover {
+  color: #FFD700;
+}
+
+/* Bottom shadow */
+.member-access-benefits-section .mab-bottom-shadow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(17, 16, 8, 0.25) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===================== RESPONSIVE ===================== */
+
+@media (max-width: 1024px) {
+  .member-access-benefits-section .mab-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .member-access-benefits-section {
+    padding: 60px 0 80px;
+  }
+
+  .member-access-benefits-section .mab-container {
+    padding: 0 16px;
+  }
+
+  .member-access-benefits-section .mab-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  .member-access-benefits-section .mab-section-title {
+    font-size: 1.6rem;
+  }
+
+  .member-access-benefits-section .mab-section-desc {
+    max-width: 100%;
+  }
+
+  .member-access-benefits-section .mab-header {
+    margin-bottom: 36px;
+  }
+
+  .member-access-benefits-section .mab-trust-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px 20px;
+  }
+
+  .member-access-benefits-section .mab-trust-secondary {
+    border-inline-start: none;
+    border-top: 1px solid rgba(201, 168, 76, 0.25);
+    padding-inline-start: 0;
+    padding-top: 16px;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .member-access-benefits-section .mab-trust-main {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .member-access-benefits-section .mab-card {
+    padding: 20px 18px;
+  }
+}
+
+.member-access-faq-section {
+  direction: rtl;
+  background-color: #F3EEE6;
+  background-image: linear-gradient(180deg, #F3EEE6 0%, #EDE5D8 60%, #D8CEB8 100%);
+  color: var(--text-dark);
+  padding: 80px 24px 0;
+  position: relative;
+  overflow: visible;
+  font-family: 'Heebo', sans-serif;
+}
+
+.member-access-faq-section .faq-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.member-access-faq-section .faq-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.member-access-faq-section .faq-ornament {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.member-access-faq-section .faq-title {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  color: var(--text-dark);
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.member-access-faq-section .faq-intro {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #5A4E40;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* FAQ List */
+.member-access-faq-section .faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.member-access-faq-section .faq-item {
+  padding: 36px 0;
+  text-align: right;
+}
+
+.member-access-faq-section .faq-question {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-dark);
+  margin: 0 0 14px;
+  text-align: right;
+}
+
+.member-access-faq-section .faq-answer {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #5A4E40;
+  margin: 0;
+  text-align: right;
+}
+
+/* Gold divider */
+.member-access-faq-section .faq-divider {
+  height: 1px;
+  background: linear-gradient(to left, transparent, #C9A84C 30%, #C9A84C 70%, transparent);
+  opacity: 0.45;
+  width: 100%;
+}
+
+/* Notice Box */
+.member-access-faq-section .faq-notice {
+  margin-top: 52px;
+  background-color: #131108;
+  background-image: linear-gradient(135deg, #1C1A10 0%, #111008 100%);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 8px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  color: #F5E6C8;
+}
+
+.member-access-faq-section .faq-notice-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  color: #C9A84C;
+}
+
+.member-access-faq-section .faq-notice-content {
+  flex: 1;
+}
+
+.member-access-faq-section .faq-notice-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #F5E6C8;
+  margin: 0;
+  text-align: right;
+}
+
+/* Bottom gradient transition to dark */
+.member-access-faq-section .faq-bottom-transition {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent 0%, #0A0A0A 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .member-access-faq-section {
+    padding: 60px 16px 0;
+  }
+
+  .member-access-faq-section .faq-container {
+    padding-bottom: 60px;
+  }
+
+  .member-access-faq-section .faq-header {
+    margin-bottom: 40px;
+  }
+
+  .member-access-faq-section .faq-title {
+    font-size: 1.625rem;
+  }
+
+  .member-access-faq-section .faq-intro {
+    font-size: 1rem;
+  }
+
+  .member-access-faq-section .faq-item {
+    padding: 28px 0;
+  }
+
+  .member-access-faq-section .faq-question {
+    font-size: 1.2rem;
+  }
+
+  .member-access-faq-section .faq-notice {
+    padding: 20px 18px;
+    gap: 14px;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .member-access-faq-section .faq-notice-icon {
+    margin-top: 1px;
+  }
+}
+
+.member-access-cta-section {
+  position: relative;
+  overflow: visible;
+  background-color: #0A0A0A;
+  background-image:
+    radial-gradient(ellipse 60% 70% at 50% 50%, rgba(201,168,76,0.09) 0%, transparent 70%),
+    linear-gradient(180deg, #0A0A0A 0%, #0D0C05 100%);
+  color: var(--text-light);
+  padding: 80px 24px;
+  text-align: center;
+  direction: rtl;
+}
+
+.member-access-cta-section .mac-glow-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+}
+
+.member-access-cta-section .mac-top-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.5) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.5) 70%, transparent 100%);
+  z-index: 1;
+}
+
+.member-access-cta-section .mac-bottom-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.5) 30%, rgba(201,168,76,0.8) 50%, rgba(201,168,76,0.5) 70%, transparent 100%);
+  z-index: 1;
+}
+
+.member-access-cta-section .mac-ornament-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.member-access-cta-section .mac-ornament-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.member-access-cta-section .mac-container {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.member-access-cta-section .mac-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.member-access-cta-section .mac-heading {
+  font-family: 'Cormorant Garamond', 'Frank Ruhl Libre', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-light);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.member-access-cta-section .mac-heading span {
+  background: linear-gradient(135deg, #C9A84C 0%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.member-access-cta-section .mac-subtext {
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0;
+  max-width: 560px;
+}
+
+.member-access-cta-section .mac-btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.member-access-cta-section .mac-btn-primary {
+  background: linear-gradient(135deg, #C9A84C 0%, #FFD700 50%, #B8860B 100%);
+  color: #0A0A0A;
+  padding: 14px 36px;
+  border-radius: 4px;
+  border: none;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+
+.member-access-cta-section .mac-btn-primary:hover {
+  box-shadow: 0 8px 32px rgba(201,168,76,0.55);
+  transform: translateY(-2px);
+}
+
+.member-access-cta-section .mac-btn-secondary {
+  background: transparent;
+  color: var(--text-light);
+  padding: 13px 36px;
+  border-radius: 4px;
+  border: 1px solid rgba(201,168,76,0.6);
+  font-family: 'Heebo', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.member-access-cta-section .mac-btn-secondary:hover {
+  border-color: rgba(201,168,76,1);
+  color: #C9A84C;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.2);
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .member-access-cta-section {
+    padding: 100px 40px;
+  }
+
+  .member-access-cta-section .mac-heading {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .member-access-cta-section {
+    padding: 60px 20px;
+  }
+
+  .member-access-cta-section .mac-glow-bg {
+    width: 320px;
+    height: 200px;
+  }
+
+  .member-access-cta-section .mac-heading {
+    font-size: 1.6rem;
+  }
+
+  .member-access-cta-section .mac-btn-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .member-access-cta-section .mac-btn-primary,
+  .member-access-cta-section .mac-btn-secondary {
+    width: 100%;
+    text-align: center;
+    padding: 14px 24px;
+  }
+
+  .member-access-cta-section .mac-ornament-top {
+    margin-bottom: 28px;
+  }
+
+  .member-access-cta-section .mac-ornament-bottom {
+    margin-top: 28px;
+  }
+}</style>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: var(--text-dark, #333) !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+      [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 10px !important; padding-right: 28px !important; }
+      .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus (exclude catalog sub-menus that use <a> children instead of <li>) */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))):not(:has(> a)), .sub-menu:not(:has(li)):not(:has(> a)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .navbar .sub-menu.mobile-expanded, .nav-menu .sub-menu.mobile-expanded, #navMenu .sub-menu.mobile-expanded { max-height: none !important; overflow-y: visible !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-dark) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-dark) !important; white-space: normal !important; }
+        .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+        [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 0 !important; padding-right: 28px !important; }
+        .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+        .nav-menu.active, #navMenu.active { max-width: 100vw !important; overflow-x: hidden !important; box-sizing: border-box !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-dark) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <button class="phone-header-btn" data-phone="+972585454037" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/united-match-general-logo.webp" alt="UNITED MATCH" class="logo">
+      </a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/" data-i18n="nav-home">בית</a></li><li><a href="/access-membership">גישה וחברות</a></li><li><a href="/profile-match-journey">פרופיל ומסע השידוכים</a></li><li><a href="/events-torah">אירועים ותורה</a></li><li><a href="/admin-platform-trust">ניהול ואמינות</a></li><li><a href="/personal-area" class="nav-link">אזור אישי</a></li></ul></div>
+
+    
+
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-dark)) !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '50%', 'important');
+          mobileToggle.style.setProperty('transform', 'translateY(-50%)', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '50%', 'important');
+          phoneBtn.style.setProperty('transform', 'translateY(-50%)', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu on button click - use newToggle now
+    newToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = this.querySelector('.hamburger-icon');
+      const closeIcon = this.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    });
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '+972 585454037';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // === WHATSAPP BUTTON VISIBILITY FIX ===
+    // Ensure WhatsApp floating button is hidden on desktop and visible on mobile
+    // IMPORTANT: Only target the floating button by its class, NOT generic wa.me links
+    const handleWhatsAppVisibility = function() {
+      const whatsappBtn = document.querySelector('.whatsapp-float');
+      if (whatsappBtn) {
+        const isDesktop = window.innerWidth >= 769;
+        if (isDesktop) {
+          whatsappBtn.style.setProperty('display', 'none', 'important');
+          whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
+          whatsappBtn.style.setProperty('opacity', '0', 'important');
+          whatsappBtn.style.setProperty('pointer-events', 'none', 'important');
+          console.log('[WhatsApp] Button hidden on desktop');
+        } else {
+          whatsappBtn.style.removeProperty('display');
+          whatsappBtn.style.removeProperty('visibility');
+          whatsappBtn.style.removeProperty('opacity');
+          whatsappBtn.style.removeProperty('pointer-events');
+          console.log('[WhatsApp] Button visible on mobile');
+        }
+      }
+    };
+    
+    // Run on load
+    handleWhatsAppVisibility();
+    
+    // Run on resize with debouncing
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleWhatsAppVisibility, 100);
+    });
+  });
+})();
+
+</script>
+  
+  <main class="blog-page ai-generated-page"><section class="member-access-hero-section" data-layout-spec="האזור האישי שלי-hero" dir="rtl" data-hero-type="fullscreen-scrim">
+
+  <!-- Decorative background layers -->
+  <div class="mahs-bg-radial" aria-hidden="true"></div>
+  <div class="mahs-constellation" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" class="mahs-constellation-svg">
+      <!-- Left edge constellation lines -->
+      <line x1="0" y1="120" x2="80" y2="200" stroke="rgba(201,168,76,0.18)" stroke-width="0.8"></line>
+      <line x1="80" y1="200" x2="160" y2="140" stroke="rgba(201,168,76,0.12)" stroke-width="0.8"></line>
+      <line x1="160" y1="140" x2="240" y2="280" stroke="rgba(201,168,76,0.1)" stroke-width="0.8"></line>
+      <circle cx="80" cy="200" r="2" fill="rgba(201,168,76,0.35)"></circle>
+      <circle cx="160" cy="140" r="1.5" fill="rgba(201,168,76,0.25)"></circle>
+      <circle cx="0" cy="120" r="1.5" fill="rgba(201,168,76,0.2)"></circle>
+      <!-- Right edge constellation lines -->
+      <line x1="1200" y1="80" x2="1110" y2="180" stroke="rgba(201,168,76,0.18)" stroke-width="0.8"></line>
+      <line x1="1110" y1="180" x2="1040" y2="100" stroke="rgba(201,168,76,0.12)" stroke-width="0.8"></line>
+      <line x1="1040" y1="100" x2="960" y2="240" stroke="rgba(201,168,76,0.1)" stroke-width="0.8"></line>
+      <circle cx="1110" cy="180" r="2" fill="rgba(201,168,76,0.35)"></circle>
+      <circle cx="1040" cy="100" r="1.5" fill="rgba(201,168,76,0.25)"></circle>
+      <circle cx="1200" cy="80" r="1.5" fill="rgba(201,168,76,0.2)"></circle>
+      <!-- Bottom edge -->
+      <line x1="200" y1="680" x2="340" y2="620" stroke="rgba(201,168,76,0.1)" stroke-width="0.8"></line>
+      <line x1="340" y1="620" x2="420" y2="660" stroke="rgba(201,168,76,0.08)" stroke-width="0.8"></line>
+      <circle cx="340" cy="620" r="1.5" fill="rgba(201,168,76,0.2)"></circle>
+      <line x1="1000" y1="680" x2="860" y2="610" stroke="rgba(201,168,76,0.1)" stroke-width="0.8"></line>
+      <line x1="860" y1="610" x2="780" y2="650" stroke="rgba(201,168,76,0.08)" stroke-width="0.8"></line>
+      <circle cx="860" cy="610" r="1.5" fill="rgba(201,168,76,0.2)"></circle>
+    </svg>
+  </div>
+
+  <!-- Background image -->
+  <div class="mahs-bg-image-wrap" aria-hidden="true">
+    <img data-hero-bg="true" data-context="Cinematic luxury dark background with deep near-black and aubergine tones, subtle golden particles and soft bokeh light scattered across a dark velvet-like surface, evoking exclusivity and elegance for a premium Jewish matchmaking platform, no faces, no text, abstract luxury atmosphere" width="1200" height="700" src="/assets/united-match-general-section-hero-member-access-hero-image-1.webp" alt="רקע יוקרתי לאזור האישי" class="mahs-bg-img">
+    <div class="mahs-scrim" aria-hidden="true"></div>
+  </div>
+
+  <!-- Main content container -->
+  <div class="mahs-container">
+
+    <!-- Two-column layout: text (right) + panel (left) -->
+    <div class="mahs-inner">
+
+      <!-- RIGHT COLUMN: Text + CTAs -->
+      <div class="mahs-text-col">
+
+        <!-- Gold ornament divider above headline -->
+        <div class="mahs-ornament" aria-hidden="true">
+          <svg data-no-icon-edit="true" aria-hidden="true" width="240" height="18" viewBox="0 0 240 18" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="9" x2="102" y2="9" stroke="rgba(201,168,76,0.55)" stroke-width="0.8"></line>
+            <polygon points="120,2 126,9 120,16 114,9" fill="none" stroke="rgba(201,168,76,0.7)" stroke-width="1"></polygon>
+            <circle cx="120" cy="9" r="2.5" fill="rgba(201,168,76,0.8)"></circle>
+            <line x1="138" y1="9" x2="240" y2="9" stroke="rgba(201,168,76,0.55)" stroke-width="0.8"></line>
+          </svg>
+        </div>
+
+        <h1 class="mahs-headline">האזור האישי שלי</h1>
+
+        <h3 class="mahs-subtitle">גישה מאובטחת, חוויה פרטית ויוקרתית — כל מה שחשוב לך נמצא כאן, שמור ומוגן.</h3>
+
+        <!-- CTA buttons -->
+        <div class="mahs-cta-row">
+          <a href="#login" class="mahs-btn-primary">כניסה לחשבון</a>
+          <a href="#register" class="mahs-btn-secondary">הרשמה</a>
+        </div>
+
+        <!-- Access tiers info -->
+        <p class="mahs-access-info">
+          <span class="mahs-access-dot" aria-hidden="true"></span>
+          שתי רמות גישה זמינות: חבר רגיל · חבר פרימיום
+        </p>
+
+      </div>
+      <!-- END RIGHT COLUMN -->
+
+      <!-- LEFT COLUMN: Trust panel -->
+      <div class="mahs-trust-panel">
+        <!-- Corner flourish -->
+        <div class="mahs-corner-flourish mahs-corner-tl" aria-hidden="true"></div>
+        <div class="mahs-corner-flourish mahs-corner-tr" aria-hidden="true"></div>
+        <div class="mahs-corner-flourish mahs-corner-bl" aria-hidden="true"></div>
+        <div class="mahs-corner-flourish mahs-corner-br" aria-hidden="true"></div>
+
+        <div class="mahs-panel-label">ערכי הבית</div>
+        <h3 class="mahs-panel-title">מחויבות שלנו אליך</h3>
+
+        <ul class="mahs-trust-list">
+          <li class="mahs-trust-item">
+            <div class="mahs-trust-icon-wrap">
+              <svg data-element-type="icon" data-icon-type="svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <div class="mahs-trust-content">
+              <strong>פרטיות מוחלטת</strong>
+              <span>המידע שלך מוצפן ומוגן בכל עת</span>
+            </div>
+          </li>
+          <li class="mahs-trust-item">
+            <div class="mahs-trust-icon-wrap">
+              <svg data-element-type="icon" data-icon-type="svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </div>
+            <div class="mahs-trust-content">
+              <strong>התאמה אישית</strong>
+              <span>שידוכים מדויקים בהתאם לערכים ולאישיות שלך</span>
+            </div>
+          </li>
+          <li class="mahs-trust-item">
+            <div class="mahs-trust-icon-wrap">
+              <svg data-element-type="icon" data-icon-type="svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="mahs-trust-content">
+              <strong>בקרה אנושית</strong>
+              <span>צוות מומחים מלווה כל תהליך בעין מקצועית</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="mahs-panel-divider" aria-hidden="true"></div>
+        <p class="mahs-panel-tagline">"כי כל שידוך הוא עולם ומלואו"</p>
+      </div>
+      <!-- END LEFT COLUMN -->
+
+    </div>
+    <!-- END mahs-inner -->
+  </div>
+  <!-- END mahs-container -->
+
+  <!-- Bottom gradient transition -->
+  <div class="mahs-bottom-fade" aria-hidden="true"></div>
+
+</section>
+
+<section class="member-access-membership-section" data-layout-spec="האזור האישי שלי-membership" dir="rtl" id="member-access-membership-section">
+  <!-- Decorative radial glow -->
+  <div class="membership-glow-decoration" aria-hidden="true"></div>
+
+  <div class="membership-container">
+    <!-- Section Header -->
+    <div class="membership-header">
+      <!-- Gold ornament divider -->
+      <div class="membership-ornament" aria-hidden="true">
+        <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 240 20" width="240" height="20" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="10" x2="100" y2="10" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"></line>
+          <polygon points="120,3 127,10 120,17 113,10" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.8"></polygon>
+          <line x1="140" y1="10" x2="240" y2="10" stroke="#C9A84C" stroke-width="0.8" opacity="0.6"></line>
+        </svg>
+      </div>
+
+      <h2 class="membership-title">רמות גישה לפלטפורמה</h2>
+      <p class="membership-subtitle">United Match מציעה שתי רמות גישה — גישה רגילה לחברי הפלטפורמה, וחברות פרימיום עבור מי שמחפש ליווי אישי, עדיפות בהתאמות, ואירועים בלעדיים. בחרו את המסלול המתאים לכם.</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="membership-grid zappy-preserve-css-grid" id="zappy-auto-grid-1777835924736-w5v930" data-zappy-auto-grid="true" data-original-item-width="536" data-original-gap="28px" style="display: grid; --zappy-grid-cols: repeat(2, minmax(0, 1fr)); grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch !important;" data-zappy-explicit-columns="true">
+
+      <!-- Card: Regular Access (RIGHT in RTL = first in DOM) -->
+      <article class="membership-card membership-card--regular" data-grid-item-index="0">
+        <div class="membership-card-inner">
+          <div class="membership-card-header">
+            <div class="membership-card-icon" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 40 40" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="14" r="7" stroke="#C9A84C" stroke-width="1.5"></circle>
+                <path d="M6 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+            </div>
+            <h3 class="membership-card-title">גישה רגילה</h3>
+            <p class="membership-card-desc">חברות בסיסית לכלל משתמשי הפלטפורמה</p>
+          </div>
+
+          <div class="membership-divider" aria-hidden="true"></div>
+
+          <ul class="membership-features-list">
+            <li class="membership-feature-item">
+              <span class="membership-feature-dot" aria-hidden="true"></span>
+              <span>פרופיל אישי מלא ומפורט</span>
+            </li>
+            <li class="membership-feature-item">
+              <span class="membership-feature-dot" aria-hidden="true"></span>
+              <span>עדכון פרטים אישיים בכל עת</span>
+            </li>
+            <li class="membership-feature-item">
+              <span class="membership-feature-dot" aria-hidden="true"></span>
+              <span>צפייה בסטטוס הפרופיל הפעיל</span>
+            </li>
+            <li class="membership-feature-item">
+              <span class="membership-feature-dot" aria-hidden="true"></span>
+              <span>קבלת הודעות מנהל ועדכונים</span>
+            </li>
+            <li class="membership-feature-item">
+              <span class="membership-feature-dot" aria-hidden="true"></span>
+              <span>צפייה בסטטוס התאמות בסיסי</span>
+            </li>
+            <li class="membership-feature-item">
+              <span class="membership-feature-dot" aria-hidden="true"></span>
+              <span>גישה לפינת ההלכות והתוכן</span>
+            </li>
+          </ul>
+
+          <div class="membership-card-footer">
+            <a href="/contact" class="membership-btn membership-btn--secondary btn btn-primary" data-element-type="button" data-element-id="btn-1777835924717-nj47yooi2" data-native-element="true" style="outline: currentcolor; border-color: rgb(201, 168, 76) !important; color: rgb(255, 255, 255) !important; background-color: rgb(201, 168, 76) !important; background-image: none !important;">בירור גישה</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card: Premium Access (LEFT in RTL = second in DOM) -->
+      <article class="membership-card membership-card--premium" data-grid-item-index="1">
+        <div class="membership-premium-badge">פרימיום</div>
+        <!-- Corner flourish decoration -->
+        <svg class="membership-corner-flourish" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 80 80" width="80" height="80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L30 2" stroke="#C9A84C" stroke-width="0.8" opacity="0.5"></path>
+          <path d="M2 2 L2 30" stroke="#C9A84C" stroke-width="0.8" opacity="0.5"></path>
+          <path d="M6 6 L26 6" stroke="#C9A84C" stroke-width="0.4" opacity="0.3"></path>
+          <path d="M6 6 L6 26" stroke="#C9A84C" stroke-width="0.4" opacity="0.3"></path>
+        </svg>
+
+        <div class="membership-card-inner">
+          <div class="membership-card-header">
+            <div class="membership-card-icon membership-card-icon--premium" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 40 40" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4 L24 14 L35 14 L26 21 L29 32 L20 26 L11 32 L14 21 L5 14 L16 14 Z" stroke="#C9A84C" stroke-width="1.4" fill="rgba(201,168,76,0.12)"></path>
+              </svg>
+            </div>
+            <h3 class="membership-card-title membership-card-title--premium">חברות פרימיום</h3>
+            <p class="membership-card-desc">ליווי אישי ובלעדי ברמה הגבוהה ביותר</p>
+          </div>
+
+          <div class="membership-divider membership-divider--premium" aria-hidden="true"></div>
+
+          <ul class="membership-features-list">
+            <li class="membership-feature-item membership-feature-item--premium">
+              <span class="membership-feature-dot membership-feature-dot--premium" aria-hidden="true"></span>
+              <span>תג פרימיום בפרופיל האישי</span>
+            </li>
+            <li class="membership-feature-item membership-feature-item--premium">
+              <span class="membership-feature-dot membership-feature-dot--premium" aria-hidden="true"></span>
+              <span>התאמה בעדיפות גבוהה ומזורזת</span>
+            </li>
+            <li class="membership-feature-item membership-feature-item--premium">
+              <span class="membership-feature-dot membership-feature-dot--premium" aria-hidden="true"></span>
+              <span>מסלול התאמה עסקי ואליט</span>
+            </li>
+            <li class="membership-feature-item membership-feature-item--premium">
+              <span class="membership-feature-dot membership-feature-dot--premium" aria-hidden="true"></span>
+              <span>הזמנות לאירועים בלעדיים</span>
+            </li>
+            <li class="membership-feature-item membership-feature-item--premium">
+              <span class="membership-feature-dot membership-feature-dot--premium" aria-hidden="true"></span>
+              <span>סקירת מנהל אישית ומעמיקה</span>
+            </li>
+            <li class="membership-feature-item membership-feature-item--premium">
+              <span class="membership-feature-dot membership-feature-dot--premium" aria-hidden="true"></span>
+              <span>מעקב התאמות מתקדם ומפורט</span>
+            </li>
+          </ul>
+
+          <div class="membership-card-footer">
+            <a href="/contact" class="membership-btn membership-btn--primary" data-element-type="button" data-element-id="btn-1777835924717-isz4rvoc8" data-native-element="true">פנייה לצוות</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <!-- /Cards Grid -->
+  </div>
+
+  <!-- Bottom gold divider -->
+  <div class="membership-bottom-divider" aria-hidden="true"></div>
+</section>
+
+<section class="member-access-benefits-section" data-layout-spec="האזור האישי שלי-benefits" dir="rtl">
+
+  <!-- Section Header -->
+  <div class="mab-container">
+    <div class="mab-header">
+      <div class="mab-gold-ornament" aria-hidden="true">
+        <svg data-no-icon-edit="true" aria-hidden="true" width="240" height="20" viewBox="0 0 240 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="10" x2="100" y2="10" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.6"></line>
+          <rect x="112" y="5" width="10" height="10" transform="rotate(45 117 10)" fill="#C9A84C" fill-opacity="0.6"></rect>
+          <line x1="134" y1="10" x2="240" y2="10" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.6"></line>
+        </svg>
+      </div>
+      <h2 class="mab-section-title">מה מחכה לכם באזור האישי</h2>
+      <p class="mab-section-desc">האזור האישי של United Match נבנה עבורכם — מרחב פרטי, מאובטח ומלוטש שבו תנהלו את מסע השידוך שלכם בשקיפות מלאה. בין אם הצטרפתם כחברים רגילים ובין אם בחרתם בחברות פרימיום, תמצאו כאן את כל הכלים הדרושים לניהול הפרופיל, מעקב אחר ההתאמות ותקשורת ישירה עם צוות המאגר.</p>
+    </div>
+
+    <!-- Benefits Grid -->
+    <div class="mab-grid">
+
+      <!-- Card 1 - Standard -->
+      <article class="mab-card mab-card-standard">
+        <div class="mab-card-icon-wrap" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="9" r="5" stroke="currentColor" stroke-width="1.5"></circle>
+            <path d="M4 24c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div class="mab-card-content">
+          <span class="mab-card-badge">חברות רגילה</span>
+          <h3 class="mab-card-title">ניהול פרופיל אישי</h3>
+          <p class="mab-card-desc">ערכו את פרטיכם האישיים, העלו תמונה, עדכנו העדפות ותיאור מפורט. הפרופיל שלכם הוא כרטיס הביקור שלכם במאגר — מדויק, פרטי ומוגן.</p>
+        </div>
+      </article>
+
+      <!-- Card 2 - Standard -->
+      <article class="mab-card mab-card-standard">
+        <div class="mab-card-icon-wrap" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="5" width="20" height="18" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+            <line x1="4" y1="11" x2="24" y2="11" stroke="currentColor" stroke-width="1.5"></line>
+            <line x1="9" y1="16" x2="19" y2="16" stroke="currentColor" stroke-width="1.5"></line>
+            <line x1="9" y1="19.5" x2="15" y2="19.5" stroke="currentColor" stroke-width="1.5"></line>
+          </svg>
+        </div>
+        <div class="mab-card-content">
+          <span class="mab-card-badge">חברות רגילה</span>
+          <h3 class="mab-card-title">עדכונים שוטפים</h3>
+          <p class="mab-card-desc">קבלו התראות ועדכונים ישירות לאזור האישי שלכם — הודעות מנהלים, שינויים במאגר ואירועים קרובים. הכל במקום אחד, נגיש ומסודר.</p>
+        </div>
+      </article>
+
+      <!-- Card 3 - Standard -->
+      <article class="mab-card mab-card-standard">
+        <div class="mab-card-icon-wrap" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.5"></circle>
+            <path d="M14 9v5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="mab-card-content">
+          <span class="mab-card-badge">חברות רגילה</span>
+          <h3 class="mab-card-title">מעקב סטטוס בסיסי</h3>
+          <p class="mab-card-desc">עקבו אחר מצב ההצעות שהוגשו לכם — האם נצפו, האם בטיפול, האם נסגרו. שקיפות מלאה לאורך כל שלבי התהליך.</p>
+        </div>
+      </article>
+
+      <!-- Card 4 - Premium -->
+      <article class="mab-card mab-card-premium">
+        <div class="mab-card-icon-wrap" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 3L17.5 10.5L26 11.5L20 17.5L21.5 26L14 22L6.5 26L8 17.5L2 11.5L10.5 10.5L14 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="mab-card-content">
+          <span class="mab-card-badge mab-badge-premium">פרימיום</span>
+          <h3 class="mab-card-title">התאמה בעדיפות גבוהה</h3>
+          <p class="mab-card-desc">חברי פרימיום מקבלים עדיפות בתהליך ההתאמה — הצעות מדויקות יותר, בתדירות גבוהה יותר, עם ליווי אישי של שדכן מנוסה מצוות United Match.</p>
+        </div>
+        <div class="mab-card-corner-accent" aria-hidden="true"></div>
+      </article>
+
+      <!-- Card 5 - Premium -->
+      <article class="mab-card mab-card-premium">
+        <div class="mab-card-icon-wrap" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 20L8 16H12V12H20V4H24V20H4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+            <circle cx="10" cy="22" r="2" stroke="currentColor" stroke-width="1.5"></circle>
+            <circle cx="18" cy="22" r="2" stroke="currentColor" stroke-width="1.5"></circle>
+          </svg>
+        </div>
+        <div class="mab-card-content">
+          <span class="mab-card-badge mab-badge-premium">פרימיום</span>
+          <h3 class="mab-card-title">הזמנות לאירועים</h3>
+          <p class="mab-card-desc">גישה בלעדית לאירועי הכרות, ערבי פגישות ופעילויות קהילתיות המאורגנות על ידי United Match. חוויות בלתי נשכחות בסביבה מכובדת ובטוחה.</p>
+        </div>
+        <div class="mab-card-corner-accent" aria-hidden="true"></div>
+      </article>
+
+      <!-- Card 6 - Premium -->
+      <article class="mab-card mab-card-premium">
+        <div class="mab-card-icon-wrap" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 4C8.477 4 4 8.477 4 14s4.477 10 10 10 10-4.477 10-10S19.523 4 14 4Z" stroke="currentColor" stroke-width="1.5"></path>
+            <path d="M14 9v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+            <path d="M10 14l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="mab-card-content">
+          <span class="mab-card-badge mab-badge-premium">פרימיום</span>
+          <h3 class="mab-card-title">מעקב מתקדם עם ליווי אנושי</h3>
+          <p class="mab-card-desc">מעבר לנתונים — שיחות אישיות עם שדכן, דוחות התקדמות מפורטים ותמיכה רגשית לאורך כל הדרך. כי שידוך אמיתי דורש יותר מאלגוריתם.</p>
+        </div>
+        <div class="mab-card-corner-accent" aria-hidden="true"></div>
+      </article>
+
+    </div><!-- /mab-grid -->
+
+    <!-- Trust Panel -->
+    <div class="mab-trust-panel">
+      <div class="mab-trust-main">
+        <div class="mab-trust-icon-wrap" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 2L4 5v5c0 4.418 3.134 8.548 7 9.95C14.866 18.548 18 14.418 18 10V5L11 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+            <path d="M8 11l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="mab-trust-title">חברות פרימיום — תהליך מאושר ומאומת</h3>
+          <p class="mab-trust-body">הגישה לחברות פרימיום מותנית באישור מנהל ואימות מסמכים. תהליך זה מבטיח שכל חבר פרימיום במאגר עומד בקריטריונים הגבוהים של United Match — לשמירה על רמת הרצינות, הפרטיות והאמינות של הקהילה כולה.</p>
+        </div>
+      </div>
+      <div class="mab-trust-secondary">
+        <p class="mab-trust-note">לשאלות על תהליך האישור<br>פנו אלינו ישירות</p>
+        <a href="/contact" class="mab-trust-cta">צרו קשר</a>
+      </div>
+    </div>
+
+  </div><!-- /mab-container -->
+
+  <!-- Bottom shadow divider -->
+  <div class="mab-bottom-shadow" aria-hidden="true"></div>
+
+</section>
+
+<section class="member-access-faq-section" data-layout-spec="האזור האישי שלי-faq" dir="rtl" id="member-access-faq-section">
+  <div class="faq-container">
+
+    <!-- Section Header -->
+    <div class="faq-header">
+      <div class="faq-ornament" aria-hidden="true">
+        <svg data-no-icon-edit="true" aria-hidden="true" width="240" height="20" viewBox="0 0 240 20" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="10" x2="100" y2="10" stroke="#C9A84C" stroke-width="1" opacity="0.6"></line>
+          <polygon points="120,4 124,10 120,16 116,10" fill="#C9A84C" opacity="0.6"></polygon>
+          <line x1="140" y1="10" x2="240" y2="10" stroke="#C9A84C" stroke-width="1" opacity="0.6"></line>
+        </svg>
+      </div>
+      <h2 class="faq-title">שאלות נפוצות</h2>
+      <p class="faq-intro">כאן תמצאו תשובות לשאלות הנפוצות ביותר בנוגע לאזור האישי, סוגי החברות וההליכים הנדרשים להצטרפות לקהילת United Match.</p>
+    </div>
+
+    <!-- FAQ List -->
+    <div class="faq-list">
+
+      <article class="faq-item" data-grid-item-index="0">
+        <h3 class="faq-question" style="cursor: pointer; outline: currentcolor; max-width: none;" aria-expanded="false" data-zappy-text-width="full">מי יכול להיכנס לאזור האישי?</h3>
+        <p class="faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; transition: max-height 0.35s, opacity 0.25s, padding 0.25s; padding-top: 0px; padding-bottom: 0px;">הגישה לאזור האישי מיועדת לחברים רשומים בלבד. כל מי שהשלים את הליך ההרשמה, אישר את כתובת הדוא"ל שלו וקיבל אישור מהצוות שלנו, יוכל להתחבר ולגשת לפרופיל האישי, להתאמות ולתכנים הבלעדיים של הפלטפורמה. אנו שומרים על רמת אבטחה גבוהה ומוודאים שכל משתמש הוא אמיתי ורציני.</p>
+      </article>
+
+      <div class="faq-divider" aria-hidden="true"></div>
+
+      <article class="faq-item" data-grid-item-index="2">
+        <h3 class="faq-question" style="cursor: pointer;">מה ההבדל בין גישה רגילה לגישה פרימיום?</h3>
+        <p class="faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; padding-top: 0px; padding-bottom: 0px; transition: max-height 0.35s, opacity 0.25s, padding 0.25s;">חברים בגישה רגילה יכולים לצפות בפרופיל הבסיסי שלהם ולקבל הצעות שידוך מוגבלות. חברות פרימיום פותחת גישה מלאה למאגר ההתאמות, לתכנים המתקדמים, לאירועים בלעדיים ולליווי אישי צמוד מצד הצוות. חברי פרימיום נהנים גם מעדיפות בתהליך ההתאמה ומרמת פרטיות מוגברת.</p>
+      </article>
+
+      <div class="faq-divider" aria-hidden="true"></div>
+
+      <article class="faq-item" data-grid-item-index="4">
+        <h3 class="faq-question" style="cursor: pointer;">כיצד מתקבל אישור לחברות פרימיום?</h3>
+        <p class="faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; padding-top: 0px; padding-bottom: 0px; transition: max-height 0.35s, opacity 0.25s, padding 0.25s;">לאחר הגשת הבקשה לחברות פרימיום, הצוות שלנו עורך בדיקה אישית ודיסקרטית של הפרופיל. התהליך כולל עיון בפרטים שמסרתם, ולעיתים שיחת היכרות קצרה עם אחד מנציגינו. מטרתנו היא להבטיח שכל חבר פרימיום מתאים לרמה ולאיכות שאנו מחויבים לשמור עליהן בקהילה שלנו.</p>
+      </article>
+
+      <div class="faq-divider" aria-hidden="true"></div>
+
+      <article class="faq-item" data-grid-item-index="6">
+        <h3 class="faq-question" style="cursor: pointer; text-align: right;" aria-expanded="false">אילו מסמכים עשויים להידרש לאימות?</h3>
+        <p class="faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; transition: max-height 0.35s, opacity 0.25s, padding 0.25s; padding-top: 0px; padding-bottom: 0px;">במסגרת תהליך האימות, ייתכן שנבקש תמונת פנים ברורה ועדכנית, וכן אישור זהות בסיסי. בחלק מהמקרים, בעיקר לחברות פרימיום, ייתכן שנבקש פרטים נוספים המאפשרים לנו להבטיח התאמה מיטבית ורמת אמינות גבוהה. כל המסמכים מטופלים בסודיות מוחלטת ואינם נחשפים לצדדים שלישיים.</p>
+      </article>
+
+    </div>
+
+    <!-- Premium Notice Box -->
+    <div class="faq-notice">
+      <div class="faq-notice-icon" aria-hidden="true">
+        <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="14" cy="14" r="12.5" stroke="#C9A84C" stroke-width="1.2"></circle>
+          <path d="M14 8v7" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"></path>
+          <circle cx="14" cy="19" r="1" fill="#C9A84C"></circle>
+        </svg>
+      </div>
+      <div class="faq-notice-content">
+        <p class="faq-notice-text">אישור לחברות פרימיום מתבצע לאחר בדיקה אנושית ודיסקרטית על ידי צוות United Match. אנו מחויבים לשמור על פרטיותכם המוחלטת לאורך כל שלבי התהליך.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom gradient transition to dark section -->
+  <div class="faq-bottom-transition" aria-hidden="true"></div>
+
+</section>
+
+<section class="member-access-cta-section" data-layout-spec="האזור האישי שלי-cta" dir="rtl">
+  <!-- Top gold divider line -->
+  <div class="member-access-cta-section .mac-top-line" aria-hidden="true"></div>
+
+  <!-- Radial glow background decoration -->
+  <div class="mac-glow-bg" aria-hidden="true"></div>
+
+  <!-- Ornament divider top -->
+  <div class="mac-ornament-top" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 240 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="240" height="16">
+      <line x1="0" y1="8" x2="104" y2="8" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+      <polygon points="120,2 126,8 120,14 114,8" fill="none" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.8"></polygon>
+      <line x1="136" y1="8" x2="240" y2="8" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+    </svg>
+  </div>
+
+  <div class="mac-container">
+    <div class="mac-content">
+      <h2 class="mac-heading">מוכנים להתחיל את המסע?</h2>
+      <p class="mac-subtext">הצוות שלנו זמין לסייע לכם בכניסה לאזור האישי, בתהליך ההרשמה ובבחינת ההתאמה לחברות הפרימיום שלנו. אנחנו כאן עבורכם — בצנעה, במקצועיות ובחום.</p>
+      <div class="mac-btn-row">
+        <a href="/login" class="mac-btn-primary btn-primary">כניסה לאזור האישי</a>
+        <a href="/contact" class="mac-btn-secondary btn-secondary">יצירת קשר</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ornament divider bottom -->
+  <div class="mac-ornament-bottom" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 240 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="240" height="16">
+      <line x1="0" y1="8" x2="104" y2="8" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+      <polygon points="120,2 126,8 120,14 114,8" fill="none" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.8"></polygon>
+      <line x1="136" y1="8" x2="240" y2="8" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.6"></line>
+    </svg>
+  </div>
+
+  <!-- Bottom gold divider line -->
+  <div class="mac-bottom-line" aria-hidden="true"></div>
+</section></main>
+  
+  
+
+
+
+<footer class="site-footer" dir="rtl">
+  <div class="footer-top-accent"></div>
+  <div class="footer-container">
+    <div class="footer-grid">
+
+      <!-- Column 1: Company Info -->
+      <div class="footer-col footer-col--brand">
+        <div class="footer-logo-wrap">
+          <img src="/assets/united-match-general-logo.webp" alt="UNITED MATCH" class="logo">
+        </div>
+        <p class="footer-tagline">שידוכים ברמה הגבוהה ביותר — בסודיות, באמינות ובלב שלם.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" class="social-link" style="display:none !important;"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram" class="social-link" style="display:none !important;"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="WhatsApp" class="social-link" style="display:none !important;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-col footer-col--links">
+        <h4 class="footer-heading"><span class="heading-line"></span>ניווט מהיר</h4>
+        <ul class="footer-nav">
+          <li><a href="/access-membership">גישה וחברות</a></li>
+          <li><a href="/profile-match-journey">פרופיל ומסע השידוכים</a></li>
+          <li><a href="/events-torah">אירועים ותורה</a></li>
+          <li><a href="/admin-platform-trust">ניהול ואמינות</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Contact Info -->
+      <div class="footer-col footer-col--contact">
+        <h4 class="footer-heading"><span class="heading-line"></span>פרטי התקשרות</h4>
+        <ul class="footer-contact">
+          <li>
+            <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+            <span class="contact-text"><a href="mailto:hodya57356@gmail.com">hodya57356@gmail.com</a></span>
+          </li>
+          <li>
+            <span class="contact-icon"><i class="fas fa-phone"></i></span>
+            <span class="contact-text"><a href="tel:+972 585454037">+972 585454037</a></span>
+          </li>
+          <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <span class="contact-text">[business_address]</span></a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: About / Trust -->
+      <div class="footer-col footer-col--trust">
+        <h4 class="footer-heading"><span class="heading-line"></span>אודות UNITED MATCH</h4>
+        <p class="footer-about">אנו מאמינים שכל אדם ראוי לפגוש את זיווגו בדרך המכובדת, המדויקת והאישית ביותר. הפלטפורמה שלנו בנויה על יסודות של אמון, ערכים ואיכות ללא פשרות.</p>
+        <div class="footer-badge">
+          <i class="fas fa-shield-alt"></i>
+          <span>פלטפורמה מאובטחת ומוסמכת</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Gold Divider -->
+  <div class="footer-divider"></div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-container">
+    <div class="footer-bottom">
+      <p class="footer-copyright">© 2026 UNITED MATCH. כל הזכויות שמורות.</p>
+      <div class="footer-legal">
+        <a href="/privacy">מדיניות פרטיות</a>
+        <span class="legal-sep"></span>
+        <a href="/terms">תנאי שימוש</a>
+        <span class="legal-sep"></span>
+        <a href="/accessibility">נגישות</a>
+        <span class="legal-sep"></span>
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-navbar-scroll-effect">
+    (function(){
+      var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');
+      var cm=document.querySelector('.zappy-catalog-menu,#zappy-catalog-menu');
+      if(!nb)return;
+      var fb='rgba(243,238,230,0.85)';
+      var th=60;
+      var rs=getComputedStyle(document.documentElement);
+      var td=rs.getPropertyValue('--text-dark').trim()||'#1a1a1a';
+      var tl=rs.getPropertyValue('--text-light').trim()||'#ffffff';
+      var st=true?td:tl;
+      nb.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease,box-shadow 0.3s ease';
+      if(cm)cm.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease';
+      var neSel='a,.navbar-brand,.navbar-brand a,.dropdown-toggle,.mobile-toggle,.phone-header-btn,.mobile-hamburger-btn,.mobile-close-btn,.mobile-submenu-toggle,.nav-link';
+      var skipCls=['cart-link','login-link','nav-search-toggle','search-toggle'];
+      function sTC(c,clr){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){var sk=false;if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu')){sk=true;}for(var j=0;j<skipCls.length;j++){if(els[i].classList.contains(skipCls[j])){sk=true;break;}}if(!sk)els[i].style.setProperty('color',clr,'important');}}
+      function cTC(c){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu'))continue;els[i].style.removeProperty('color');}}
+      function applyScrolled(){
+        nb.classList.add('scrolled');
+        if(window.innerWidth>768){
+          nb.style.setProperty('--frosted-text',st);
+          nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('background-color',fb,'important');
+          nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+        }
+        if(cm){cm.classList.add('scrolled');if(window.innerWidth>768){cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}}
+      }
+      function onS(){
+        if(window._zappyNavNoDarkHero) return;
+        if(window.innerWidth<=768){nb.classList.remove('scrolled');cTC(nb);if(cm){cm.classList.remove('scrolled');cTC(cm);}return;}
+        var y=window.scrollY||window.pageYOffset;
+        if(y>th){
+          nb.classList.add('scrolled');nb.style.setProperty('background-color',fb,'important');nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('--frosted-text',st);nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+          if(cm){cm.classList.add('scrolled');cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}
+        }else{
+          nb.classList.remove('scrolled');nb.style.setProperty('background-color','transparent','important');nb.style.removeProperty('background-image');
+          nb.style.removeProperty('--frosted-text');nb.style.backdropFilter='none';nb.style.webkitBackdropFilter='none';nb.style.boxShadow='none';
+          cTC(nb);
+          if(cm){cm.classList.remove('scrolled');cm.style.setProperty('background','transparent','important');cm.style.setProperty('backdrop-filter','none','important');cm.style.setProperty('-webkit-backdrop-filter','none','important');cTC(cm);}
+        }
+      }
+      function sLum(rv,gv,bv){rv/=255;gv/=255;bv/=255;rv=rv<=0.03928?rv/12.92:Math.pow((rv+0.055)/1.055,2.4);gv=gv<=0.03928?gv/12.92:Math.pow((gv+0.055)/1.055,2.4);bv=bv<=0.03928?bv/12.92:Math.pow((bv+0.055)/1.055,2.4);return 0.2126*rv+0.7152*gv+0.0722*bv;}
+      window.addEventListener('scroll',onS,{passive:true});
+      window.addEventListener('resize',onS,{passive:true});
+      onS();
+      var heroEl=document.querySelector('section[class*="hero"],[data-hero-type],main>section:first-child');
+      var hasDH=false;
+      if(heroEl){var hCs=getComputedStyle(heroEl);var hBI=hCs.backgroundImage;if(hBI&&hBI!=='none'){if(hBI.indexOf('url(')!==-1){var hM2=hCs.backgroundColor.match(/\d+/g);if(hM2&&hM2.length>=3){hasDH=sLum(parseInt(hM2[0]),parseInt(hM2[1]),parseInt(hM2[2]))<0.4;}else{hasDH=true;}}else if(hBI.indexOf('gradient')!==-1){var cM=hBI.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g);if(cM&&cM.length>0){var tLm=0;for(var ci=0;ci<cM.length;ci++){var pts=cM[ci].match(/\d+/g);tLm+=sLum(parseInt(pts[0]),parseInt(pts[1]),parseInt(pts[2]));}hasDH=(tLm/cM.length)<0.4;}else{hasDH=true;}}else{hasDH=true;}}else{var hM=hCs.backgroundColor.match(/\d+/g);if(hM&&hM.length>=3){hasDH=sLum(parseInt(hM[0]),parseInt(hM[1]),parseInt(hM[2]))<0.4;}}}
+      if(!hasDH){window.removeEventListener('scroll',onS);window.removeEventListener('resize',onS);applyScrolled();window._zappyNavNoDarkHero=true;}
+    })();
+    </script>
+</body>
+</html>
