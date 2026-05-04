@@ -217,24 +217,28 @@ Information about WCAG compliance and accessibility features.
 
 **Total active products: 3**
 
-### גישת שדכנים/שדכניות
-https://example.com/product/gysht-shdknymshdknyvt-o9ib51
-- Price: 0.00 ILS
+### גישת שדכנים/שדכניות – United Match
+https://example.com/product/gysht-shdknymshdknyvt-united-match-9fwnpm
+- Price: 199.90 ILS (sale, was 299.90 ILS)
 - Availability: In stock
-- Description: **גישת שדכנים/שדכניות – United Match** מיועד לשדכנים ושדכניות המעוניינים לפעול בתוך מערכת United Match. 🔍 גישה מוגבלת למאגר השידוכים 🔍 צפייה בפרטים חלקיים בלבד 🔒 ללא טלפון, שם משפחה ותמונה מלאה ללא אישור מנהלת 📩 אפשרות לבקש פרטים מלאים מהמנהלת 💡 אפשרות להציע התאמות שידוכים 📊 מעקב אחר פניות והתאמות 📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. שדכנים רואים מידע חלקי בלבד לפי הרשאות הגישה שלהם.
+- Brand: United Match
+- Description: מערכת ייעודית לשדכנים ושדכניות מקצועיים המעוניינים לפעול בתוך מאגר השידוכים היוקרתי של United Match.
+- Image: https://example.com/assets/product-1777891421652-q4dbrqq.webp
 
-### גישה פרימיום לאנשי עסקים – לקוחות
-https://example.com/product/gyshh-prymyvm-lanshy-askym-lkvchvt-h4ywlp
+###   גישה פרימיום למערכת United Match
+https://example.com/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n
 - Price: 0.00 ILS
 - Availability: In stock
-- Description: **גישה פרימיום למערכת United Match** מתאים ללקוחות המעוניינים בליווי אישי ועדיפות גבוהה בהתאמות אנשי עסקים . ⭐ עדיפות גבוהה בהתאמות ⭐ יותר הצעות שידוך ⭐ ליווי אישי מול המנהלת ⭐ קבלת עדכונים מהירים ⭐ טיפול מהיר יותר מול מנהלת ⭐ חשיפה גבוהה יותר במאגר 📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. לקוחות רואים מידע לפי סוג הגישה שלהם בלבד.
-- Image: https://example.com/assets/product-1777890245285-vezgk.webp
+- Brand: United Match
+- Description: המסלול מיועד ללקוחות המעוניינים בליווי אישי, חשיפה גבוהה יותר במאגר ועדיפות משמעותית בהתאמות — כולל אפשרות התאמות לאנשי עסקים ולקוחות בכירים.
+- Image: https://example.com/assets/product-autofit-1777891157100-ma8ehw.webp
 
-### גישה רגילה – לקוחות
-https://example.com/product/gyshh-rgylh-lkvchvt-2kbr1j
+### גישה רגילה למערכת United Match
+https://example.com/product/gyshh-rgylh-lmarkt-united-match-0q2icv
 - Price: 0.00 ILS
 - Availability: In stock
-- Description: **גישה רגילה למערכת United Match** מתאים ללקוחות המעוניינים להצטרף למאגר השידוכים ברמה הבסיסית. ✅ הרשמה למאגר השידוכים ✅ מילוי שאלון אישי ✅ יצירת פרופיל אישי ✅ אפשרות לקבל הצעות בסיסיות ⚠️ צפייה מוגבלת בפרופילים ⚠️ ללא חשיפת פרטים מלאים 📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. לקוחות רואים מידע לפי סוג הגישה שלהם בלבד.
+- Description: המסלול מתאים לכל מי שמעוניין להיכנס לעולם השידוכים בצורה בטוחה, יוקרתית ומסודרת, עם ליווי מקצועי לאורך הדרך.
+- Image: https://example.com/assets/product-1777891185453-oz73hl.webp
 
 ---
 

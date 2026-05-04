@@ -1,37 +1,61 @@
 {
   "@context": "https://schema.org",
-  "generated_at": "2026-05-04T10:35:46.041Z",
+  "generated_at": "2026-05-04T11:26:46.027Z",
   "base_url": "https://example.com",
   "currency": "ILS",
   "count": 3,
   "products": [
     {
       "id": "98d8168a-efcc-47c3-adcc-5476f0851a01",
-      "slug": "gysht-shdknymshdknyvt-o9ib51",
-      "name": "גישת שדכנים/שדכניות",
+      "slug": "gysht-shdknymshdknyvt-united-match-9fwnpm",
+      "name": "גישת שדכנים/שדכניות – United Match",
       "name_translations": {},
-      "description": "**גישת שדכנים/שדכניות – United Match**\n\nמיועד לשדכנים ושדכניות המעוניינים לפעול בתוך מערכת United Match.\n\n🔍 גישה מוגבלת למאגר השידוכים\n🔍 צפייה בפרטים חלקיים בלבד\n🔒 ללא טלפון, שם משפחה ותמונה מלאה ללא אישור מנהלת\n📩 אפשרות לבקש פרטים מלאים מהמנהלת\n💡 אפשרות להציע התאמות שידוכים\n📊 מעקב אחר פניות והתאמות\n\n📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. שדכנים רואים מידע חלקי בלבד לפי הרשאות הגישה שלהם.",
-      "short_description": null,
+      "description": "<p class=\"ql-align-right\"><strong>גישת שדכנים/שדכניות – United Match</strong></p><ul><li class=\"ql-align-right\">גישה לחיפוש מועמדים והתאמות בתוך המערכת</li><li class=\"ql-align-right\">צפייה בפרטים חלקיים בלבד – ללא חשיפת פרטים אישיים מלאים</li><li class=\"ql-align-right\">אפשרות לשליחת בקשות מסודרות להנהלת המאגר</li><li class=\"ql-align-right\">כלי מקצועי למציאת התאמות איכותיות ומדויקות</li><li class=\"ql-align-right\">שמירה מלאה על פרטיות המשתמשים ודיסקרטיות גבוהה</li></ul><p class=\"ql-align-right\"><br></p><p class=\"ql-align-right\">השירות מיועד לשדכנים מקצועיים המעוניינים לפעול בצורה מסודרת, יוקרתית ואמינה תוך שימוש במערכת מתקדמת לחיבור בין אנשים.</p><p class=\"ql-align-right\"><br></p>",
+      "short_description": "\nמערכת ייעודית לשדכנים ושדכניות מקצועיים המעוניינים לפעול בתוך מאגר השידוכים היוקרתי של United Match.",
       "sku": null,
-      "brand": null,
+      "brand": "United Match",
+      "price": 199.9,
+      "base_price": 299.9,
+      "sale_price": 199.9,
+      "currency": "ILS",
+      "images": [
+        "https://example.com/assets/product-1777891421652-q4dbrqq.webp"
+      ],
+      "in_stock": true,
+      "stock_status": "in_stock",
+      "url": "https://example.com/product/gysht-shdknymshdknyvt-united-match-9fwnpm",
+      "categories": [],
+      "updated_at": "2026-05-04T11:15:00.528Z"
+    },
+    {
+      "id": "8cf106ec-f8bd-4013-a773-c897d15ea9a7",
+      "slug": "gyshh-prymyvm-lmarkt-united-match-m1ay1n",
+      "name": "  גישה פרימיום למערכת United Match",
+      "name_translations": {},
+      "description": "<p class=\"ql-align-right\"><strong>&nbsp;גישה פרימיום למערכת United Match</strong></p><ul><li class=\"ql-align-right\">עדיפות גבוהה יותר בהתאמות</li><li class=\"ql-align-right\">קבלת יותר הצעות שידוך</li><li class=\"ql-align-right\">ליווי אישי ישיר מול מנהלת המערכת</li><li class=\"ql-align-right\">עדכונים מהירים ושוטפים</li><li class=\"ql-align-right\">טיפול מועדף ומהיר יותר</li><li class=\"ql-align-right\">חשיפה גבוהה יותר במאגר</li><li class=\"ql-align-right\">אפשרות להתאמות ברמת פרימיום / אנשי עסקים</li></ul><p class=\"ql-align-right\"><br></p><p class=\"ql-align-right\"><strong>חוקי המערכת:</strong></p><p class=\"ql-align-right\">רק מנהלת המערכת מחזיקה בגישה מלאה לכל הפרטים האישיים.</p><p class=\"ql-align-right\">לקוחות בגישת פרימיום נהנים מחשיפה, שירות ועדיפות גבוהה יותר — תוך שמירה מלאה על פרטיות, דיסקרטיות וביטחון המשתמשים.</p><p class=\"ql-align-right\"><br></p><p class=\"ql-align-right\">המסלול מעניק חוויית שידוכים יוקרתית, אישית ומתקדמת יותר, עם מענה מקצועי ברמה גבוהה</p>",
+      "short_description": "המסלול מיועד ללקוחות המעוניינים בליווי אישי, חשיפה גבוהה יותר במאגר ועדיפות משמעותית בהתאמות — כולל אפשרות התאמות  לאנשי עסקים ולקוחות בכירים.\n",
+      "sku": null,
+      "brand": "United Match",
       "price": 0,
       "base_price": 0,
       "sale_price": null,
       "currency": "ILS",
-      "images": [],
+      "images": [
+        "https://example.com/assets/product-autofit-1777891157100-ma8ehw.webp"
+      ],
       "in_stock": true,
       "stock_status": "in_stock",
-      "url": "https://example.com/product/gysht-shdknymshdknyvt-o9ib51",
+      "url": "https://example.com/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n",
       "categories": [],
-      "updated_at": "2026-05-04T10:17:48.683Z"
+      "updated_at": "2026-05-04T11:12:52.382Z"
     },
     {
-      "id": "8cf106ec-f8bd-4013-a773-c897d15ea9a7",
-      "slug": "gyshh-prymyvm-lanshy-askym-lkvchvt-h4ywlp",
-      "name": "גישה פרימיום לאנשי עסקים – לקוחות",
+      "id": "d90d9710-89dd-41f9-aabd-3e23968bafee",
+      "slug": "gyshh-rgylh-lmarkt-united-match-0q2icv",
+      "name": "גישה רגילה למערכת United Match",
       "name_translations": {},
-      "description": "<p>**גישה פרימיום למערכת United Match** מתאים ללקוחות המעוניינים בליווי אישי ועדיפות גבוהה בהתאמות אנשי עסקים . ⭐ עדיפות גבוהה בהתאמות ⭐ יותר הצעות שידוך ⭐ ליווי אישי מול המנהלת ⭐ קבלת עדכונים מהירים ⭐ טיפול מהיר יותר מול מנהלת ⭐ חשיפה גבוהה יותר במאגר 📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. לקוחות רואים מידע לפי סוג הגישה שלהם בלבד.</p>",
-      "short_description": null,
+      "description": "<p class=\"ql-align-right\"><strong>גישה רגילה למערכת United Match</strong></p><ul><li class=\"ql-align-right\">הרשמה למאגר השידוכים</li><li class=\"ql-align-right\">מילוי שאלון התאמה אישי</li><li class=\"ql-align-right\">יצירת פרופיל אישי מסודר</li><li class=\"ql-align-right\"> אפשרות לקבל הצעות והתאמות בסיסיות</li><li class=\"ql-align-right\"> ללא חשיפת פרטים מלאים של מועמדים אחרים</li></ul><p class=\"ql-align-right\"><br></p><p class=\"ql-align-right\"> <strong>חוקי המערכת:</strong></p><p class=\"ql-align-right\">רק מנהלת המערכת מחזיקה בגישה מלאה לכל הפרטים האישיים.</p><p class=\"ql-align-right\">לקוחות בגישה רגילה מקבלים מידע חלקי בלבד, בהתאם לרמת הגישה שלהם, תוך שמירה מלאה על פרטיות, דיסקרטיות וביטחון המשתמשים.</p><p class=\"ql-align-right\"><br></p><p class=\"ql-align-right\"> המסלול מספק כניסה איכותית לעולם השידוכים, עם תהליך מקצועי, מסודר ומאובטח</p><p><br></p>",
+      "short_description": "המסלול מתאים לכל מי שמעוניין להיכנס לעולם השידוכים בצורה בטוחה, יוקרתית ומסודרת, עם ליווי מקצועי לאורך הדרך.",
       "sku": null,
       "brand": null,
       "price": 0,
@@ -39,33 +63,13 @@
       "sale_price": null,
       "currency": "ILS",
       "images": [
-        "https://example.com/assets/product-1777890245285-vezgk.webp"
+        "https://example.com/assets/product-1777891185453-oz73hl.webp"
       ],
       "in_stock": true,
       "stock_status": "in_stock",
-      "url": "https://example.com/product/gyshh-prymyvm-lanshy-askym-lkvchvt-h4ywlp",
+      "url": "https://example.com/product/gyshh-rgylh-lmarkt-united-match-0q2icv",
       "categories": [],
-      "updated_at": "2026-05-04T10:25:58.653Z"
-    },
-    {
-      "id": "d90d9710-89dd-41f9-aabd-3e23968bafee",
-      "slug": "gyshh-rgylh-lkvchvt-2kbr1j",
-      "name": "גישה רגילה – לקוחות",
-      "name_translations": {},
-      "description": "**גישה רגילה למערכת United Match**\n\nמתאים ללקוחות המעוניינים להצטרף למאגר השידוכים ברמה הבסיסית.\n\n✅ הרשמה למאגר השידוכים\n✅ מילוי שאלון אישי\n✅ יצירת פרופיל אישי\n✅ אפשרות לקבל הצעות בסיסיות\n⚠️ צפייה מוגבלת בפרופילים\n⚠️ ללא חשיפת פרטים מלאים\n\n📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. לקוחות רואים מידע לפי סוג הגישה שלהם בלבד.",
-      "short_description": null,
-      "sku": null,
-      "brand": null,
-      "price": 0,
-      "base_price": 0,
-      "sale_price": null,
-      "currency": "ILS",
-      "images": [],
-      "in_stock": true,
-      "stock_status": "in_stock",
-      "url": "https://example.com/product/gyshh-rgylh-lkvchvt-2kbr1j",
-      "categories": [],
-      "updated_at": "2026-05-04T10:17:48.595Z"
+      "updated_at": "2026-05-04T11:11:31.150Z"
     }
   ]
 }
