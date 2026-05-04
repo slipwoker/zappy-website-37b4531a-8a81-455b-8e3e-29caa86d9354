@@ -129,6 +129,10 @@ https://example.com/events-torah
 https://example.com/halacha-corner-946537
 UNITED MATCH - פינת ההלכות והמחשבה | United Match
 
+### פינת הלכות
+https://example.com/halacha-corner
+UNITED MATCH - פינת הלכות
+
 ### יסודות התקשורת בתחילת קשר רציני
 https://example.com/halacha-corner/communication-at-the-start
 מאמר מעשי על בניית שיח מכבד, ברור ועמוק בתחילת היכרות משמעותית.
@@ -156,10 +160,6 @@ UNITED MATCH - האזור האישי שלי
 ### תפריט האירוח | United Match
 https://example.com/culinary-menu
 UNITED MATCH - תפריט האירוח | United Match
-
-### פינת הלכות
-https://example.com/halacha-corner
-UNITED MATCH - פינת הלכות
 
 ### דברו איתנו — השידוך הבא שלכם מתחיל כאן — UNITED MATCH
 https://example.com/contact
@@ -197,7 +197,7 @@ Information about WCAG compliance and accessibility features.
   - `email` (email, required)
   - `phone` (tel)
   - `message` (textarea)
-  - `privacy_consent` (checkbox)
+  - `privacy_consent` (checkbox, required)
 
 ---
 
