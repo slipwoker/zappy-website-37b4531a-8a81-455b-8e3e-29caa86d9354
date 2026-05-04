@@ -125,13 +125,13 @@ https://example.com/profile-match-journey
 https://example.com/events-torah
 גלו אירועי שידוכים בלעדיים, ימי פעילות קהילתיים ופינת הלכות מעשירה. חיבור בין ערכי תורה לבין שידוכים יהודיים ברמה הגבוהה ביותר — כל זה במקום אחד.
 
-### פינת ההלכות והמחשבה | United Match
-https://example.com/halacha-corner-946537
-UNITED MATCH - פינת ההלכות והמחשבה | United Match
-
 ### פינת הלכות
 https://example.com/halacha-corner
 UNITED MATCH - פינת הלכות
+
+### פינת ההלכות והמחשבה | United Match
+https://example.com/halacha-corner-946537
+UNITED MATCH - פינת ההלכות והמחשבה | United Match
 
 ### יסודות התקשורת בתחילת קשר רציני
 https://example.com/halacha-corner/communication-at-the-start
@@ -197,7 +197,7 @@ Information about WCAG compliance and accessibility features.
   - `email` (email, required)
   - `phone` (tel)
   - `message` (textarea)
-  - `privacy_consent` (checkbox, required)
+  - `privacy_consent` (checkbox)
 
 ---
 
