@@ -165,6 +165,38 @@ UNITED MATCH - תפריט האירוח | United Match
 https://example.com/contact
 יש לכם שאלות? צוות United Match זמין עבורכם לכל פרט ובירור. צרו קשר עוד היום ותנו לנו ללוות אתכם בדרך לשידוך המושלם שמחכה לכם.
 
+### Products
+https://example.com/products
+המוצרים שלנו - UNITED MATCH
+
+### Cart
+https://example.com/cart
+עגלת הקניות שלך
+
+### Checkout
+https://example.com/checkout
+תשלום
+
+### Login
+https://example.com/login
+התחברות לקוחות
+
+### Account
+https://example.com/account
+החשבון שלי
+
+### Order Success
+https://example.com/order-success
+תודה על ההזמנה
+
+### Product Detail
+https://example.com/product/:slug
+פרטי המוצר - UNITED MATCH
+
+### Category
+https://example.com/category/:slug
+מוצרים - UNITED MATCH
+
 ## Legal & Policy
 
 ### Privacy Policy
@@ -181,23 +213,9 @@ Information about WCAG compliance and accessibility features.
 
 ---
 
-## How to Contact Us
+## Products
 
-- Email: hodya57356@gmail.com
-- Phone: +972 585454037
-- Phone (tel): tel:+972585454037
-
-### Contact form
-- URL: https://example.com/culinary-menu
-- Endpoint: https://example.com/api/email/contact-form
-- Method: POST
-- Content-Type: application/json
-- Fields:
-  - `fullname` (text, required)
-  - `email` (email, required)
-  - `phone` (tel)
-  - `message` (textarea, required)
-  - `privacy_consent` (checkbox, required)
+_No products are currently configured._
 
 ---
 
@@ -322,3 +340,5 @@ General
 - Sitemap (XML): https://example.com/sitemap.xml
 - Robots: https://example.com/robots.txt
 - Flattened page text (for LLMs): https://example.com/llms-full.txt
+- Products (JSON): https://example.com/products.json
+- Products (Google Merchant RSS): https://example.com/product-feed.xml
