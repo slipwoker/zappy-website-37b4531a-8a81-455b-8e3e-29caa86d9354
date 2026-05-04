@@ -1,8 +1,71 @@
 {
   "@context": "https://schema.org",
-  "generated_at": "2026-05-04T10:14:40.425Z",
+  "generated_at": "2026-05-04T10:30:42.333Z",
   "base_url": "https://example.com",
   "currency": "ILS",
-  "count": 0,
-  "products": []
+  "count": 3,
+  "products": [
+    {
+      "id": "98d8168a-efcc-47c3-adcc-5476f0851a01",
+      "slug": "gysht-shdknymshdknyvt-o9ib51",
+      "name": "גישת שדכנים/שדכניות",
+      "name_translations": {},
+      "description": "**גישת שדכנים/שדכניות – United Match**\n\nמיועד לשדכנים ושדכניות המעוניינים לפעול בתוך מערכת United Match.\n\n🔍 גישה מוגבלת למאגר השידוכים\n🔍 צפייה בפרטים חלקיים בלבד\n🔒 ללא טלפון, שם משפחה ותמונה מלאה ללא אישור מנהלת\n📩 אפשרות לבקש פרטים מלאים מהמנהלת\n💡 אפשרות להציע התאמות שידוכים\n📊 מעקב אחר פניות והתאמות\n\n📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. שדכנים רואים מידע חלקי בלבד לפי הרשאות הגישה שלהם.",
+      "short_description": null,
+      "sku": null,
+      "brand": null,
+      "price": 0,
+      "base_price": 0,
+      "sale_price": null,
+      "currency": "ILS",
+      "images": [],
+      "in_stock": true,
+      "stock_status": "in_stock",
+      "url": "https://example.com/product/gysht-shdknymshdknyvt-o9ib51",
+      "categories": [],
+      "updated_at": "2026-05-04T10:17:48.683Z"
+    },
+    {
+      "id": "8cf106ec-f8bd-4013-a773-c897d15ea9a7",
+      "slug": "gyshh-prymyvm-lanshy-askym-lkvchvt-h4ywlp",
+      "name": "גישה פרימיום לאנשי עסקים – לקוחות",
+      "name_translations": {},
+      "description": "<p>**גישה פרימיום למערכת United Match** מתאים ללקוחות המעוניינים בליווי אישי ועדיפות גבוהה בהתאמות אנשי עסקים . ⭐ עדיפות גבוהה בהתאמות ⭐ יותר הצעות שידוך ⭐ ליווי אישי מול המנהלת ⭐ קבלת עדכונים מהירים ⭐ טיפול מהיר יותר מול מנהלת ⭐ חשיפה גבוהה יותר במאגר 📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. לקוחות רואים מידע לפי סוג הגישה שלהם בלבד.</p>",
+      "short_description": null,
+      "sku": null,
+      "brand": null,
+      "price": 0,
+      "base_price": 0,
+      "sale_price": null,
+      "currency": "ILS",
+      "images": [
+        "https://example.com/assets/product-1777890245285-vezgk.webp"
+      ],
+      "in_stock": true,
+      "stock_status": "in_stock",
+      "url": "https://example.com/product/gyshh-prymyvm-lanshy-askym-lkvchvt-h4ywlp",
+      "categories": [],
+      "updated_at": "2026-05-04T10:25:58.653Z"
+    },
+    {
+      "id": "d90d9710-89dd-41f9-aabd-3e23968bafee",
+      "slug": "gyshh-rgylh-lkvchvt-2kbr1j",
+      "name": "גישה רגילה – לקוחות",
+      "name_translations": {},
+      "description": "**גישה רגילה למערכת United Match**\n\nמתאים ללקוחות המעוניינים להצטרף למאגר השידוכים ברמה הבסיסית.\n\n✅ הרשמה למאגר השידוכים\n✅ מילוי שאלון אישי\n✅ יצירת פרופיל אישי\n✅ אפשרות לקבל הצעות בסיסיות\n⚠️ צפייה מוגבלת בפרופילים\n⚠️ ללא חשיפת פרטים מלאים\n\n📌 חוק המערכת: רק מנהלת המערכת רואה את כל הפרטים המלאים. לקוחות רואים מידע לפי סוג הגישה שלהם בלבד.",
+      "short_description": null,
+      "sku": null,
+      "brand": null,
+      "price": 0,
+      "base_price": 0,
+      "sale_price": null,
+      "currency": "ILS",
+      "images": [],
+      "in_stock": true,
+      "stock_status": "in_stock",
+      "url": "https://example.com/product/gyshh-rgylh-lkvchvt-2kbr1j",
+      "categories": [],
+      "updated_at": "2026-05-04T10:17:48.595Z"
+    }
+  ]
 }
