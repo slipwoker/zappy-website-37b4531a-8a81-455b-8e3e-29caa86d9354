@@ -1723,9 +1723,9 @@
   <div class="membership-divider-wrapper">
     <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <!-- Gold thin edge line -->
-      <path d="M0,12 L1440,52" stroke="url(#goldEdge)" stroke-width="1" fill="#0A0A0A" opacity="0.55"></path>
+      <path d="M0,12 L1440,52" stroke="url(#goldEdge)" stroke-width="1" fill="var(--bg-dark)" opacity="0.55"></path>
       <!-- Dark fill below diagonal -->
-      <path d="M0,80 L0,14 L1440,54 L1440,80 Z" fill="#0A0A0A"></path>
+      <path d="M0,80 L0,14 L1440,54 L1440,80 Z" fill="var(--bg-dark)"></path>
       <defs>
         <linearGradient id="goldEdge" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stop-color="#C9A84C"></stop>
@@ -1738,205 +1738,682 @@
 
 </section>
 
-<section class="index-success-stories-section" data-layout-spec="בית-success-stories" dir="rtl">
+<section style="width:100%;max-width:100%;box-sizing:border-box;position:relative;overflow:hidden;background:var(--bg-dark);direction:rtl;" data-zappy-section="true" class="section">
+<style>
+  .um-pricing-section {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    background: #050505;
+    padding: 120px 0 140px;
+    font-family: system-ui, sans-serif;
+    direction: rtl;
+  }
 
-  <!-- Decorative radial gold glow -->
-  <div class="iss-glow-bg" aria-hidden="true"></div>
+  /* Diagonal background slabs */
+  .um-pricing-section::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 60%;
+    height: 130%;
+    background: linear-gradient(145deg, #0d0b06 0%, #1a1508 60%, #0a0904 100%);
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+    z-index: 0;
+  }
 
-  <!-- Section Header -->
-  <div class="iss-container">
-    <div class="iss-header">
-      <div class="iss-ornament" aria-hidden="true">
-        <svg data-no-icon-edit="true" aria-hidden="true" width="240" height="24" viewBox="0 0 240 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0" y1="12" x2="100" y2="12" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></line>
-          <polygon points="120,4 126,12 120,20 114,12" fill="none" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.8"></polygon>
-          <line x1="140" y1="12" x2="240" y2="12" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></line>
-        </svg>
+  .um-pricing-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient-primary);
+    z-index: 10;
+  }
+
+  /* Gold grid lines */
+  .um-grid-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(224,184,79,1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(224,184,79,1) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* Glowing orb */
+  .um-orb {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,184,79,0.12) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+    animation: um-orb-pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes um-orb-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  .um-content-wrapper {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  /* LEFT SIDE - Label & Heading */
+  .um-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .um-section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px;
+    border: 1px solid rgba(224,184,79,0.35);
+    background: rgba(224,184,79,0.07);
+    width: fit-content;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .um-section-label::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(224,184,79,0.15), transparent);
+    animation: um-shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes um-shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+  }
+
+  .um-heading-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .um-plan-type {
+    font-size: 15px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .um-main-heading {
+    font-size: clamp(42px, 6vw, 76px);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--text-light);
+    margin: 0;
+    position: relative;
+  }
+
+  .um-main-heading span {
+    display: block;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .um-tagline {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(243,238,230,0.65);
+    max-width: 420px;
+    margin-top: 8px;
+  }
+
+  /* Decorative vertical bar */
+  .um-vbar {
+    width: 3px;
+    height: 80px;
+    background: var(--gradient-primary);
+    margin: 8px 0;
+    position: relative;
+  }
+
+  .um-vbar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--secondary);
+    box-shadow: 0 0 20px rgba(224,184,79,0.8);
+  }
+
+  /* Trust badges row */
+  .um-trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .um-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+    color: rgba(243,238,230,0.5);
+    letter-spacing: 0.05em;
+  }
+
+  .um-trust-badge::before {
+    content: '✓';
+    color: var(--secondary);
+    font-size: 10px;
+  }
+
+  /* RIGHT SIDE - Card */
+  .um-right-col {
+    position: relative;
+  }
+
+  .um-card-wrapper {
+    position: relative;
+  }
+
+  /* Glow behind card */
+  .um-card-glow {
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(224,184,79,0.18) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 4px;
+    animation: um-glow-pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes um-glow-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  .um-card {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(145deg, #111008 0%, #0d0b06 100%);
+    border: 1px solid rgba(224,184,79,0.25);
+    padding: 48px 44px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.75), inset 0 1px 0 rgba(224,184,79,0.15);
+    transition: var(--transition-hover);
+  }
+
+  .um-card:hover {
+    border-color: rgba(224,184,79,0.5);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.85), 0 0 60px rgba(224,184,79,0.1), inset 0 1px 0 rgba(224,184,79,0.25);
+    transform: translateY(-4px);
+  }
+
+  /* Recommended ribbon */
+  .um-ribbon {
+    position: absolute;
+    top: -14px;
+    right: 40px;
+    background: var(--gradient-primary);
+    color: #050505;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    z-index: 5;
+    box-shadow: 0 4px 20px rgba(224,184,79,0.4);
+  }
+
+  .um-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(224,184,79,0.12);
+    gap: 16px;
+  }
+
+  .um-card-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .um-card-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 600;
+  }
+
+  .um-card-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-light);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .um-card-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Package badge */
+  .um-package-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgba(224,184,79,0.4);
+    background: rgba(224,184,79,0.06);
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .um-package-badge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-primary);
+    opacity: 0.08;
+  }
+
+  .um-package-badge-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  .um-package-badge-icon {
+    font-size: 24px;
+    position: relative;
+    z-index: 1;
+    margin-top: 2px;
+  }
+
+  /* Features list */
+  .um-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .um-features-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    color: rgba(243,238,230,0.85);
+    line-height: 1.4;
+    transition: var(--transition-default);
+  }
+
+  .um-features-list li:hover {
+    color: var(--text-light);
+    transform: translateX(-4px);
+  }
+
+  .um-feature-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(224,184,79,0.1);
+    border: 1px solid rgba(224,184,79,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 10px;
+    color: var(--secondary);
+    transition: var(--transition-default);
+  }
+
+  .um-features-list li:hover .um-feature-dot {
+    background: rgba(224,184,79,0.2);
+    box-shadow: 0 0 12px rgba(224,184,79,0.3);
+  }
+
+  /* CTA Button */
+  .um-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 18px 32px;
+    background: var(--gradient-primary);
+    color: #050505;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-hover);
+    box-shadow: 0 8px 32px rgba(224,184,79,0.35);
+  }
+
+  .um-cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .um-cta-btn:hover::before {
+    left: 200%;
+  }
+
+  .um-cta-btn:hover {
+    box-shadow: var(--shadow-btn-hover);
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+
+  .um-cta-btn .um-btn-arrow {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .um-cta-btn:hover .um-btn-arrow {
+    transform: translateX(-6px);
+  }
+
+  /* Payment note */
+  .um-payment-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: rgba(243,238,230,0.35);
+    letter-spacing: 0.05em;
+  }
+
+  .um-payment-note::before {
+    content: '🔒';
+    font-size: 11px;
+  }
+
+  /* Floating decorative number */
+  .um-deco-number {
+    position: absolute;
+    top: -40px;
+    left: -30px;
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(224,184,79,0.04);
+    line-height: 1;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+
+  /* Diagonal corner accent */
+  .um-corner-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 50px 50px;
+    border-color: transparent transparent rgba(224,184,79,0.15) transparent;
+    z-index: 2;
+  }
+
+  /* Section scrolling marquee */
+  .um-marquee-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    height: 40px;
+    border-top: 1px solid rgba(224,184,79,0.08);
+    z-index: 5;
+  }
+
+  .um-marquee-track {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 0;
+    animation: um-marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes um-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .um-marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 30px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(224,184,79,0.3);
+    flex-shrink: 0;
+  }
+
+  .um-marquee-separator {
+    color: rgba(224,184,79,0.2);
+    font-size: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .um-pricing-section {
+      padding: 100px 0 120px;
+    }
+
+    .um-content-wrapper {
+      grid-template-columns: 1fr;
+      gap: 60px;
+      padding: 0 24px;
+    }
+
+    .um-main-heading {
+      font-size: 52px;
+    }
+
+    .um-left-col {
+      text-align: center;
+      align-items: center;
+    }
+
+    .um-tagline {
+      text-align: center;
+    }
+
+    .um-trust-row {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .um-pricing-section {
+      padding-top: 100px;
+    }
+
+    .um-card {
+      padding: 36px 28px;
+    }
+
+    .um-main-heading {
+      font-size: 40px;
+    }
+
+    .um-card-header {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .um-package-badge {
+      width: 60px;
+      height: 60px;
+    }
+  }
+</style>
+
+<div class="um-pricing-section">
+  <!-- Background elements -->
+  <div class="um-grid-lines"></div>
+  <div class="um-orb"></div>
+  <div class="um-deco-number">01</div>
+
+  <!-- Main content -->
+  <div class="um-content-wrapper">
+
+    <!-- LEFT COLUMN -->
+    <div class="um-left-col">
+      <div class="um-section-label">
+        תוכנית הצטרפות
       </div>
-      <p class="iss-eyebrow">סיפורי הצלחה</p>
-      <h2 class="iss-title">לבבות שמצאו את דרכם</h2>
-      <p class="iss-subtitle">אנשים אמיתיים, סיפורים אמיתיים — כי כל שידוך הוא עולם ומלואו</p>
+
+      <div class="um-heading-group">
+        <div class="um-plan-type">אנשי עסקים</div>
+        <h2 class="um-main-heading">
+          השקעה<span>בעתידך</span>
+        </h2>
+      </div>
+
+      <div class="um-vbar"></div>
+
+      <p class="um-tagline">
+        חברות אחת. הזדמנות אחת. עתיד משותף.
+      </p>
+
+      <p class="um-tagline" style="margin-top:-16px; font-size:14px; opacity:0.55;">
+        שידרוג פרמיום לפרופיל שלך ועלה לראש תוצאות החיפוש — כי ההזדמנות הנכונה מגיעה לאלו שנראים ראשונים.
+      </p>
+
+      <div class="um-trust-row">
+        <div class="um-trust-badge">תשלום מאובטח</div>
+        <div class="um-trust-badge">שירות יוקרתי</div>
+        <div class="um-trust-badge">אלפי זוגות מאושרים</div>
+      </div>
     </div>
 
-    <!-- Three-column testimonial grid -->
-    <div class="iss-stories-grid">
+    <!-- RIGHT COLUMN - Card -->
+    <div class="um-right-col">
+      <div class="um-card-wrapper">
+        <div class="um-card-glow"></div>
+        <div class="um-card">
+          <div class="um-ribbon">מומלץ</div>
+          <div class="um-corner-accent"></div>
 
-      <!-- Card START (right) - slightly lower -->
-      <article class="iss-story-card iss-card-side iss-card-start">
-        <div class="iss-medallion" aria-hidden="true">
-          <svg data-element-type="icon" data-icon-type="svg" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="32" r="31" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></circle>
-            <circle cx="32" cy="32" r="24" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.3"></circle>
-            <path d="M32 20 C28 14, 18 14, 18 24 C18 32, 32 42, 32 42 C32 42, 46 32, 46 24 C46 14, 36 14, 32 20Z" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-opacity="0.9"></path>
-          </svg>
-        </div>
-        <div class="iss-card-content">
-          <div class="iss-quote-mark" aria-hidden="true">“</div>
-          <p class="iss-story-text">הגעתי ל-United Match אחרי שנים של חיפוש. הגישה הפרטית והמכובדת שינתה הכל. תוך שלושה חודשים פגשתי את האיש שחיכיתי לו כל חיי. הצוות ליווה אותנו בדיסקרטיות מלאה ובחמימות אמיתית.</p>
-          <footer class="iss-card-footer">
-            <div class="iss-stars" aria-label="חמישה כוכבים">
-              <span aria-hidden="true">✦ ✦ ✦ ✦ ✦</span>
+          <div class="um-card-header">
+            <div class="um-card-title-group">
+              <span class="um-card-eyebrow">חבילה</span>
+              <h3 class="um-card-title">אנשי עסקים</h3>
+              <span class="um-card-subtitle">תוכנית הצטרפות פרמיום</span>
             </div>
-            <div class="iss-identity">
-              <span class="iss-name">מ.כ.</span>
-              <span class="iss-location">ירושלים</span>
+            <div class="um-package-badge">
+              <span class="um-package-badge-label">UNITED</span>
+              <span class="um-package-badge-icon">✦</span>
             </div>
-          </footer>
-        </div>
-      </article>
-
-      <!-- Card CENTER - slightly larger and elevated -->
-      <article class="iss-story-card iss-card-center">
-        <div class="iss-center-glow" aria-hidden="true"></div>
-        <div class="iss-medallion iss-medallion-large" aria-hidden="true">
-          <svg data-element-type="icon" data-icon-type="svg" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="40" cy="40" r="39" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.6"></circle>
-            <circle cx="40" cy="40" r="30" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.3"></circle>
-            <path d="M40 22 L43.5 33.5 H55.5 L46 40.5 L49.5 52 L40 45 L30.5 52 L34 40.5 L24.5 33.5 H36.5 Z" fill="#C9A84C" fill-opacity="0.25" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.8"></path>
-          </svg>
-        </div>
-        <div class="iss-card-content">
-          <div class="iss-quote-mark" aria-hidden="true">“</div>
-          <p class="iss-story-text">United Match הוא לא עוד אתר הכרויות — זו חוויה שלמה של כבוד, אמון ואמונה. השדכנים הקשיבו לכל מה שחשוב לי, הבינו את הערכים שלי, ומצאו לי שותפה לחיים שמשלימה אותי בכל דבר. היום אנחנו נשואים זה שנה וחצי.</p>
-          <footer class="iss-card-footer">
-            <div class="iss-stars" aria-label="חמישה כוכבים">
-              <span aria-hidden="true">✦ ✦ ✦ ✦ ✦</span>
-            </div>
-            <div class="iss-identity">
-              <span class="iss-name">א.ל. ו-ר.ל.</span>
-              <span class="iss-location">תל אביב</span>
-            </div>
-          </footer>
-        </div>
-        <div class="iss-featured-badge">סיפור מומלץ</div>
-      </article>
-
-      <!-- Card END (left) - slightly lower -->
-      <article class="iss-story-card iss-card-side iss-card-end">
-        <div class="iss-medallion" aria-hidden="true">
-          <svg data-element-type="icon" data-icon-type="svg" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="32" r="31" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.5"></circle>
-            <circle cx="32" cy="32" r="24" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.3"></circle>
-            <path d="M22 26 Q22 20 28 20 Q32 20 32 24 Q32 20 36 20 Q42 20 42 26 Q42 32 32 38 Q22 32 22 26Z" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-opacity="0.9"></path>
-          </svg>
-        </div>
-        <div class="iss-card-content">
-          <div class="iss-quote-mark" aria-hidden="true">“</div>
-          <p class="iss-story-text">כאישה דתייה שחיפשה שידוך רציני, חשוב לי מאוד הצניעות והפרטיות. United Match הבטיחו לי שהמידע שלי מוגן לחלוטין, ושהתהליך יתנהל ביראת כבוד. מצאתי את בן זוגי תוך ארבעה חודשים.</p>
-          <footer class="iss-card-footer">
-            <div class="iss-stars" aria-label="חמישה כוכבים">
-              <span aria-hidden="true">✦ ✦ ✦ ✦ ✦</span>
-            </div>
-            <div class="iss-identity">
-              <span class="iss-name">ש.ב.</span>
-              <span class="iss-location">בני ברק</span>
-            </div>
-          </footer>
-        </div>
-      </article>
-
-    </div><!-- end stories grid -->
-
-    <!-- Trust Strip -->
-    <div class="iss-trust-strip">
-      <div class="iss-trust-divider" aria-hidden="true"></div>
-      <div class="iss-trust-items">
-        <div class="iss-trust-item">
-          <div class="iss-trust-icon" aria-hidden="true">
-            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 3 L5 7 V14 C5 19.5 9 24.5 14 26 C19 24.5 23 19.5 23 14 V7 L14 3Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"></path>
-              <path d="M10 14 L13 17 L18 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
           </div>
-          <span class="iss-trust-label">פרטיות מלאה</span>
-        </div>
-        <div class="iss-trust-sep" aria-hidden="true">✦</div>
-        <div class="iss-trust-item">
-          <div class="iss-trust-icon" aria-hidden="true">
-            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="14" cy="10" r="5" stroke="currentColor" stroke-width="1.5" fill="none"></circle>
-              <path d="M6 24 C6 19.6 9.6 16 14 16 C18.4 16 22 19.6 22 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"></path>
-            </svg>
-          </div>
-          <span class="iss-trust-label">ליווי אישי ומקצועי</span>
-        </div>
-        <div class="iss-trust-sep" aria-hidden="true">✦</div>
-        <div class="iss-trust-item">
-          <div class="iss-trust-icon" aria-hidden="true">
-            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 4 L16.5 10.5 H23.5 L18 14.5 L20.5 21 L14 17 L7.5 21 L10 14.5 L4.5 10.5 H11.5 Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"></path>
-            </svg>
-          </div>
-          <span class="iss-trust-label">שידוכים יוקרתיים</span>
-        </div>
-        <div class="iss-trust-sep" aria-hidden="true">✦</div>
-        <div class="iss-trust-item">
-          <div class="iss-trust-icon" aria-hidden="true">
-            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="7" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-              <path d="M4 11 L14 17 L24 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-            </svg>
-          </div>
-          <span class="iss-trust-label">תהליך מאובטח</span>
-        </div>
-        <div class="iss-trust-sep" aria-hidden="true">✦</div>
-        <div class="iss-trust-item">
-          <div class="iss-trust-icon" aria-hidden="true">
-            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 5 C10 5, 5 9, 5 14 C5 19, 9 23, 14 23 C19 23, 23 19, 23 14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"></path>
-              <path d="M18 5 L23 5 L23 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M23 5 L16 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-            </svg>
-          </div>
-          <span class="iss-trust-label">קהילה תומכת</span>
-        </div>
-      </div>
-      <div class="iss-trust-divider" aria-hidden="true"></div>
-    </div>
 
-    <!-- Closing CTA -->
-    <div class="iss-cta-block">
-      <h3 class="iss-cta-heading">מוכנים לכתוב את הסיפור שלכם?</h3>
-      <p class="iss-cta-sub">הצטרפו למאגר השידוכים הפרטי והיוקרתי של United Match ותנו לנו ללוות אתכם אל הפרק הבא בחיים</p>
-      <div class="iss-cta-buttons">
-        <a href="/contact" class="btn-primary iss-btn-main">צרו קשר עכשיו</a>
-        <a href="/contact" class="btn-secondary iss-btn-sec">הרשמה למאגר</a>
+          <ul class="um-features-list">
+            <li>
+              <span class="um-feature-dot">✦</span>
+              שידרוג לפרופיל
+            </li>
+            <li>
+              <span class="um-feature-dot">✦</span>
+              עדיפות בתוצאות החיפוש
+            </li>
+            <li>
+              <span class="um-feature-dot">✦</span>
+              חשיפה מוגברת למועמדים מתאימים
+            </li>
+            <li>
+              <span class="um-feature-dot">✦</span>
+              תמיכה אישית מצוות UNITED MATCH
+            </li>
+          </ul>
+
+          <a href="/contact" class="um-cta-btn">
+            <span>הצטרפות עכשיו</span>
+            <span class="um-btn-arrow">←</span>
+          </a>
+
+          <div class="um-payment-note">
+            ללא התחייבות · תשלום חד פעמי
+          </div>
+        </div>
       </div>
     </div>
 
-  </div><!-- end container -->
-
-  <!-- Bottom constellation divider -->
-  <div class="iss-divider-wrapper">
-    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1280 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Constellation dots -->
-      <circle cx="80" cy="30" r="1.5" fill="#C9A84C" fill-opacity="0.5"></circle>
-      <circle cx="160" cy="18" r="1" fill="#C9A84C" fill-opacity="0.35"></circle>
-      <circle cx="260" cy="35" r="1.5" fill="#C9A84C" fill-opacity="0.45"></circle>
-      <circle cx="380" cy="22" r="1" fill="#C9A84C" fill-opacity="0.3"></circle>
-      <circle cx="480" cy="38" r="1.5" fill="#C9A84C" fill-opacity="0.5"></circle>
-      <circle cx="580" cy="15" r="1" fill="#C9A84C" fill-opacity="0.4"></circle>
-      <circle cx="640" cy="28" r="2" fill="#C9A84C" fill-opacity="0.6"></circle>
-      <circle cx="700" cy="15" r="1" fill="#C9A84C" fill-opacity="0.4"></circle>
-      <circle cx="800" cy="38" r="1.5" fill="#C9A84C" fill-opacity="0.5"></circle>
-      <circle cx="900" cy="22" r="1" fill="#C9A84C" fill-opacity="0.3"></circle>
-      <circle cx="1000" cy="35" r="1.5" fill="#C9A84C" fill-opacity="0.45"></circle>
-      <circle cx="1100" cy="18" r="1" fill="#C9A84C" fill-opacity="0.35"></circle>
-      <circle cx="1200" cy="30" r="1.5" fill="#C9A84C" fill-opacity="0.5"></circle>
-      <!-- Constellation lines -->
-      <line x1="80" y1="30" x2="160" y2="18" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <line x1="160" y1="18" x2="260" y2="35" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <line x1="480" y1="38" x2="580" y2="15" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <line x1="580" y1="15" x2="640" y2="28" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <line x1="640" y1="28" x2="700" y2="15" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <line x1="700" y1="15" x2="800" y2="38" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <line x1="1000" y1="35" x2="1100" y2="18" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <line x1="1100" y1="18" x2="1200" y2="30" stroke="#C9A84C" stroke-width="0.5" stroke-opacity="0.2"></line>
-      <!-- Dissolving curve path filling bottom -->
-      <path d="M0,90 L0,55 Q80,42 160,50 T320,45 Q400,48 480,40 T640,44 Q720,48 800,40 T960,45 Q1040,48 1120,42 T1280,50 L1280,90 Z" fill="#050505"></path>
-    </svg>
   </div>
 
+  <!-- Marquee strip -->
+  <div class="um-marquee-container">
+    <div class="um-marquee-track">
+      <span class="um-marquee-item">UNITED MATCH <span class="um-marquee-separator">✦</span> אלפי זוגות מאושרים <span class="um-marquee-separator">✦</span> שירות יוקרתי <span class="um-marquee-separator">✦</span> תשלום מאובטח</span>
+      <span class="um-marquee-item">UNITED MATCH <span class="um-marquee-separator">✦</span> אלפי זוגות מאושרים <span class="um-marquee-separator">✦</span> שירות יוקרתי <span class="um-marquee-separator">✦</span> תשלום מאובטח</span>
+    </div>
+  </div>
+</div>
 </section>
 
 <section class="index-cta-section" data-layout-spec="בית-cta" dir="rtl">
