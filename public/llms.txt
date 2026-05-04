@@ -1,4 +1,109 @@
-# Business — Generative Engine Optimization Map
+# UNITED MATCH — Generative Engine Optimization Map
+
+> Build me a luxury premium matchmaking website exactly like this style:
+
+DESIGN STYLE:
+- Elegant black background (#050505)
+- Gold accents (#D4AF37)
+- White soft text
+- Premium, emotional, high-end Jewish matchmaking aesthetic
+- Hebrew RTL layout
+- Modern luxury landing page
+- Very polished and visually balanced
+- Full desktop and mobile responsive
+
+HEADER:
+- Centered United Match logo with crown + heart icon
+- Navigation menu:
+  בית
+  הודעות מנהלים
+  התאמות
+  מאגר
+  אירועים
+  פינת הלכות
+- Left side buttons:
+  הרשמה
+  כניסה לאזור אישי
+- Thin gold divider line under header
+
+HERO SECTION:
+- Large realistic golden diamond heart centered
+- Black cinematic glowing background
+- Left side:
+  Main headline:
+  "מחברים לבבות, יוצרים עתיד"
+- Subheadline:
+  "ברוכים הבאים למאגר השידוכים הפרטי והיוקרתי של United Match"
+- Two CTA buttons:
+  הרשמה עכשיו
+  כניסה לאזור אישי
+
+RIGHT PANEL:
+- Elegant gold bordered admin announcements card
+- Title:
+  הודעות מנהלים
+- Include dated updates
+- Button:
+  לכל ההודעות
+
+FEATURE GRID BELOW:
+6 premium cards with icons:
+1. פינת הלכות
+2. אירועים וימי פעילות
+3. התאמות
+4. המאגר
+5. פרסומים ועדכונים
+6. פרטיות וביטחון
+
+Each card:
+- Gold icon
+- Gold border
+- Black background
+- Hover glow
+- Button
+
+FOOTER:
+- SSL security
+- Privacy
+- Community support
+- Contact phone
+- Gold divider styling
+
+SPECIAL REQUIREMENTS:
+- Use realistic diamond heart hero image
+- Luxurious spacing
+- No clutter
+- Highly professional
+- Premium matchmaking platform
+- Business + emotional elegance
+- Use gold glow effects subtly
+- Include premium fonts
+- Feel exclusive and trustworthy
+
+SECTIONS TO BUILD:
+- Home
+- Registration
+- Login
+- Personal profile dashboard
+- Premium membership
+- Admin-only dashboard
+- Match tracking
+- Events
+- Torah section
+- Contact page
+
+FUNCTIONALITY:
+- User signup/login
+- Admin email access only
+- Personal profile editing
+- Premium user badge
+- Secure private database feel
+- Image upload
+- Match history
+- Subscription options
+
+Overall goal:
+Create a luxury, elite, private matchmaking platform that feels exclusive, trustworthy, elegant, and emotionally powerful.
 
 ---
 
@@ -76,12 +181,145 @@ Information about WCAG compliance and accessibility features.
 
 ---
 
-# Business Context (for LLM understanding)
+## How to Contact Us
 
-## About Business
+- Email: hodya57356@gmail.com
+- Phone: +972 585454037
+- Phone (tel): tel:+972585454037
+
+### Contact form
+- URL: https://example.com/contact
+- Endpoint: https://example.com/api/email/contact-form
+- Method: POST
+- Content-Type: application/json
+- Fields:
+  - `name` (text, required)
+  - `phone` (tel, required)
+  - `email` (email, required)
+  - `subject` (text)
+  - `message` (textarea, required)
+  - `privacy_consent` (checkbox, required)
+
 ---
 
-# Additional Resources
+# Business Context (for LLM understanding)
 
-- **Sitemap**: https://example.com/sitemap.xml
-- **Robots.txt**: https://example.com/robots.txt
+## About UNITED MATCH
+Build me a luxury premium matchmaking website exactly like this style:
+
+DESIGN STYLE:
+- Elegant black background (#050505)
+- Gold accents (#D4AF37)
+- White soft text
+- Premium, emotional, high-end Jewish matchmaking aesthetic
+- Hebrew RTL layout
+- Modern luxury landing page
+- Very polished and visually balanced
+- Full desktop and mobile responsive
+
+HEADER:
+- Centered United Match logo with crown + heart icon
+- Navigation menu:
+  בית
+  הודעות מנהלים
+  התאמות
+  מאגר
+  אירועים
+  פינת הלכות
+- Left side buttons:
+  הרשמה
+  כניסה לאזור אישי
+- Thin gold divider line under header
+
+HERO SECTION:
+- Large realistic golden diamond heart centered
+- Black cinematic glowing background
+- Left side:
+  Main headline:
+  "מחברים לבבות, יוצרים עתיד"
+- Subheadline:
+  "ברוכים הבאים למאגר השידוכים הפרטי והיוקרתי של United Match"
+- Two CTA buttons:
+  הרשמה עכשיו
+  כניסה לאזור אישי
+
+RIGHT PANEL:
+- Elegant gold bordered admin announcements card
+- Title:
+  הודעות מנהלים
+- Include dated updates
+- Button:
+  לכל ההודעות
+
+FEATURE GRID BELOW:
+6 premium cards with icons:
+1. פינת הלכות
+2. אירועים וימי פעילות
+3. התאמות
+4. המאגר
+5. פרסומים ועדכונים
+6. פרטיות וביטחון
+
+Each card:
+- Gold icon
+- Gold border
+- Black background
+- Hover glow
+- Button
+
+FOOTER:
+- SSL security
+- Privacy
+- Community support
+- Contact phone
+- Gold divider styling
+
+SPECIAL REQUIREMENTS:
+- Use realistic diamond heart hero image
+- Luxurious spacing
+- No clutter
+- Highly professional
+- Premium matchmaking platform
+- Business + emotional elegance
+- Use gold glow effects subtly
+- Include premium fonts
+- Feel exclusive and trustworthy
+
+SECTIONS TO BUILD:
+- Home
+- Registration
+- Login
+- Personal profile dashboard
+- Premium membership
+- Admin-only dashboard
+- Match tracking
+- Events
+- Torah section
+- Contact page
+
+FUNCTIONALITY:
+- User signup/login
+- Admin email access only
+- Personal profile editing
+- Premium user badge
+- Secure private database feel
+- Image upload
+- Match history
+- Subscription options
+
+Overall goal:
+Create a luxury, elite, private matchmaking platform that feels exclusive, trustworthy, elegant, and emotionally powerful.
+
+## Target Audience
+- Matchmaking
+
+## Industry
+General
+
+---
+
+# Machine-readable feeds
+
+- Sitemap (XML): https://example.com/sitemap.xml
+- Robots: https://example.com/robots.txt
+- Flattened page text (for LLMs): https://example.com/llms-full.txt
