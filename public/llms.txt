@@ -196,7 +196,7 @@ Information about WCAG compliance and accessibility features.
   - `fullname` (text, required)
   - `email` (email, required)
   - `phone` (tel)
-  - `message` (textarea, required)
+  - `message` (textarea)
   - `privacy_consent` (checkbox, required)
 
 ---
