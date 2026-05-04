@@ -110,105 +110,105 @@ Create a luxury, elite, private matchmaking platform that feels exclusive, trust
 ## Pages
 
 ### מחברים לבבות, יוצרים עתיד — UNITED MATCH
-https://example.com
+https://united-match.zappy5.app
 מאגר השידוכים היוקרתי והפרטי ביותר בישראל. שידוכים לדתיים ברמה הגבוהה ביותר, עם ליווי אישי, פרטיות מלאה ואלגנטיות ללא פשרות. הצטרפו עכשיו.
 
 ### הדלת לעולם השידוכים היוקרתי נפתחת — UNITED MATCH
-https://example.com/access-membership
+https://united-match.zappy5.app/access-membership
 הירשמו למאגר השידוכים הפרטי של United Match וקבלו גישה לחברות פרמיום. הכרויות לדתיים ברמה עילית, עם תג חבר מיוחד וחוויה בלעדית לגמרי.
 
 ### הפרופיל שלך הוא תחילת הסיפור שלך — UNITED MATCH
-https://example.com/profile-match-journey
+https://united-match.zappy5.app/profile-match-journey
 ערכו את הפרופיל האישי שלכם, עקבו אחר היסטוריית ההתאמות ותנו לסיפור האהבה שלכם להתחיל. מסע השידוכים הפרטי והמאובטח שלכם מתחיל כאן.
 
 ### אירועים יוקרתיים ותורה שמחברים נשמות — UNITED MATCH
-https://example.com/events-torah
+https://united-match.zappy5.app/events-torah
 גלו אירועי שידוכים בלעדיים, ימי פעילות קהילתיים ופינת הלכות מעשירה. חיבור בין ערכי תורה לבין שידוכים יהודיים ברמה הגבוהה ביותר — כל זה במקום אחד.
 
 ### פינת הלכות
-https://example.com/halacha-corner
+https://united-match.zappy5.app/halacha-corner
 UNITED MATCH - פינת הלכות
 
 ### פינת ההלכות והמחשבה | United Match
-https://example.com/halacha-corner-946537
+https://united-match.zappy5.app/halacha-corner-946537
 UNITED MATCH - פינת ההלכות והמחשבה | United Match
 
 ### יסודות התקשורת בתחילת קשר רציני
-https://example.com/halacha-corner/communication-at-the-start
+https://united-match.zappy5.app/halacha-corner/communication-at-the-start
 מאמר מעשי על בניית שיח מכבד, ברור ועמוק בתחילת היכרות משמעותית.
 
 ### גבולות בריאים בתוך קשר מתפתח
-https://example.com/halacha-corner/healthy-boundaries
+https://united-match.zappy5.app/halacha-corner/healthy-boundaries
 למה גבולות נכונים אינם מרחיקים אלא יוצרים אמון, קצב נכון וכבוד בתוך תהליך היכרות.
 
 ### בחירת ערכים משותפים לפני הקמת בית
-https://example.com/halacha-corner/shared-values-home
+https://united-match.zappy5.app/halacha-corner/shared-values-home
 מבט מעשי על החשיבות של ערכים משותפים, סדרי עדיפויות וחזון חיים בבניית זוגיות יציבה.
 
 ### כיצד מקבלים החלטה שקולה לקראת המשך קשר
-https://example.com/halacha-corner/wise-relationship-decision
+https://united-match.zappy5.app/halacha-corner/wise-relationship-decision
 כלים להבחין בין רגש חולף לבין התאמה אמיתית, ולקבל החלטה מתוך יישוב דעת ובהירות.
 
 ### פלטפורמה מאובטחת שבנויה על אמון מוחלט — UNITED MATCH
-https://example.com/admin-platform-trust
+https://united-match.zappy5.app/admin-platform-trust
 מערכת ניהול מתקדמת, אבטחת מידע ברמה הגבוהה ביותר ושקיפות מלאה. United Match מחויבת לפרטיות חברותיה ולניהול מקצועי שמעמיד את האמון במרכז.
 
 ### האזור האישי שלי
-https://example.com/personal-area
+https://united-match.zappy5.app/personal-area
 UNITED MATCH - האזור האישי שלי
 
 ### תפריט האירוח | United Match
-https://example.com/culinary-menu
+https://united-match.zappy5.app/culinary-menu
 UNITED MATCH - תפריט האירוח | United Match
 
 ### דברו איתנו — השידוך הבא שלכם מתחיל כאן — UNITED MATCH
-https://example.com/contact
+https://united-match.zappy5.app/contact
 יש לכם שאלות? צוות United Match זמין עבורכם לכל פרט ובירור. צרו קשר עוד היום ותנו לנו ללוות אתכם בדרך לשידוך המושלם שמחכה לכם.
 
 ### Products
-https://example.com/products
+https://united-match.zappy5.app/products
 המוצרים שלנו - UNITED MATCH
 
 ### Cart
-https://example.com/cart
+https://united-match.zappy5.app/cart
 עגלת הקניות שלך
 
 ### Checkout
-https://example.com/checkout
+https://united-match.zappy5.app/checkout
 תשלום
 
 ### Login
-https://example.com/login
+https://united-match.zappy5.app/login
 התחברות לקוחות
 
 ### Account
-https://example.com/account
+https://united-match.zappy5.app/account
 החשבון שלי
 
 ### Order Success
-https://example.com/order-success
+https://united-match.zappy5.app/order-success
 תודה על ההזמנה
 
 ### Product Detail
-https://example.com/product/:slug
+https://united-match.zappy5.app/product/:slug
 פרטי המוצר - UNITED MATCH
 
 ### Category
-https://example.com/category/:slug
+https://united-match.zappy5.app/category/:slug
 מוצרים - UNITED MATCH
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://example.com/privacy
+https://united-match.zappy5.app/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://example.com/terms
+https://united-match.zappy5.app/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://example.com/accessibility
+https://united-match.zappy5.app/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
@@ -218,27 +218,27 @@ Information about WCAG compliance and accessibility features.
 **Total active products: 3**
 
 ### גישת שדכנים/שדכניות – United Match
-https://example.com/product/gysht-shdknymshdknyvt-united-match-9fwnpm
+https://united-match.zappy5.app/product/gysht-shdknymshdknyvt-united-match-9fwnpm
 - Price: 199.90 ILS (sale, was 299.90 ILS)
 - Availability: In stock
 - Brand: United Match
 - Description: מערכת ייעודית לשדכנים ושדכניות מקצועיים המעוניינים לפעול בתוך מאגר השידוכים היוקרתי של United Match.
-- Image: https://example.com/assets/product-1777891421652-q4dbrqq.webp
+- Image: https://united-match.zappy5.app/assets/product-1777891421652-q4dbrqq.webp
 
 ###   גישה פרימיום למערכת United Match
-https://example.com/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n
+https://united-match.zappy5.app/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n
 - Price: 0.00 ILS
 - Availability: In stock
 - Brand: United Match
 - Description: המסלול מיועד ללקוחות המעוניינים בליווי אישי, חשיפה גבוהה יותר במאגר ועדיפות משמעותית בהתאמות — כולל אפשרות התאמות לאנשי עסקים ולקוחות בכירים.
-- Image: https://example.com/assets/product-autofit-1777891157100-ma8ehw.webp
+- Image: https://united-match.zappy5.app/assets/product-autofit-1777891157100-ma8ehw.webp
 
 ### גישה רגילה למערכת United Match
-https://example.com/product/gyshh-rgylh-lmarkt-united-match-0q2icv
+https://united-match.zappy5.app/product/gyshh-rgylh-lmarkt-united-match-0q2icv
 - Price: 0.00 ILS
 - Availability: In stock
 - Description: המסלול מתאים לכל מי שמעוניין להיכנס לעולם השידוכים בצורה בטוחה, יוקרתית ומסודרת, עם ליווי מקצועי לאורך הדרך.
-- Image: https://example.com/assets/product-1777891185453-oz73hl.webp
+- Image: https://united-match.zappy5.app/assets/product-1777891185453-oz73hl.webp
 
 ---
 
@@ -360,8 +360,8 @@ General
 
 # Machine-readable feeds
 
-- Sitemap (XML): https://example.com/sitemap.xml
-- Robots: https://example.com/robots.txt
-- Flattened page text (for LLMs): https://example.com/llms-full.txt
-- Products (JSON): https://example.com/products.json
-- Products (Google Merchant RSS): https://example.com/product-feed.xml
+- Sitemap (XML): https://united-match.zappy5.app/sitemap.xml
+- Robots: https://united-match.zappy5.app/robots.txt
+- Flattened page text (for LLMs): https://united-match.zappy5.app/llms-full.txt
+- Products (JSON): https://united-match.zappy5.app/products.json
+- Products (Google Merchant RSS): https://united-match.zappy5.app/product-feed.xml
