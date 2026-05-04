@@ -105,13 +105,13 @@ FUNCTIONALITY:
 Overall goal:
 Create a luxury, elite, private matchmaking platform that feels exclusive, trustworthy, elegant, and emotionally powerful.
 
-Source: https://united-match.zappy5.app
+Source: https://united-match.co.il
 
 ---
 
 ## מחברים לבבות, יוצרים עתיד — UNITED MATCH
 
-URL: https://united-match.zappy5.app
+URL: https://united-match.co.il
 Description: מאגר השידוכים היוקרתי והפרטי ביותר בישראל. שידוכים לדתיים ברמה הגבוהה ביותר, עם ליווי אישי, פרטיות מלאה ואלגנטיות ללא פשרות. הצטרפו עכשיו.
 
 מחברים לבבות, יוצרים עתיד — UNITED MATCH
@@ -735,7 +735,7 @@ United Match — שידוכים יוקרתיים
 
 ## הדלת לעולם השידוכים היוקרתי נפתחת — UNITED MATCH
 
-URL: https://united-match.zappy5.app/access-membership
+URL: https://united-match.co.il/access-membership
 Description: הירשמו למאגר השידוכים הפרטי של United Match וקבלו גישה לחברות פרמיום. הכרויות לדתיים ברמה עילית, עם תג חבר מיוחד וחוויה בלעדית לגמרי.
 
 הדלת לעולם השידוכים היוקרתי נפתחת — UNITED MATCH
@@ -1634,7 +1634,7 @@ United Match פתוחה לגברים ונשים יהודיים שומרי מסו
 
 ## הפרופיל שלך הוא תחילת הסיפור שלך — UNITED MATCH
 
-URL: https://united-match.zappy5.app/profile-match-journey
+URL: https://united-match.co.il/profile-match-journey
 Description: ערכו את הפרופיל האישי שלכם, עקבו אחר היסטוריית ההתאמות ותנו לסיפור האהבה שלכם להתחיל. מסע השידוכים הפרטי והמאובטח שלכם מתחיל כאן.
 
 הפרופיל שלך הוא תחילת הסיפור שלך — UNITED MATCH
@@ -2632,7 +2632,7 @@ Description: ערכו את הפרופיל האישי שלכם, עקבו אחר �
 
 ## אירועים יוקרתיים ותורה שמחברים נשמות — UNITED MATCH
 
-URL: https://united-match.zappy5.app/events-torah
+URL: https://united-match.co.il/events-torah
 Description: גלו אירועי שידוכים בלעדיים, ימי פעילות קהילתיים ופינת הלכות מעשירה. חיבור בין ערכי תורה לבין שידוכים יהודיים ברמה הגבוהה ביותר — כל זה במקום אחד.
 
 אירועים יוקרתיים ותורה שמחברים נשמות — UNITED MATCH
@@ -3331,7 +3331,7 @@ United Match היא יותר מפלטפורמת שידוכים — היא קהי
 
 ## פינת הלכות
 
-URL: https://united-match.zappy5.app/halacha-corner
+URL: https://united-match.co.il/halacha-corner
 Description: UNITED MATCH - פינת הלכות
 
 פינת הלכות
@@ -4043,7 +4043,7 @@ United Match
 
 ## פינת ההלכות והמחשבה | United Match
 
-URL: https://united-match.zappy5.app/halacha-corner-946537
+URL: https://united-match.co.il/halacha-corner-946537
 Description: UNITED MATCH - פינת ההלכות והמחשבה | United Match
 
 פינת ההלכות והמחשבה | United Match
@@ -4574,7 +4574,7 @@ United Match
 
 ## יסודות התקשורת בתחילת קשר רציני
 
-URL: https://united-match.zappy5.app/halacha-corner/communication-at-the-start
+URL: https://united-match.co.il/halacha-corner/communication-at-the-start
 Description: מאמר מעשי על בניית שיח מכבד, ברור ועמוק בתחילת היכרות משמעותית.
 
 יסודות התקשורת בתחילת קשר רציני
@@ -4928,7 +4928,7 @@ Description: מאמר מעשי על בניית שיח מכבד, ברור ועמ�
 
 ## גבולות בריאים בתוך קשר מתפתח
 
-URL: https://united-match.zappy5.app/halacha-corner/healthy-boundaries
+URL: https://united-match.co.il/halacha-corner/healthy-boundaries
 Description: למה גבולות נכונים אינם מרחיקים אלא יוצרים אמון, קצב נכון וכבוד בתוך תהליך היכרות.
 
 גבולות בריאים בתוך קשר מתפתח
@@ -5283,7 +5283,7 @@ Description: למה גבולות נכונים אינם מרחיקים אלא י�
 
 ## בחירת ערכים משותפים לפני הקמת בית
 
-URL: https://united-match.zappy5.app/halacha-corner/shared-values-home
+URL: https://united-match.co.il/halacha-corner/shared-values-home
 Description: מבט מעשי על החשיבות של ערכים משותפים, סדרי עדיפויות וחזון חיים בבניית זוגיות יציבה.
 
 בחירת ערכים משותפים לפני הקמת בית
@@ -5629,7 +5629,7 @@ Description: מבט מעשי על החשיבות של ערכים משותפים,
 
 ## כיצד מקבלים החלטה שקולה לקראת המשך קשר
 
-URL: https://united-match.zappy5.app/halacha-corner/wise-relationship-decision
+URL: https://united-match.co.il/halacha-corner/wise-relationship-decision
 Description: כלים להבחין בין רגש חולף לבין התאמה אמיתית, ולקבל החלטה מתוך יישוב דעת ובהירות.
 
 כיצד מקבלים החלטה שקולה לקראת המשך קשר
@@ -6005,7 +6005,7 @@ Description: כלים להבחין בין רגש חולף לבין התאמה א
 
 ## פלטפורמה מאובטחת שבנויה על אמון מוחלט — UNITED MATCH
 
-URL: https://united-match.zappy5.app/admin-platform-trust
+URL: https://united-match.co.il/admin-platform-trust
 Description: מערכת ניהול מתקדמת, אבטחת מידע ברמה הגבוהה ביותר ושקיפות מלאה. United Match מחויבת לפרטיות חברותיה ולניהול מקצועי שמעמיד את האמון במרכז.
 
 פלטפורמה מאובטחת שבנויה על אמון מוחלט — UNITED MATCH
@@ -6609,7 +6609,7 @@ SSL
 
 ## האזור האישי שלי
 
-URL: https://united-match.zappy5.app/personal-area
+URL: https://united-match.co.il/personal-area
 Description: UNITED MATCH - האזור האישי שלי
 
 אזור אישי
@@ -7298,7 +7298,7 @@ United Match מציעה שתי רמות גישה — גישה רגילה לחב�
 
 ## תפריט האירוח | United Match
 
-URL: https://united-match.zappy5.app/culinary-menu
+URL: https://united-match.co.il/culinary-menu
 Description: UNITED MATCH - תפריט האירוח | United Match
 
 תפריט האירוח | United Match
@@ -8243,7 +8243,7 @@ United Match
 
 ## מדיניות פרטיות
 
-URL: https://united-match.zappy5.app/privacy
+URL: https://united-match.co.il/privacy
 Description: מדיניות הפרטיות שלנו - כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם
 
 מדיניות פרטיות
@@ -8561,7 +8561,7 @@ UNITED MATCH ("החברה", "אנו", "שלנו") מחויבת להגן על פ�
 
 ## הצהרת נגישות
 
-URL: https://united-match.zappy5.app/accessibility
+URL: https://united-match.co.il/accessibility
 Description: הצהרת הנגישות שלנו - מחויבותנו לנגישות דיגיטלית
 
 הצהרת נגישות
@@ -8888,7 +8888,7 @@ UNITED MATCH מחויבת להנגיש את השירותים לכלל הציבו
 
 ## תנאי שימוש
 
-URL: https://united-match.zappy5.app/terms
+URL: https://united-match.co.il/terms
 Description: תנאי השימוש באתר - הזכויות והחובות של המשתמשים
 
 תנאי שימוש
@@ -9234,7 +9234,7 @@ UNITED MATCH מספקת General דרך האתר. השירותים כפופים �
 
 ## דברו איתנו — השידוך הבא שלכם מתחיל כאן — UNITED MATCH
 
-URL: https://united-match.zappy5.app/contact
+URL: https://united-match.co.il/contact
 Description: יש לכם שאלות? צוות United Match זמין עבורכם לכל פרט ובירור. צרו קשר עוד היום ותנו לנו ללוות אתכם בדרך לשידוך המושלם שמחכה לכם.
 
 דברו איתנו — השידוך הבא שלכם מתחיל כאן — UNITED MATCH
@@ -10280,7 +10280,7 @@ UNITED MATCH
 
 ## מוצרים
 
-URL: https://united-match.zappy5.app/products
+URL: https://united-match.co.il/products
 Description: המוצרים שלנו - UNITED MATCH
 
 מוצרים - UNITED MATCH
@@ -10552,7 +10552,7 @@ Description: המוצרים שלנו - UNITED MATCH
 
 ## עגלת קניות
 
-URL: https://united-match.zappy5.app/cart
+URL: https://united-match.co.il/cart
 Description: עגלת הקניות שלך
 
 עגלת קניות - UNITED MATCH
@@ -10800,7 +10800,7 @@ Description: עגלת הקניות שלך
 
 ## תשלום
 
-URL: https://united-match.zappy5.app/checkout
+URL: https://united-match.co.il/checkout
 Description: תשלום
 
 תשלום - UNITED MATCH
@@ -11226,7 +11226,7 @@ Description: תשלום
 
 ## התחברות
 
-URL: https://united-match.zappy5.app/login
+URL: https://united-match.co.il/login
 Description: התחברות לקוחות
 
 התחברות - UNITED MATCH
@@ -11481,7 +11481,7 @@ Description: התחברות לקוחות
 
 ## החשבון שלי
 
-URL: https://united-match.zappy5.app/account
+URL: https://united-match.co.il/account
 Description: החשבון שלי
 
 החשבון שלי - UNITED MATCH
@@ -11830,7 +11830,7 @@ Description: החשבון שלי
 
 ## ההזמנה התקבלה!
 
-URL: https://united-match.zappy5.app/order-success
+URL: https://united-match.co.il/order-success
 Description: תודה על ההזמנה
 
 ההזמנה התקבלה! - UNITED MATCH
@@ -12102,7 +12102,7 @@ Description: תודה על ההזמנה
 
 ## מדיניות החזרות
 
-URL: https://united-match.zappy5.app/return-policy
+URL: https://united-match.co.il/return-policy
 Description: מדיניות החזרת מוצרים - זכויותיכם להחזרה והחלפה בהתאם לחוק
 
 מדיניות החזרות - UNITED MATCH
@@ -12403,7 +12403,7 @@ UNITED MATCH מחויבת לשביעות רצון לקוחותיה. מדיניו
 
 ## פרטי המוצר
 
-URL: https://united-match.zappy5.app/product/:slug
+URL: https://united-match.co.il/product/:slug
 Description: פרטי המוצר - UNITED MATCH
 
 פרטי המוצר - UNITED MATCH
@@ -12653,7 +12653,7 @@ Description: פרטי המוצר - UNITED MATCH
 
 ## מוצרים
 
-URL: https://united-match.zappy5.app/category/:slug
+URL: https://united-match.co.il/category/:slug
 Description: מוצרים - UNITED MATCH
 
 מוצרים - UNITED MATCH
@@ -12928,7 +12928,7 @@ Description: מוצרים - UNITED MATCH
 ## Product Catalog
 
 ### גישת שדכנים/שדכניות – United Match
-URL: https://united-match.zappy5.app/product/gysht-shdknymshdknyvt-united-match-9fwnpm
+URL: https://united-match.co.il/product/gysht-shdknymshdknyvt-united-match-9fwnpm
 Price: 199.90 ILS (sale, was 299.90 ILS)
 Availability: In stock
 Brand: United Match
@@ -12938,7 +12938,7 @@ Brand: United Match
 ---
 
 ###   גישה פרימיום למערכת United Match
-URL: https://united-match.zappy5.app/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n
+URL: https://united-match.co.il/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n
 Price: 0.00 ILS
 Availability: In stock
 Brand: United Match
@@ -12948,7 +12948,7 @@ Brand: United Match
 ---
 
 ### גישה רגילה למערכת United Match
-URL: https://united-match.zappy5.app/product/gyshh-rgylh-lmarkt-united-match-0q2icv
+URL: https://united-match.co.il/product/gyshh-rgylh-lmarkt-united-match-0q2icv
 Price: 0.00 ILS
 Availability: In stock
 

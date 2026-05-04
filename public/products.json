@@ -1,7 +1,7 @@
 {
   "@context": "https://schema.org",
-  "generated_at": "2026-05-04T12:48:21.982Z",
-  "base_url": "https://united-match.zappy5.app",
+  "generated_at": "2026-05-04T13:13:12.985Z",
+  "base_url": "https://united-match.co.il",
   "currency": "ILS",
   "count": 3,
   "products": [
@@ -19,11 +19,11 @@
       "sale_price": 199.9,
       "currency": "ILS",
       "images": [
-        "https://united-match.zappy5.app/assets/product-1777891421652-q4dbrqq.webp"
+        "https://united-match.co.il/assets/product-1777891421652-q4dbrqq.webp"
       ],
       "in_stock": true,
       "stock_status": "in_stock",
-      "url": "https://united-match.zappy5.app/product/gysht-shdknymshdknyvt-united-match-9fwnpm",
+      "url": "https://united-match.co.il/product/gysht-shdknymshdknyvt-united-match-9fwnpm",
       "categories": [],
       "updated_at": "2026-05-04T11:15:00.528Z"
     },
@@ -41,11 +41,11 @@
       "sale_price": null,
       "currency": "ILS",
       "images": [
-        "https://united-match.zappy5.app/assets/product-autofit-1777891157100-ma8ehw.webp"
+        "https://united-match.co.il/assets/product-autofit-1777891157100-ma8ehw.webp"
       ],
       "in_stock": true,
       "stock_status": "in_stock",
-      "url": "https://united-match.zappy5.app/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n",
+      "url": "https://united-match.co.il/product/gyshh-prymyvm-lmarkt-united-match-m1ay1n",
       "categories": [],
       "updated_at": "2026-05-04T11:12:52.382Z"
     },
@@ -63,11 +63,11 @@
       "sale_price": null,
       "currency": "ILS",
       "images": [
-        "https://united-match.zappy5.app/assets/product-1777891185453-oz73hl.webp"
+        "https://united-match.co.il/assets/product-1777891185453-oz73hl.webp"
       ],
       "in_stock": true,
       "stock_status": "in_stock",
-      "url": "https://united-match.zappy5.app/product/gyshh-rgylh-lmarkt-united-match-0q2icv",
+      "url": "https://united-match.co.il/product/gyshh-rgylh-lmarkt-united-match-0q2icv",
       "categories": [],
       "updated_at": "2026-05-04T11:11:31.150Z"
     }
